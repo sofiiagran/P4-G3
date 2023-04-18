@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/P4-G3.iml" filepath="$PROJECT_DIR$/.idea/P4-G3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TL-compiler/TL-compiler.iml" filepath="$PROJECT_DIR$/TL-compiler/TL-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TL-parser/TL-parser.iml" filepath="$PROJECT_DIR$/TL-parser/TL-parser.iml" />
+    </modules>
+  </component>
+</project>
