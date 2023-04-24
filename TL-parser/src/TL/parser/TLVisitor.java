@@ -179,11 +179,18 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAskExp(TLParser.AskExpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#mathExp}.
+	 * Visit a parse tree produced by the {@code mathExp}
+	 * labeled alternative in {@link TLParser#mathExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitMathExp(TLParser.MathExpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#value}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitValue(TLParser.ValueContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#textInit}.
 	 * @param ctx the parse tree

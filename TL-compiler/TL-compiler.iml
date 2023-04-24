@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="TL-parser" exported="" />
-    <orderEntry type="library" exported="" name="antlr-4.12.0-complete" level="project" />
+    <orderEntry type="library" name="antlr-4.12.0-complete" level="project" />
+    <orderEntry type="module" module-name="TL-parser" />
   </component>
 </module>

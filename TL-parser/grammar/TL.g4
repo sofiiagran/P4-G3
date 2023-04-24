@@ -113,7 +113,7 @@ expression:
     | returnExp+
     | printExp+
     | askExp+
-    | mathExp+
+    | mathExpr+
     ;
 
 operation:
@@ -131,8 +131,12 @@ printExp:
 
 askExp: ASK askID=var (TEXT_VAL | var | NUMBER_VAL) ( (ADD (TEXT_VAL | var | NUMBER_VAL))+)?;
 
-mathExp:
-    (var | NUMBER_VAL) (mathematicalOperation (var  | NUMBER_VAL)+ )+
+mathExpr:
+     left = value ((op = mathematicalOperation) right = value+ )+ #mathExp
+    ;
+
+value:
+    var | NUMBER_VAL
     ;
 
 textInit:
@@ -167,11 +171,11 @@ conditionalOperation:
 			 ;
 
 mathematicalOperation:
-			 mathOp=ASSIGN
-			 | mathOp=ADD
-			 | mathOp=SUB
-			 | mathOp=MUL
-			 | mathOp=DIV
+			   ASSIGN
+			 | ADD
+			 | SUB
+			 | MUL
+			 | DIV
 			 ;
 
 
