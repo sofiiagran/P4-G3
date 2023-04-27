@@ -203,6 +203,24 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBooleanInit(TLParser.BooleanInitContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TLParser#structInit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructInit(TLParser.StructInitContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#structBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructBody(TLParser.StructBodyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#structField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructField(TLParser.StructFieldContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TLParser#var}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

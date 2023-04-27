@@ -59,12 +59,14 @@ initialization:
     textInit+
     | numberInit+
     | booleanInit+
+    | structInit+
     ;
 
 dataType:
     dtNumber=NUMBER
     | dtText=TEXT
     | dtBoolean=BOOLEAN
+    | dtStruct=STRUCT
     ;
 
 funcBody:
@@ -147,6 +149,23 @@ booleanInit:
     (BOOLEAN)? var ASSIGN BOOL_LITERAL
     ;
 
+structInit:
+    (STRUCT?) var LBRACE structBody RBRACE
+    ;
+
+
+structBody:
+structField (',' structField)*
+    ;
+
+
+structField:
+textInit+
+| booleanInit+
+| numberInit+
+;
+
+
 var:
     varID=ID
     ;
@@ -187,6 +206,7 @@ FUNC : 'function';
 BOOLEAN : 'truthvalue';
 NUMBER : 'number';
 TEXT : 'text';
+STRUCT : 'struct';
 
 //operation keywords
 PRINT : 'print';

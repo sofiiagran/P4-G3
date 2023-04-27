@@ -5,6 +5,15 @@ start {
 
   myFunction
 
+  struct test {
+  a = 5,
+  b = 5,
+  c = 5,
+  lol = "lol"
+  }
+
+
+
 }
 
 functions {

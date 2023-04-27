@@ -86,6 +86,12 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         return super.visitBooleanInit(ctx);
     }
 
+
+    @Override
+    public String visitStructInit(TLParser.StructInitContext ctx) {
+        return ctx.getRuleContext().getText();
+    }
+
     /*** Declaration ***/
     @Override
     public String visitDeclaration(TLParser.DeclarationContext ctx) {
@@ -141,6 +147,9 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitMathematicalOperation(TLParser.MathematicalOperationContext ctx) {
         return super.visitMathematicalOperation(ctx);
     }
+
+
+
 
     /*** Aggregator ***/
 
