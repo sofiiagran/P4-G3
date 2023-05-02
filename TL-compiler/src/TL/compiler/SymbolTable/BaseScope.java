@@ -3,7 +3,6 @@ package TL.compiler.SymbolTable;
 import java.util.*;
 
 public class BaseScope implements IScope {
-
     private IScope enclosingScope;
     public Map<String, Symbol> symbols = new HashMap<String, Symbol>();
 

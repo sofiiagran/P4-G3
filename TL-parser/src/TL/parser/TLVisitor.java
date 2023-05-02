@@ -17,6 +17,12 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(TLParser.ProgramContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TLParser#prototypes}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrototypes(TLParser.PrototypesContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TLParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -53,12 +59,6 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncDec(TLParser.FuncDecContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#funcName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncName(TLParser.FuncNameContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TLParser#funcOutputParam}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -71,29 +71,44 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncInputParam(TLParser.FuncInputParamContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TLParser#funcName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFuncName(TLParser.FuncNameContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TLParser#funcCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFuncCall(TLParser.FuncCallContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#declaration}.
+	 * Visit a parse tree produced by the {@code numberDec}
+	 * labeled alternative in {@link TLParser#declaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDeclaration(TLParser.DeclarationContext ctx);
+	T visitNumberDec(TLParser.NumberDecContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code textDec}
+	 * labeled alternative in {@link TLParser#declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTextDec(TLParser.TextDecContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code boolDec}
+	 * labeled alternative in {@link TLParser#declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolDec(TLParser.BoolDecContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#initialization}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitInitialization(TLParser.InitializationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link TLParser#dataType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDataType(TLParser.DataTypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#funcBody}.
 	 * @param ctx the parse tree
@@ -143,11 +158,32 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatementBody(TLParser.StatementBodyContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#condition}.
+	 * Visit a parse tree produced by the {@code con1}
+	 * labeled alternative in {@link TLParser#condition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCondition(TLParser.ConditionContext ctx);
+	T visitCon1(TLParser.Con1Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code con2}
+	 * labeled alternative in {@link TLParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCon2(TLParser.Con2Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code con3}
+	 * labeled alternative in {@link TLParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCon3(TLParser.Con3Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#rightCondition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRightCondition(TLParser.RightConditionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#expression}.
 	 * @param ctx the parse tree
@@ -155,17 +191,17 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpression(TLParser.ExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#operation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOperation(TLParser.OperationContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TLParser#returnExp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitReturnExp(TLParser.ReturnExpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#returnBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturnBody(TLParser.ReturnBodyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#printExp}.
 	 * @param ctx the parse tree
@@ -173,18 +209,42 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrintExp(TLParser.PrintExpContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TLParser#printBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintBody(TLParser.PrintBodyContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TLParser#askExp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAskExp(TLParser.AskExpContext ctx);
 	/**
+<<<<<<< Updated upstream
 	 * Visit a parse tree produced by the {@code mathExp}
 	 * labeled alternative in {@link TLParser#mathExpr}.
+=======
+	 * Visit a parse tree produced by {@link TLParser#answerVal}.
+>>>>>>> Stashed changes
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMathExp(TLParser.MathExpContext ctx);
+	T visitAnswerVal(TLParser.AnswerValContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code mathExp1}
+	 * labeled alternative in {@link TLParser#mathExp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMathExp1(TLParser.MathExp1Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code mathExp2}
+	 * labeled alternative in {@link TLParser#mathExp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMathExp2(TLParser.MathExp2Context ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#value}.
 	 * @param ctx the parse tree
@@ -210,12 +270,6 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBooleanInit(TLParser.BooleanInitContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#var}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVar(TLParser.VarContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TLParser#val}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -228,9 +282,15 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConditionalOperation(TLParser.ConditionalOperationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#mathematicalOperation}.
+	 * Visit a parse tree produced by {@link TLParser#mathematicalOperation1}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMathematicalOperation(TLParser.MathematicalOperationContext ctx);
+	T visitMathematicalOperation1(TLParser.MathematicalOperation1Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#mathematicalOperation2}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMathematicalOperation2(TLParser.MathematicalOperation2Context ctx);
 }

@@ -18,6 +18,16 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitProgram(TLParser.ProgramContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TLParser#prototypes}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrototypes(TLParser.PrototypesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#prototypes}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrototypes(TLParser.PrototypesContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TLParser#block}.
 	 * @param ctx the parse tree
 	 */
@@ -78,16 +88,6 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitFuncDec(TLParser.FuncDecContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#funcName}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncName(TLParser.FuncNameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLParser#funcName}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncName(TLParser.FuncNameContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link TLParser#funcOutputParam}.
 	 * @param ctx the parse tree
 	 */
@@ -108,6 +108,16 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitFuncInputParam(TLParser.FuncInputParamContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TLParser#funcName}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncName(TLParser.FuncNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#funcName}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncName(TLParser.FuncNameContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TLParser#funcCall}.
 	 * @param ctx the parse tree
 	 */
@@ -118,15 +128,41 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitFuncCall(TLParser.FuncCallContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#declaration}.
+	 * Enter a parse tree produced by the {@code numberDec}
+	 * labeled alternative in {@link TLParser#declaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterDeclaration(TLParser.DeclarationContext ctx);
+	void enterNumberDec(TLParser.NumberDecContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLParser#declaration}.
+	 * Exit a parse tree produced by the {@code numberDec}
+	 * labeled alternative in {@link TLParser#declaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitDeclaration(TLParser.DeclarationContext ctx);
+	void exitNumberDec(TLParser.NumberDecContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code textDec}
+	 * labeled alternative in {@link TLParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterTextDec(TLParser.TextDecContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code textDec}
+	 * labeled alternative in {@link TLParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitTextDec(TLParser.TextDecContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code boolDec}
+	 * labeled alternative in {@link TLParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolDec(TLParser.BoolDecContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code boolDec}
+	 * labeled alternative in {@link TLParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolDec(TLParser.BoolDecContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLParser#initialization}.
 	 * @param ctx the parse tree
@@ -137,16 +173,6 @@ public interface TLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitInitialization(TLParser.InitializationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TLParser#dataType}.
-	 * @param ctx the parse tree
-	 */
-	void enterDataType(TLParser.DataTypeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLParser#dataType}.
-	 * @param ctx the parse tree
-	 */
-	void exitDataType(TLParser.DataTypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLParser#funcBody}.
 	 * @param ctx the parse tree
@@ -228,15 +254,51 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitStatementBody(TLParser.StatementBodyContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#condition}.
+	 * Enter a parse tree produced by the {@code con1}
+	 * labeled alternative in {@link TLParser#condition}.
 	 * @param ctx the parse tree
 	 */
-	void enterCondition(TLParser.ConditionContext ctx);
+	void enterCon1(TLParser.Con1Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLParser#condition}.
+	 * Exit a parse tree produced by the {@code con1}
+	 * labeled alternative in {@link TLParser#condition}.
 	 * @param ctx the parse tree
 	 */
-	void exitCondition(TLParser.ConditionContext ctx);
+	void exitCon1(TLParser.Con1Context ctx);
+	/**
+	 * Enter a parse tree produced by the {@code con2}
+	 * labeled alternative in {@link TLParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterCon2(TLParser.Con2Context ctx);
+	/**
+	 * Exit a parse tree produced by the {@code con2}
+	 * labeled alternative in {@link TLParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitCon2(TLParser.Con2Context ctx);
+	/**
+	 * Enter a parse tree produced by the {@code con3}
+	 * labeled alternative in {@link TLParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterCon3(TLParser.Con3Context ctx);
+	/**
+	 * Exit a parse tree produced by the {@code con3}
+	 * labeled alternative in {@link TLParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitCon3(TLParser.Con3Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#rightCondition}.
+	 * @param ctx the parse tree
+	 */
+	void enterRightCondition(TLParser.RightConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#rightCondition}.
+	 * @param ctx the parse tree
+	 */
+	void exitRightCondition(TLParser.RightConditionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLParser#expression}.
 	 * @param ctx the parse tree
@@ -248,16 +310,6 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitExpression(TLParser.ExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#operation}.
-	 * @param ctx the parse tree
-	 */
-	void enterOperation(TLParser.OperationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLParser#operation}.
-	 * @param ctx the parse tree
-	 */
-	void exitOperation(TLParser.OperationContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link TLParser#returnExp}.
 	 * @param ctx the parse tree
 	 */
@@ -267,6 +319,16 @@ public interface TLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitReturnExp(TLParser.ReturnExpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#returnBody}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturnBody(TLParser.ReturnBodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#returnBody}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturnBody(TLParser.ReturnBodyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLParser#printExp}.
 	 * @param ctx the parse tree
@@ -278,6 +340,16 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitPrintExp(TLParser.PrintExpContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TLParser#printBody}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintBody(TLParser.PrintBodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#printBody}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintBody(TLParser.PrintBodyContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TLParser#askExp}.
 	 * @param ctx the parse tree
 	 */
@@ -288,17 +360,49 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitAskExp(TLParser.AskExpContext ctx);
 	/**
+<<<<<<< Updated upstream
 	 * Enter a parse tree produced by the {@code mathExp}
 	 * labeled alternative in {@link TLParser#mathExpr}.
+=======
+	 * Enter a parse tree produced by {@link TLParser#answerVal}.
+>>>>>>> Stashed changes
 	 * @param ctx the parse tree
 	 */
-	void enterMathExp(TLParser.MathExpContext ctx);
+	void enterAnswerVal(TLParser.AnswerValContext ctx);
 	/**
+<<<<<<< Updated upstream
 	 * Exit a parse tree produced by the {@code mathExp}
 	 * labeled alternative in {@link TLParser#mathExpr}.
+=======
+	 * Exit a parse tree produced by {@link TLParser#answerVal}.
+>>>>>>> Stashed changes
 	 * @param ctx the parse tree
 	 */
-	void exitMathExp(TLParser.MathExpContext ctx);
+	void exitAnswerVal(TLParser.AnswerValContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code mathExp1}
+	 * labeled alternative in {@link TLParser#mathExp}.
+	 * @param ctx the parse tree
+	 */
+	void enterMathExp1(TLParser.MathExp1Context ctx);
+	/**
+	 * Exit a parse tree produced by the {@code mathExp1}
+	 * labeled alternative in {@link TLParser#mathExp}.
+	 * @param ctx the parse tree
+	 */
+	void exitMathExp1(TLParser.MathExp1Context ctx);
+	/**
+	 * Enter a parse tree produced by the {@code mathExp2}
+	 * labeled alternative in {@link TLParser#mathExp}.
+	 * @param ctx the parse tree
+	 */
+	void enterMathExp2(TLParser.MathExp2Context ctx);
+	/**
+	 * Exit a parse tree produced by the {@code mathExp2}
+	 * labeled alternative in {@link TLParser#mathExp}.
+	 * @param ctx the parse tree
+	 */
+	void exitMathExp2(TLParser.MathExp2Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLParser#value}.
 	 * @param ctx the parse tree
@@ -340,16 +444,6 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitBooleanInit(TLParser.BooleanInitContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#var}.
-	 * @param ctx the parse tree
-	 */
-	void enterVar(TLParser.VarContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLParser#var}.
-	 * @param ctx the parse tree
-	 */
-	void exitVar(TLParser.VarContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link TLParser#val}.
 	 * @param ctx the parse tree
 	 */
@@ -370,13 +464,23 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitConditionalOperation(TLParser.ConditionalOperationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#mathematicalOperation}.
+	 * Enter a parse tree produced by {@link TLParser#mathematicalOperation1}.
 	 * @param ctx the parse tree
 	 */
-	void enterMathematicalOperation(TLParser.MathematicalOperationContext ctx);
+	void enterMathematicalOperation1(TLParser.MathematicalOperation1Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLParser#mathematicalOperation}.
+	 * Exit a parse tree produced by {@link TLParser#mathematicalOperation1}.
 	 * @param ctx the parse tree
 	 */
-	void exitMathematicalOperation(TLParser.MathematicalOperationContext ctx);
+	void exitMathematicalOperation1(TLParser.MathematicalOperation1Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#mathematicalOperation2}.
+	 * @param ctx the parse tree
+	 */
+	void enterMathematicalOperation2(TLParser.MathematicalOperation2Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#mathematicalOperation2}.
+	 * @param ctx the parse tree
+	 */
+	void exitMathematicalOperation2(TLParser.MathematicalOperation2Context ctx);
 }

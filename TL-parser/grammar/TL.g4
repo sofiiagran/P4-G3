@@ -1,7 +1,11 @@
 grammar TL;
 
 program:
-    block EOF
+    (prototypes)? block EOF
+    ;
+
+prototypes:
+    (ID funcOutputParam)+
     ;
 
 block:
@@ -9,7 +13,7 @@ block:
     ;
 
 startBlock:
-    START LBRACE startBody* RBRACE
+    START BEGIN startBody* END
     ;
 
 startBody:
@@ -21,7 +25,7 @@ startBody:
 
 
 functionsBlock:
-    FUNCTIONS LBRACE funcBlockBody* RBRACE
+    FUNCTIONS BEGIN funcBlockBody* END
     ;
 
 funcBlockBody:
@@ -31,40 +35,35 @@ funcBlockBody:
     ;
 
 funcDec:
-    FUNC funcID=funcName (funcOutputParam)? LBRACE funcBody* RBRACE
+    FUNC funcID=funcName (funcOutputParam)? BEGIN funcBody* END
     ;
 
+funcOutputParam:
+    LPAREN ( (declaration | ID) | ( (declaration | ID) COMMA (declaration | ID) )* ) RPAREN
+    ;
+
+funcInputParam:
+    LPAREN (ID | (ID COMMA ID)* ) RPAREN
+    ;
 funcName:
     ID
     ;
 
-funcOutputParam:
-    LPAREN ( (declaration | var) | ( (declaration | var) COMMA (declaration | var) )* ) RPAREN
-    ;
-
-funcInputParam:
-    LPAREN (var | (var COMMA var)* ) RPAREN
-    ;
-
-
 funcCall:
-    (RUN)? funcID=funcName (funcInputParam)?
+    (RUN)? funcID=ID (funcInputParam)?
     ;
 
 declaration:
-    dt=dataType var
+    NUMBER ID #numberDec
+    | TEXT ID #textDec
+    | BOOLEAN ID #boolDec
     ;
+
 
 initialization:
     textInit+
     | numberInit+
     | booleanInit+
-    ;
-
-dataType:
-    dtNumber=NUMBER
-    | dtText=TEXT
-    | dtBoolean=BOOLEAN
     ;
 
 funcBody:
@@ -83,29 +82,35 @@ statement:
     ;
 
 ifThenStatement:
-    IF condition THEN statementBody+
+    IF condition (BEGIN | THEN) statementBody END
     ;
 ifThenElseStatement:
-    IF condition THEN statementBody+ ELSE_IF* statementBody* ELSE statementBody
+    IF condition (BEGIN | THEN) statementBody END (ELSE_IF  BEGIN statementBody END)* ELSE BEGIN statementBody END
     ;
 repeatStatement:
-    REPEAT NUMBER_VAL TIMES statementBody+
+    REPEAT (NUMBER_VAL | ID ) TIMES (BEGIN | THEN) statementBody END
     ;
 repeatUntilStatement:
-    REPEAT_UNTIL condition statementBody+
+    REPEAT_UNTIL condition (BEGIN | THEN) statementBody END
     ;
 whileStatement:
-    WHILE condition DO statementBody+
+    WHILE condition (DO | BEGIN) statementBody END
     ;
 
 statementBody:
-    expression+
-    | declaration+
+    expression* declaration* statement*
     ;
 
 condition:
-    (var | val) operation (AND operation | OR operation)*
+    leftCon=val rightCondition                      #con1
+    | ID                                            #con2
+    | NOTEQUAL ID                                   #con3
     ;
+
+rightCondition:
+    (op=conditionalOperation rightCon=val)+
+    ;
+
 
 expression:
     funcCall+
@@ -116,76 +121,110 @@ expression:
     | mathExpr+
     ;
 
-operation:
-    ( conditionalOperation (val |  var) )
-    ;
+
 
 returnExp:
-    RETURN var
+    RETURN returnBody
+    ;
+returnBody:
+    val
     ;
 
 printExp:
-    PRINT (TEXT_VAL | var | NUMBER_VAL) ( (ADD (TEXT_VAL | var | NUMBER_VAL))+)?
-
+    PRINT printBody
     ;
 
-askExp: ASK askID=var (TEXT_VAL | var | NUMBER_VAL) ( (ADD (TEXT_VAL | var | NUMBER_VAL))+)?;
+printBody:
+    (val) ( (ADD (val))+)?
+    ;
 
+
+askExp: ASK askID=ID printBody
+    ;
+
+answerVal:
+    askID=ID DOT ANSWER
+    ;
+
+<<<<<<< Updated upstream
 mathExpr:
      left = value ((op = mathematicalOperation) right = value+ )+ #mathExp
     ;
 
 value:
     var | NUMBER_VAL
+=======
+mathExp:
+    ID ASSIGN left=val (mathOp=mathematicalOperation1 right=val)+       #mathExp1
+    | left=val mathOp=mathematicalOperation2 right=val                  #mathExp2
+>>>>>>> Stashed changes
     ;
 
 textInit:
-    (TEXT)? var ASSIGN TEXT_VAL
+    (TEXT)? var1ID=ID ASSIGN (TEXT_VAL | var2ID=ID)
     ;
 
 numberInit:
-    (NUMBER)? var ASSIGN NUMBER_VAL
+    (NUMBER)? var1ID=ID ASSIGN (NUMBER_VAL | var2ID=ID)
     ;
 
 booleanInit:
-    (BOOLEAN)? var ASSIGN BOOL_LITERAL
-    ;
-
-var:
-    varID=ID
+    (BOOLEAN)? var1ID=ID ASSIGN (BOOL_LITERAL | var2ID=ID)
     ;
 
 val:
     textVal=TEXT_VAL
     | numberVal=NUMBER_VAL
     | boolVal=BOOL_LITERAL
+    | variable=ID
     ;
 
 conditionalOperation:
-             conOp=LT
-			 | conOp=GT
-			 | conOp=EQUAL
-			 | conOp=NOTEQUAL
-			 | conOp=LE
-			 | conOp=GE
+             conOpLT=LT
+			 | conOpGT=GT
+			 | conOpEQ=EQUAL
+			 | conOpNEQ=NOTEQUAL
+			 | conOpLE=LE
+			 | conOpGE=GE
 			 ;
 
+<<<<<<< Updated upstream
 mathematicalOperation:
 			   ASSIGN
 			 | ADD
 			 | SUB
 			 | MUL
 			 | DIV
+=======
+mathematicalOperation1:
+			 | mathOpADD=ADD
+			 | mathOpSUB=SUB
+			 | mathOpMUL=MUL
+			 | mathOpDIV=DIV
+>>>>>>> Stashed changes
 			 ;
+mathematicalOperation2:
+    		 | mathOpADD=ADD_ASSIGN
+    	     | mathOpSUB=SUB_ASSIGN
+    		 | mathOpMUL=MUL_ASSIGN
+    	     | mathOpDIV=DIV_ASSIGN
+    		 ;
+
 
 
 /***** LEXER RULES  *****/
 
 // list of reserved keywords
 
+
+
 START : 'start';
 FUNCTIONS : 'functions';
 FUNC : 'function';
+
+//blocks
+BEGIN: 'begin' ;
+END: 'end';
 
 // datatypes
 BOOLEAN : 'truthvalue';
@@ -208,6 +247,7 @@ RETURN: 'return';
 ASK: 'ask';
 RUN: 'run';
 ALWAYS: 'always';
+ANSWER: 'answer';
 
 // Separators
 
