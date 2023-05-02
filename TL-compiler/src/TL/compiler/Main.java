@@ -2,7 +2,6 @@ package TL.compiler;
 
 import TL.compiler.ErrorHandling.ErrorListener;
 import TL.compiler.Listener.FuncDecListener;
-import TL.compiler.Listener.VarDecListener;
 import TL.compiler.SymbolTable.SymbolDefListener;
 import TL.compiler.TypeChecker.TLTypeCheckerVisitor;
 import TL.parser.TLLexer;
@@ -19,18 +18,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        try {
-            runCompiler(args);
 
-        } catch (Exception e) {
-            /*  Whenever an error is thrown in the BuffErrorListener or ANTLRErrorListener, the user has already been
-             *  given a message explaining the error and nothing more should be done here.
-             */
-        }
-    }
-    public static void runCompiler(String[] args) throws IOException {
-
-        CharStream stream = CharStreams.fromFileName("/Users/sofiagran/Documents/Github/P4-G3/TL-compiler/src/TL/compiler/demo.TL");
+        CharStream stream = CharStreams.fromFileName("/Users/sofiagran/Desktop/P4-G3-main/TL-compiler/src/TL/compiler/demo.TL");
 
 
         ErrorListener errorListener = new ErrorListener();
@@ -47,6 +36,9 @@ public class Main {
 
         parser.addErrorListener(errorListener);
         ParseTree tree = parser.program();
+        parser.program();
+
+        System.out.println(parser);
 
         // Function declaration listener that creates prototypes
 
@@ -55,25 +47,23 @@ public class Main {
         walker.walk(funcDec, tree);
 
         /** VarDecListener varDec = new VarDecListener();
-        walker.walk(varDec, tree); **/
-
+         walker.walk(varDec, tree); **/
 
 
         SymbolDefListener symbolDefListener = new SymbolDefListener();
-         try {
+        try {
             walker.walk(symbolDefListener, tree);
-        } catch(Exception e) {
-             System.out.println(e.getMessage());
-         }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-         TLTypeCheckerVisitor typeChecker =
-               new TLTypeCheckerVisitor(errorListener);
-         typeChecker.visit(tree);
+        TLTypeCheckerVisitor typeChecker =
+                new TLTypeCheckerVisitor(errorListener);
+        typeChecker.visit(tree);
 
         // Code generation
         CodeGenerator codeGenerator = new CodeGenerator(symbolDefListener, symbolDefListener.currentScope);
         String targetCode = codeGenerator.visit(tree);
         System.out.println(targetCode);
-
     }
 }

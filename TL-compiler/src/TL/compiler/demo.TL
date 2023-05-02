@@ -1,8 +1,7 @@
-
 start begin
 
     number a
-    number b
+    text b
     truthvalue c
 
     myFunction

@@ -11,8 +11,8 @@ import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
-
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class SymbolDefListener extends TLBaseListener {
 

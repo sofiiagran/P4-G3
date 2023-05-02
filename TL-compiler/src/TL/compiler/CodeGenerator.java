@@ -1,12 +1,9 @@
 package TL.compiler;
 
-import TL.compiler.Listener.VarDecListener;
-import TL.compiler.SymbolTable.BaseScope;
 import TL.compiler.SymbolTable.IScope;
 import TL.compiler.SymbolTable.SymbolDefListener;
 import TL.parser.TLBaseVisitor;
 import TL.parser.TLParser;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 public class CodeGenerator extends TLBaseVisitor<String> {
 
@@ -101,7 +98,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     @Override
     public String visitFuncDec(TLParser.FuncDecContext ctx) {
 
-        return "\n\n" + "void " + ctx.funcID.getText() + "(" + visit(ctx.funcOutputParam()) + ") " + "{ \n\n" + visitChildren(ctx) + "}" + "\n\n";
+        return "\n\n" + "void " + ctx.funcID.getText() + "("  + ") " + "{ \n\n" + visitChildren(ctx) + "}" + "\n\n";
     }
 
     @Override
@@ -308,18 +305,18 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitMathematicalOperation1(TLParser.MathematicalOperation1Context ctx) {
 
 
-            if (ctx.mathOpADD != null) {
-                return "+";
-            }
-            if (ctx.mathOpSUB != null) {
-                return "-";
-            }
-            if (ctx.mathOpMUL != null) {
-                return "*";
-            }
-            if (ctx.mathOpDIV != null) {
-                return "/";
-            }
+        if (ctx.mathOpADD != null) {
+            return "+";
+        }
+        if (ctx.mathOpSUB != null) {
+            return "-";
+        }
+        if (ctx.mathOpMUL != null) {
+            return "*";
+        }
+        if (ctx.mathOpDIV != null) {
+            return "/";
+        }
 
 
         return null;
@@ -360,3 +357,4 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
 
 }
+

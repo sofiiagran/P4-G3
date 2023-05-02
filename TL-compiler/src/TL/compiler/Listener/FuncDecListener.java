@@ -9,7 +9,7 @@ public class FuncDecListener extends TLBaseListener {
     public String FuncPrototype1 = "";
 
     public void enterFuncDec(TLParser.FuncDecContext ctx) {
-        FuncPrototype1 = ctx.funcID.getText();
+        FuncPrototype1 = ctx.funcName().getText();
         System.out.println(FuncPrototype1 + "();");
     }
 
