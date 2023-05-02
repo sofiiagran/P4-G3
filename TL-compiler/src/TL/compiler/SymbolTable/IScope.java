@@ -9,4 +9,5 @@ public interface IScope {
     void defineSymbol(Symbol symbol);
 
     Symbol getSymbol(String name);
+
 }

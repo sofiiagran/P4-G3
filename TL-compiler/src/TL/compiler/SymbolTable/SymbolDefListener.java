@@ -96,16 +96,12 @@ public class SymbolDefListener extends TLBaseListener {
         Symbol newSymbol = new Symbol(varName, type, decScope);
         currentScope.defineSymbol(newSymbol);
 
-
         currentScope = decScope;
     }
     @Override
     public void exitBoolDec(TLParser.BoolDecContext ctx) {
         currentScope = currentScope.getEnclosedScope();
     }
-
-
-
 
 
 

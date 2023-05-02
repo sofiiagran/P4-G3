@@ -360,22 +360,12 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitAskExp(TLParser.AskExpContext ctx);
 	/**
-<<<<<<< Updated upstream
-	 * Enter a parse tree produced by the {@code mathExp}
-	 * labeled alternative in {@link TLParser#mathExpr}.
-=======
 	 * Enter a parse tree produced by {@link TLParser#answerVal}.
->>>>>>> Stashed changes
 	 * @param ctx the parse tree
 	 */
 	void enterAnswerVal(TLParser.AnswerValContext ctx);
 	/**
-<<<<<<< Updated upstream
-	 * Exit a parse tree produced by the {@code mathExp}
-	 * labeled alternative in {@link TLParser#mathExpr}.
-=======
 	 * Exit a parse tree produced by {@link TLParser#answerVal}.
->>>>>>> Stashed changes
 	 * @param ctx the parse tree
 	 */
 	void exitAnswerVal(TLParser.AnswerValContext ctx);
@@ -403,16 +393,6 @@ public interface TLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMathExp2(TLParser.MathExp2Context ctx);
-	/**
-	 * Enter a parse tree produced by {@link TLParser#value}.
-	 * @param ctx the parse tree
-	 */
-	void enterValue(TLParser.ValueContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLParser#value}.
-	 * @param ctx the parse tree
-	 */
-	void exitValue(TLParser.ValueContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLParser#textInit}.
 	 * @param ctx the parse tree

@@ -221,12 +221,7 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAskExp(TLParser.AskExpContext ctx);
 	/**
-<<<<<<< Updated upstream
-	 * Visit a parse tree produced by the {@code mathExp}
-	 * labeled alternative in {@link TLParser#mathExpr}.
-=======
 	 * Visit a parse tree produced by {@link TLParser#answerVal}.
->>>>>>> Stashed changes
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -245,12 +240,6 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMathExp2(TLParser.MathExp2Context ctx);
-	/**
-	 * Visit a parse tree produced by {@link TLParser#value}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitValue(TLParser.ValueContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#textInit}.
 	 * @param ctx the parse tree

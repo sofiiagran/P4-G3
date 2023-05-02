@@ -18,10 +18,6 @@ public class ErrorListener extends BaseErrorListener implements IErrorListener {
     @Override
     public void ThrowError(String errorMsg, ArrayList<Token> offendingTokens) {
 
-
-
-
-
     }
 
     @Override

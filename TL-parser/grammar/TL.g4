@@ -118,7 +118,7 @@ expression:
     | returnExp+
     | printExp+
     | askExp+
-    | mathExpr+
+    | mathExp+
     ;
 
 
@@ -146,18 +146,9 @@ answerVal:
     askID=ID DOT ANSWER
     ;
 
-<<<<<<< Updated upstream
-mathExpr:
-     left = value ((op = mathematicalOperation) right = value+ )+ #mathExp
-    ;
-
-value:
-    var | NUMBER_VAL
-=======
-mathExp:
+mathExp :
     ID ASSIGN left=val (mathOp=mathematicalOperation1 right=val)+       #mathExp1
     | left=val mathOp=mathematicalOperation2 right=val                  #mathExp2
->>>>>>> Stashed changes
     ;
 
 textInit:
@@ -188,20 +179,11 @@ conditionalOperation:
 			 | conOpGE=GE
 			 ;
 
-<<<<<<< Updated upstream
-mathematicalOperation:
-			   ASSIGN
-			 | ADD
-			 | SUB
-			 | MUL
-			 | DIV
-=======
 mathematicalOperation1:
 			 | mathOpADD=ADD
 			 | mathOpSUB=SUB
 			 | mathOpMUL=MUL
 			 | mathOpDIV=DIV
->>>>>>> Stashed changes
 			 ;
 mathematicalOperation2:
     		 | mathOpADD=ADD_ASSIGN
