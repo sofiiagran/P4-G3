@@ -1,7 +1,5 @@
 package TL.compiler;
 
-import TL.compiler.ErrorHandling.ErrorListener;
-import TL.compiler.Listener.FuncDecListener;
 import TL.compiler.Listener.ParamListener;
 import TL.compiler.SymbolTable.SymbolTable;
 import TL.parser.TLLexer;
@@ -12,6 +10,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import javax.xml.transform.ErrorListener;
 import java.io.IOException;
 
 public class Main {
@@ -21,18 +20,18 @@ public class Main {
 
         CharStream stream = CharStreams.fromFileName("/Users/sofiagran/Desktop/P4-G3-main/TL-compiler/src/TL/compiler/demo.TL");
 
-        ErrorListener errorListener = new ErrorListener();
+        //ErrorListener errorListener = new ErrorListener();
 
         TLLexer lexer = new TLLexer(stream);
         lexer.removeErrorListeners();
-        lexer.addErrorListener(errorListener);
+        //lexer.addErrorListener(errorListener);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         TLParser parser = new TLParser(tokens);
         parser.removeErrorListeners();
 
 
-        parser.addErrorListener(errorListener);
+        //parser.addErrorListener(errorListener);
         ParseTree tree = parser.program();
         parser.program();
 
