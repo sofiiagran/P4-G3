@@ -159,6 +159,8 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         }
         if(ctx.param != null) {
 
+            String outPutParam = visit(ctx.funcOutputParam());
+
             for(int i = 1; i < ctx.funcBody().size(); i++) {
                 print += visit(ctx.funcBody(i));
             }
@@ -166,7 +168,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                 print += visit(ctx.returnExp());
             }
 
-            return "\n\n" + returnType + " " +  ctx.funcID.getText() + "("  + visit(ctx.funcOutputParam()) + ") "
+            return "\n\n" + returnType + " " +  ctx.funcID.getText() + "("  + outPutParam + ") "
                     + "{ \n\n" + print + "}" + "\n\n" + closeScope();
         }
 
@@ -192,6 +194,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                     System.err.println("Error: variable name is already in use");
                     //Throw error
                 }
+                symbolTable.insertSymbol(new Attributes(varName, Type.Number));
                 params += "int " + varName;
             }
             if(ctx.declaration(i).textDec != null) {
@@ -200,6 +203,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                     System.err.println("Error: variable name is already in use");
                     //Throw error
                 }
+                symbolTable.insertSymbol(new Attributes(varName, Type.Text));
                 params += "char " + varName + "[]";
             }
             if(ctx.declaration(i).boolDec != null) {
@@ -208,6 +212,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                     System.err.println("Error: variable name is already in use");
                     //Throw error
                 }
+                symbolTable.insertSymbol(new Attributes(varName, Type.Boolean));
                 params += "bool " + varName;
             }
         }
@@ -272,17 +277,62 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
     @Override
     public String visitBooleanInit(TLParser.BooleanInitContext ctx) {
+        String varName = ctx.var1ID.getText();
+        Type type = Type.Boolean;
+        Attributes attribute = new Attributes(varName, type);
 
-            if(symbolTable.containsSymbol(ctx.var1ID.getText())) {
+            if(symbolTable.isInScope(attribute)) {
                 return "    " + ctx.var1ID.getText() + " = "+ ctx.BOOL_LITERAL().getText() + ";" + "\n\n";
             } else {
+                symbolTable.insertSymbol(attribute);
                 return "    bool " + ctx.var1ID.getText() + " = "+ ctx.BOOL_LITERAL().getText() + ";" + "\n\n";
             }
     }
 
     @Override
     public String visitAssignment(TLParser.AssignmentContext ctx) {
-        return ctx.var1ID.getText() + " = " + ctx.var2ID.getText();
+
+        String var1Name = ctx.var1ID.getText();
+        String var2Name = ctx.var2ID.getText();
+        Type dataType = null;
+
+        if (symbolTable.isInScope(new Attributes(var1Name, null))) {
+            if (symbolTable.isInScope(new Attributes(var2Name, null))) {
+                return "    " + var1Name + " = " + var2Name + ";\n\n";
+            } else {
+                dataType = symbolTable.retrieveSymbol(var1Name).getType();
+                symbolTable.insertSymbol(new Attributes(var2Name, dataType));
+                if(dataType == Type.Number) {
+                    return "    double " + var2Name + " = " + var1Name + ";\n\n";
+                }
+                if(dataType == Type.Text) {
+                    return "    char " + var2Name + "[] = " + var1Name + ";\n\n";
+                }
+                if(dataType == Type.Boolean) {
+                    return "    bool " + var2Name + " = " + var1Name + ";\n\n";
+                }
+            }
+
+        } else {
+            if (symbolTable.isInScope(new Attributes(var2Name, null))) {
+                dataType = symbolTable.retrieveSymbol(var2Name).getType();
+                symbolTable.insertSymbol(new Attributes(var1Name, dataType));
+
+                if (dataType == Type.Number) {
+                    return "    double " + var1Name + " = " + var2Name + ";\n\n";
+                }
+                if (dataType == Type.Text) {
+                    return "    char " + var1Name + "[] = " + var2Name + ";\n\n";
+                }
+                if (dataType == Type.Boolean) {
+                    return "    bool" + var1Name + " = " + var2Name + ";\n\n";
+                }
+
+            }
+            System.err.println("Missing variable declaration of either : " + var2Name + " or " + var1Name);
+        }
+
+        return null;
     }
 
     /*** Declaration ***/
@@ -351,7 +401,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
     @Override
     public String visitRepeatStatement(TLParser.RepeatStatementContext ctx) {
-        return "    for" + "(" + "int i = 0; " + "i > " + ctx.NUMBER_VAL() + "; " + "i++ ) { \n\n"
+        return "    for" + "(" + "int thisIsJustRandomIDxxx = 0; " + "i > " + ctx.NUMBER_VAL() + "; " + "i++ ) { \n\n"
                 + visit(ctx.statementBody()) + "    }" + "\n\n";
     }
 
@@ -398,6 +448,8 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     @Override
     public String visitMathExp1(TLParser.MathExp1Context ctx) {
 
+        typeCheckerMathExp1(ctx);
+
         String print = ctx.getChild(0).getText();
 
         for(int i = 1; i < ctx.getChildCount(); i++) {
@@ -411,23 +463,20 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     @Override
     public String visitMathExp2(TLParser.MathExp2Context ctx) {
 
+        typeCheckerMathExp2(ctx);
 
-        if(ctx.rightVal != null) {
-            return "    " + ctx.leftVar.getText() + " " + visit(ctx.mathOp) + " " + ctx.rightVal.getText() + ";\n\n";
+        String print = ctx.getChild(0).getText();
+        for(int i = 1; i < ctx.getChildCount(); i++) {
+
+            print += " " + ctx.getChild(i).getText();
+
         }
-
-        if(ctx.rightVar != null) {
-            return "    " + ctx.leftVar.getText() + " " + visit(ctx.mathOp) + " " + ctx.rightVar.getText() + ";\n\n";
-        }
-
-        return null;
+        return "    " + print + "\n\n";
     }
 
 
 
     /*** Operations and conditions ***/
-
-
 
 
     @Override
@@ -516,145 +565,143 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         String errorText = "";
         String assignID = ctx.assignId.getText();
 
+            switch (ctx.mathOp.getText()) {
 
-        switch (ctx.mathOp.getText()) {
+                case "+" -> {
+                    switch (symbolTable.retrieveSymbol(assignID).getType()) {
 
-            case "+" -> {
-                switch (symbolTable.retrieveSymbol(assignID).getType()) {
+                        case Number -> {
 
+                            if (ctx.leftVar != null) {
+                                String leftVarName = ctx.leftVar.getText();
+                                if (symbolTable.isInScope(new Attributes(leftVarName, null))) {
+                                    if (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number) {
+                                        errorText = "All values must be of same datatype";
+                                    }
+                                }
+                                else {
+                                    errorText = "Variable: " + leftVarName + " is not declared";
+                                }
 
-                    case Number -> {
-
-                        if(ctx.leftVar != null)  {
-                            String leftVarName = ctx.leftVar.getText();
-                            if(symbolTable.retrieveSymbol(leftVarName) != null) {
-                                if(symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number) {
+                            }
+                            if (ctx.leftVal != null) {
+                                if (ctx.leftVal.numberVal == null) {
                                     errorText = "All values must be of same datatype";
+                                }
+                            }
+                            if (ctx.rightVar != null) {
+                                String rightVarName = ctx.rightVar.getText();
+                                if (symbolTable.isInScope(new Attributes(rightVarName, null))) {
+                                    if (symbolTable.retrieveSymbol(rightVarName).getType() != Type.Number) {
+                                        errorText = "All values must be of same datatype";
+                                    }
+                                } else {
+                                    errorText = "Variable: " + rightVarName + " is not declared";
+                                }
+
+                            }
+                            if (ctx.rightVal != null) {
+                                if (ctx.rightVal.numberVal == null) {
+                                    errorText = "All values must be of same datatype";
+                                }
+                            }
+
+                        }
+                        case Text -> {
+
+                            if (ctx.leftVar != null) {
+                                String leftVarName = ctx.leftVar.getText();
+                                if (symbolTable.isInScope(new Attributes(leftVarName, null))) {
+                                    if (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Text) {
+                                        errorText = "All values must be of same datatype";
+                                    }
                                 } else {
                                     errorText = "Variable: " + leftVarName + " is not declared";
                                 }
                             }
-
-                        }
-                        if(ctx.leftVal != null) {
-                            if(ctx.leftVal.numberVal == null) {
-                                errorText = "All values must be of same datatype";
-                            }
-                        }
-                        if(ctx.rightVar != null)  {
-                            String rightVarName = ctx.rightVar.getText();
-                            if(symbolTable.retrieveSymbol(rightVarName) != null) {
-                                if(symbolTable.retrieveSymbol(rightVarName).getType() != Type.Number) {
+                            if (ctx.leftVal != null) {
+                                if (ctx.leftVal.textVal == null) {
                                     errorText = "All values must be of same datatype";
+                                }
+                            }
+                            if (ctx.rightVar != null) {
+                                String rightVarName = ctx.rightVar.getText();
+                                if (symbolTable.isInScope(new Attributes(rightVarName, null))) {
+                                    if (symbolTable.retrieveSymbol(rightVarName).getType() != Type.Text) {
+                                        errorText = "All values must be of same datatype";
+                                    }
                                 } else {
                                     errorText = "Variable: " + rightVarName + " is not declared";
                                 }
+
                             }
-
-                        }
-                        if(ctx.rightVal != null) {
-                            if(ctx.rightVal.numberVal == null) {
-                                errorText = "All values must be of same datatype";
-                            }
-                        }
-
-                    }
-                    case Text -> {
-
-                        if(ctx.leftVar != null)  {
-                            String leftVarName = ctx.leftVar.getText();
-                            if(symbolTable.retrieveSymbol(leftVarName) != null) {
-                                if(symbolTable.retrieveSymbol(leftVarName).getType() != Type.Text) {
+                            if (ctx.rightVal != null) {
+                                if (ctx.rightVal.textVal == null) {
                                     errorText = "All values must be of same datatype";
-                                } else {
-                                    errorText = "Variable: " + leftVarName + " is not declared";
-                                }
-                            }
-                        }
-                        if(ctx.leftVal != null) {
-                            if(ctx.leftVal.textVal == null) {
-                                errorText = "All values must be of same datatype";
-                            }
-                        }
-                        if(ctx.rightVar != null)  {
-                            String rightVarName = ctx.rightVar.getText();
-                            if(symbolTable.retrieveSymbol(rightVarName) != null) {
-                                if(symbolTable.retrieveSymbol(rightVarName).getType() != Type.Text) {
-                                    errorText = "All values must be of same datatype";
-                                } else {
-                                    errorText = "Variable: " + rightVarName + " is not declared";
                                 }
                             }
 
                         }
-                        if(ctx.rightVal != null) {
-                            if(ctx.rightVal.textVal == null) {
-                                errorText = "All values must be of same datatype";
-                            }
+                        case Boolean -> {
+                            errorText = "Cannot do math expression with boolean value";
                         }
-
-                    }
-                    case Boolean -> {
-                        errorText = "Cannot do math expression with boolean value";
-                    }
-                }
-
-            }
-
-
-
-            case "-",  "*", "/" -> {
-
-                switch (symbolTable.retrieveSymbol(assignID).getType()) {
-
-
-                    case Number -> {
-
-                        if(ctx.leftVar != null)  {
-                            String leftVarName = ctx.leftVar.getText();
-                            if(symbolTable.retrieveSymbol(leftVarName) != null) {
-                                if(symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number) {
-                                    errorText = "All values must be of same datatype";
-                                } else {
-                                    errorText = "Variable: " + leftVarName + " is not declared";
-                                }
-                            }
-                        }
-                        if(ctx.leftVal != null) {
-                            if(ctx.leftVal.numberVal == null) {
-                                errorText = "All values must be of same datatype";
-                            }
-                        }
-                        if(ctx.rightVar != null)  {
-                            String rightVarName = ctx.rightVar.getText();
-                            if(symbolTable.retrieveSymbol(rightVarName) != null) {
-                                if(symbolTable.retrieveSymbol(rightVarName).getType() != Type.Number) {
-                                    errorText = "All values must be of same datatype";
-                                } else {
-                                    errorText = "Variable: " + rightVarName + " is not declared";
-                                }
-                            }
-
-                        }
-                        if(ctx.rightVal != null) {
-                            if(ctx.rightVal.numberVal == null) {
-                                errorText = "All values must be of same datatype";
-                            }
-                        }
-
-                    }
-                    case Text -> {
-                        errorText = "Cannot do math expression that are not plus, with text values.";
-                    }
-                    case Boolean -> {
-                        errorText = "Cannot do math expression with boolean value";
                     }
 
                 }
+
+
+                case "-", "*", "/" -> {
+
+                    switch (symbolTable.retrieveSymbol(assignID).getType()) {
+
+
+                        case Number -> {
+
+                            if (ctx.leftVar != null) {
+                                String leftVarName = ctx.leftVar.getText();
+                                if (symbolTable.isInScope(new Attributes(leftVarName, null))) {
+                                    if (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number) {
+                                        errorText = "All values must be of same datatype";
+                                    }
+                                } else {
+                                    errorText = "Variable: " + leftVarName + " is not declared";
+                                }
+                            }
+                            if (ctx.leftVal != null) {
+                                if (ctx.leftVal.numberVal == null) {
+                                    errorText = "All values must be of same datatype";
+                                }
+                            }
+                            if (ctx.rightVar != null) {
+                                String rightVarName = ctx.rightVar.getText();
+                                if (symbolTable.isInScope(new Attributes(rightVarName, null))) {
+                                    if (symbolTable.retrieveSymbol(rightVarName).getType() != Type.Number) {
+                                        errorText = "All values must be of same datatype";
+                                    }
+                                } else {
+                                    errorText = "Variable: " + rightVarName + " is not declared";
+                                }
+
+                            }
+                            if (ctx.rightVal != null) {
+                                if (ctx.rightVal.numberVal == null) {
+                                    errorText = "All values must be of same datatype";
+                                }
+                            }
+
+                        }
+                        case Text -> {
+                            errorText = "Cannot do math expression that are not plus, with text values.";
+                        }
+                        case Boolean -> {
+                            errorText = "Cannot do math expression with boolean value";
+                        }
+
+                    }
+                }
+                default -> throw new IllegalArgumentException("Type not found by type-checker.");
             }
-            default -> throw new IllegalArgumentException("Type not found by type-checker.");
-        }
-        System.err.println(errorText);
+            System.err.println(errorText);
     }
     public void typeCheckerMathExp2(TLParser.MathExp2Context ctx) {
         String op = null;
@@ -669,19 +716,18 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                     String rightVarName = ctx.rightVar.getText();
                     String leftVarName = ctx.leftVar.getText();
 
-                    if (symbolTable.retrieveSymbol(rightVarName) != null) {
-                        if (symbolTable.retrieveSymbol(leftVarName) != null) {
-                            if (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number
-                                    && symbolTable.retrieveSymbol(rightVarName).getType() != Type.Number) {
-                                if (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Text
-                                        && symbolTable.retrieveSymbol(rightVarName).getType() != Type.Text) {
+                    if (symbolTable.isInScope(new Attributes(rightVarName, null))) {
+                        if (symbolTable.isInScope(new Attributes(leftVarName, null))) {
+                            if ((symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number
+                                    && symbolTable.retrieveSymbol(rightVarName).getType() != Type.Number) ||
+                                    (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Text
+                                        && symbolTable.retrieveSymbol(rightVarName).getType() != Type.Text)) {
                                     //throwTypeError(left, right, errorText);
                                     op = ctx.mathOp.getText();
                                     type = "either string or integer";
                                     errorText = "On operation " + op + ". Both values must be of the same type: " + type;
 
                                 }
-                            }
 
                         } else {
                             errorText = "Variable: " + leftVarName + " is not declared";
@@ -696,16 +742,15 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
                     String leftVarName = ctx.leftVar.getText();
 
-                    if (symbolTable.retrieveSymbol(leftVarName) != null) {
-                        if (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number
-                                && ctx.rightVal.numberVal == null) {
-                            if (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Text
-                                    && ctx.rightVal.textVal == null) {
+                    if (symbolTable.isInScope(new Attributes(leftVarName, null))) {
+                        if ((symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number
+                                && ctx.rightVal.numberVal == null)
+                                || (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Text
+                                        && ctx.rightVal.textVal == null)) {
                                 //throwTypeError(left, right, errorText);
                                 op = ctx.mathOp.getText();
                                 type = "either string or integer";
                                 errorText = "On operation " + op + ". Both values must be of the same type: " + type;
-                            }
                         }
 
                     } else {
@@ -722,8 +767,8 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                     String rightVarName = ctx.rightVar.getText();
                     String leftVarName = ctx.leftVar.getText();
 
-                    if (symbolTable.retrieveSymbol(rightVarName) != null) {
-                        if (symbolTable.retrieveSymbol(leftVarName) != null) {
+                    if (symbolTable.isInScope(new Attributes(rightVarName, null))) {
+                        if (symbolTable.isInScope(new Attributes(leftVarName, null))) {
                             if (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number
                                     && symbolTable.retrieveSymbol(rightVarName).getType() != Type.Number) {
                                 //throwTypeError(left, right, errorText);
@@ -744,8 +789,9 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                 if (ctx.rightVal != null) {
                     String leftVarName = ctx.leftVar.getText();
 
-                    if (symbolTable.retrieveSymbol(leftVarName) != null) {
-                        if (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number && ctx.rightVal.numberVal != null) {
+                    if (symbolTable.isInScope(new Attributes(leftVarName, null))) {
+                        if (symbolTable.retrieveSymbol(leftVarName).getType() != Type.Number
+                                && ctx.rightVal.numberVal != null) {
                             //throwTypeError(left, right, errorText);
                             op = ctx.mathOp.getText();
                             type = "integer";
@@ -771,7 +817,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                 if(ctx.returnExp().returnVar != null) {
                     String varName = ctx.returnExp().returnVar.getText();
 
-                    if(symbolTable.retrieveSymbol(varName) != null){
+                    if(symbolTable.isInScope(new Attributes(varName, null))){
                         returnDt = symbolTable.retrieveSymbol(varName).getType();
                     }
                 }

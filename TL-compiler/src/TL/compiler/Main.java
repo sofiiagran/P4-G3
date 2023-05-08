@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
 
-        CharStream stream = CharStreams.fromFileName("/Users/sofiagran/Desktop/P4-G3-main/TL-compiler/src/TL/compiler/demo.TL");
+        CharStream stream = CharStreams.fromFileName("/Users/sofiagran/Documents/GitHub/P4-G3/TL-compiler/src/TL/compiler/demo.TL");
 
         //ErrorListener errorListener = new ErrorListener();
 

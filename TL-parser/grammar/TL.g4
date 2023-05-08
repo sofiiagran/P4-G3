@@ -151,8 +151,8 @@ answerVal:
 
 mathExp :
     assignId=ID ASSIGN (leftVal=val | leftVar=ID) (mathOp=mathematicalOperation1 (rightVal=val | rightVar=ID))+       #mathExp1
-    | assignID=ID mathOp=mathematicalOperation2 ((leftVal=val | leftVar=ID)
-    (mathOp1=mathematicalOperation1 (rightVal=val | rightVar=ID))+)                 #mathExp2
+    | assignID=ID mathOp=mathematicalOperation2 (leftVal=val | leftVar=ID)
+    (mathOp1=mathematicalOperation1 (rightVal=val | rightVar=ID))*                 #mathExp2
     ;
 
 textInit:

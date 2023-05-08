@@ -5,5 +5,6 @@ public enum Type {
     Number,
     Text,
     Boolean,
-    Void
+    Void;
+
 }

@@ -1,11 +1,10 @@
 start begin
 
     number x
-    number q
     number w
     text e
 
-    myfunc(q, w)
+    myfunc(x, w)
 
 
 end
@@ -16,6 +15,10 @@ functions begin
 
     a = "hej"
 
+    a += e
+
+    x = o - g
+
     return x
 
     end
@@ -23,7 +26,8 @@ functions begin
     function myfunc2 begin
 
     h = "hej"
-    x = 2
+
+    x = 2 + 2 + 5 + x
 
     end
 
