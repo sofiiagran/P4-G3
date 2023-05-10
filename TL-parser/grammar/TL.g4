@@ -93,7 +93,7 @@ ifThenStatement:
     IF condition (BEGIN | THEN) statementBody END
     ;
 ifThenElseStatement:
-    IF condition (BEGIN | THEN) statementBody END (ELSE_IF  BEGIN statementBody END)* ELSE BEGIN statementBody END
+    IF condition (BEGIN | THEN) statementBody END (ELSE_IF condition  BEGIN statementBody END)* (ELSE BEGIN statementBody END)?
     ;
 repeatStatement:
     REPEAT (NUMBER_VAL | ID ) TIMES (BEGIN | THEN) statementBody END

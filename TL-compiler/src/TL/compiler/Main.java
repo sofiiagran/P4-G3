@@ -1,7 +1,9 @@
 package TL.compiler;
 
+import TL.compiler.CodeGen.CodeGenerator;
+import TL.compiler.Listener.FuncDecListener;
+import TL.compiler.Listener.GlobalDecListener;
 import TL.compiler.Listener.ParamListener;
-import TL.compiler.SymbolTable.SymbolTable;
 import TL.parser.TLLexer;
 import TL.parser.TLParser;
 import org.antlr.v4.runtime.CharStream;
@@ -10,7 +12,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import javax.xml.transform.ErrorListener;
 import java.io.IOException;
 
 public class Main {
@@ -36,7 +37,6 @@ public class Main {
         parser.program();
 
         ParseTreeWalker walker = new ParseTreeWalker();
-        SymbolTable symbolTable = new SymbolTable();
 
         ParamListener param = new ParamListener();
         walker.walk(param, tree);
@@ -44,11 +44,13 @@ public class Main {
         //FuncDecListener funcDec = new FuncDecListener(param, symbolTable);
         //walker.walk(funcDec, tree);
 
-
+        GlobalDecListener globalDecListener = new GlobalDecListener();
+        globalDecListener.visit(tree);
 
         // Code generation
-        CodeGenerator codeGenerator = new CodeGenerator(symbolTable);
+        CodeGenerator codeGenerator = new CodeGenerator();
         String targetCode = codeGenerator.visit(tree);
+
         System.out.println(targetCode);
 
     }

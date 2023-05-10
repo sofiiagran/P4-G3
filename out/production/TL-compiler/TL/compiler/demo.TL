@@ -17,8 +17,6 @@ functions begin
 
     a += e
 
-    x = o - g
-
     return x
 
     end

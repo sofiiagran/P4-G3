@@ -1,22 +1,16 @@
-package TL.compiler;
+package TL.compiler.CodeGen;
 
 
+import TL.compiler.CodeGen.Visitors.NumberDec;
 import TL.compiler.SymbolTable.*;
 import TL.parser.TLBaseVisitor;
-import TL.parser.TLLexer;
 import TL.parser.TLParser;
 
 public class CodeGenerator extends TLBaseVisitor<String> {
 
 
-    public SymbolTable symbolTable;
-
-
-    CodeGenerator(SymbolTable s) {
-        this.symbolTable = s;
-    }
-
-
+    public SymbolTable symbolTable = new SymbolTable();
+    public NumberDec numberDec = new NumberDec();
 
     // when empty productions are visited, an empty string is returned
 
@@ -38,10 +32,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
     @Override
     public String visitProgram(TLParser.ProgramContext ctx) {
-
-
         return openScope() + visit(ctx.block()) + closeScope();
-
     }
 
     @Override
@@ -84,12 +75,10 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitPrintExp(TLParser.PrintExpContext ctx) {
         return "    printf(" + visit(ctx.printBody()) + ");" + "\n\n";
     }
-
     @Override
     public String visitPrintBody(TLParser.PrintBodyContext ctx) {
 
         //need more complex code !!
-
         String val = "";
         for (int i = 0; i < ctx.getChildCount(); i++) {
             if(ctx.printVar != null) {
@@ -100,8 +89,9 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                     //Throw error here
                 }
             } else {
-                val += ctx.getChild(i).getText() ;
+                val += ctx.getChild(i).getText();
             }
+
             if(i >= 0 && i < (ctx.getChildCount() - 1)) { val += " "; }
         }
         return val;
@@ -110,6 +100,8 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     @Override
     public String visitReturnExp(TLParser.ReturnExpContext ctx) {
         if(ctx.returnVar != null) {
+
+            //Check if variable is declared
             if(symbolTable.isInScope(new Attributes(ctx.returnVar.getText(), null))) {
                 return "    return " + ctx.returnVar.getText() + ";" + "\n\n";
             } else {
@@ -117,7 +109,6 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                 //Throw error here
                 return "";
             }
-
         } else {
             return "    return " + ctx.returnVal.getText() + ";" + "\n\n";
         }
@@ -226,18 +217,17 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         String params = "";
 
         for(int i = 0; i < ctx.ID().size(); i++) {
-
             if(i > 0 && i <ctx.ID().size()) {
                 params += ", ";
             }
-
+            //Check if variable is declared
             if(symbolTable.isInScope(new Attributes(ctx.ID(i).getText(), null))) {
                 params += ctx.ID(i).getText();
             } else {
+                // Throw error
                 System.err.println("Error: input parameter: " + ctx.ID(i).getText() + " is not declared");
                 params = "";
             }
-
         }
         return params;
     }
@@ -252,9 +242,11 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         Type type = Type.Number;
         Attributes attribute = new Attributes(varName, type);
 
+        //Check if variable is declared
         if(symbolTable.isInScope(attribute)) {
             return "    "  + varName + " = " + ctx.NUMBER_VAL() + ";" + "\n\n";
         } else {
+            //If not, declare it
             symbolTable.insertSymbol(attribute);
             return "    double " + varName + " = " + ctx.NUMBER_VAL() + ";" + "\n\n";
         }
@@ -267,9 +259,11 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         Type type = Type.Text;
         Attributes attribute = new Attributes(varName, type);
 
+        //Check if variable is declared
         if(symbolTable.isInScope(attribute)) {
                 return "    "  + ctx.var1ID.getText() + " = " + ctx.TEXT_VAL() + ";" + "\n\n";
             } else {
+            //if not, declare it
                 symbolTable.insertSymbol(attribute);
                 return "    "  + "char " + ctx.var1ID.getText() + "[]" + " = " + ctx.TEXT_VAL() + ";" + "\n\n";
             }
@@ -281,9 +275,11 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         Type type = Type.Boolean;
         Attributes attribute = new Attributes(varName, type);
 
+        //Check if variable is declared
             if(symbolTable.isInScope(attribute)) {
                 return "    " + ctx.var1ID.getText() + " = "+ ctx.BOOL_LITERAL().getText() + ";" + "\n\n";
             } else {
+                //if not, declare it
                 symbolTable.insertSymbol(attribute);
                 return "    bool " + ctx.var1ID.getText() + " = "+ ctx.BOOL_LITERAL().getText() + ";" + "\n\n";
             }
@@ -294,12 +290,17 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
         String var1Name = ctx.var1ID.getText();
         String var2Name = ctx.var2ID.getText();
-        Type dataType = null;
+        Type dataType;
 
+        // Maybe write this a little prettier
+
+        //Check if variable 1 is declared
         if (symbolTable.isInScope(new Attributes(var1Name, null))) {
+            //Check if variable 2 is declared
             if (symbolTable.isInScope(new Attributes(var2Name, null))) {
                 return "    " + var1Name + " = " + var2Name + ";\n\n";
             } else {
+
                 dataType = symbolTable.retrieveSymbol(var1Name).getType();
                 symbolTable.insertSymbol(new Attributes(var2Name, dataType));
                 if(dataType == Type.Number) {
@@ -341,16 +342,8 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     @Override
     public String visitNumberDecl(TLParser.NumberDeclContext ctx) {
 
-        String varName = ctx.numberID.getText();
-        Type type = Type.Number;
-        Attributes attribute = new Attributes(varName, type);
+        return numberDec.visitNumberDec(ctx, symbolTable);
 
-        if(symbolTable.isInScope(attribute)) {
-            return "";
-        } else {
-            symbolTable.insertSymbol(attribute);
-            return "    int " + varName + ";" + "\n\n";
-        }
     }
 
     @Override
@@ -359,7 +352,9 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         Type type = Type.Text;
         Attributes attribute = new Attributes(varName, type);
 
+        // Check if it is already declared
         if (symbolTable.isInScope(attribute)) {
+            //Throw error
             return "";
         } else {
             symbolTable.insertSymbol(attribute);
@@ -373,7 +368,10 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         Type type = Type.Boolean;
         Attributes attribute = new Attributes(varName, type);
 
+
+        // Check if it is already declared
         if (symbolTable.isInScope(attribute)) {
+            //Throw error
             return "";
         } else {
             symbolTable.insertSymbol(attribute);
@@ -385,23 +383,39 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
     @Override
     public String visitIfThenStatement(TLParser.IfThenStatementContext ctx) {
-        return "    if(" + visit(ctx.condition()) + ") { \n\n" + visit(ctx.statementBody()) + "   }" + "\n\n";
+        return openScope() +  "    if(" + visit(ctx.condition()) + ") { \n"
+                + visit(ctx.statementBody()) + "   } \n\n" + closeScope();
     }
 
     @Override
     public String visitIfThenElseStatement(TLParser.IfThenElseStatementContext ctx) {
-        return super.visitIfThenElseStatement(ctx);
-    }
 
+        String printStatements = openScope() + "    if(" + visit(ctx.condition(0)) + ") { \n"
+                + visit(ctx.statementBody(0)) + "\n   } \n" + closeScope();
+
+        if(ctx.ELSE_IF() != null) {
+            for(int i = 0; i > ctx.ELSE_IF().size(); i++) {
+                printStatements += openScope() + "    else if (" + visit(ctx.condition((i + 1))) + ") {\n        "
+                        + visit(ctx.statementBody((i + 1))) + "\n    }" + closeScope();
+            }
+        }
+        if(ctx.ELSE() != null) {
+            int size = ctx.statementBody().size();
+            printStatements += openScope() + " else { " + visit(ctx.statementBody(size)) + "\n    }\n"
+            + closeScope();
+        }
+
+        return printStatements;
+    }
 
     @Override
     public String visitWhileStatement(TLParser.WhileStatementContext ctx) {
-        return "    while(" + visit(ctx.condition()) + ") { \n\n" + visit(ctx.statementBody()) + "    }" + "\n\n";
+        return "    while (" + visit(ctx.condition()) + ") { \n\n" + visit(ctx.statementBody()) + "    }" + "\n\n";
     }
 
     @Override
     public String visitRepeatStatement(TLParser.RepeatStatementContext ctx) {
-        return "    for" + "(" + "int thisIsJustRandomIDxxx = 0; " + "i > " + ctx.NUMBER_VAL() + "; " + "i++ ) { \n\n"
+        return "    for (int thisIsJustRandomIDxxx = 0; i > " + ctx.NUMBER_VAL() + "; i++ ) { \n\n"
                 + visit(ctx.statementBody()) + "    }" + "\n\n";
     }
 
@@ -417,7 +431,12 @@ public class CodeGenerator extends TLBaseVisitor<String> {
             return ctx.leftConVal.getText() + visit(ctx.rightCondition());
         }
         if(ctx.leftConVar != null) {
-            return ctx.leftConVar.getText() + visit(ctx.rightCondition());
+            if(symbolTable.isInScope(new Attributes(ctx.leftConVar.getText(), null))) {
+                return ctx.leftConVar.getText() + visit(ctx.rightCondition());
+            } else {
+                //Throw error
+                return "Variable: " + ctx.leftConVar.getText() + " is not declared";
+            }
         }
         return null;
     }
@@ -440,7 +459,6 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         for(int i = 1; i < ctx.getChildCount(); i++) {
 
             print += " " + ctx.getChild(i).getText();
-
         }
         return "    " + print + "\n\n";
     }
