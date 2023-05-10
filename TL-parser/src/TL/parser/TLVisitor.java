@@ -200,12 +200,6 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrintExp(TLParser.PrintExpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#printBody}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPrintBody(TLParser.PrintBodyContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TLParser#askExp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -324,16 +324,6 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitPrintExp(TLParser.PrintExpContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#printBody}.
-	 * @param ctx the parse tree
-	 */
-	void enterPrintBody(TLParser.PrintBodyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLParser#printBody}.
-	 * @param ctx the parse tree
-	 */
-	void exitPrintBody(TLParser.PrintBodyContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link TLParser#askExp}.
 	 * @param ctx the parse tree
 	 */

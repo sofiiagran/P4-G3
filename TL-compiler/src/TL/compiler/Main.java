@@ -44,13 +44,12 @@ public class Main {
         //FuncDecListener funcDec = new FuncDecListener(param, symbolTable);
         //walker.walk(funcDec, tree);
 
-        GlobalDecListener globalDecListener = new GlobalDecListener();
-        globalDecListener.visit(tree);
+        //GlobalDecListener globalDecListener = new GlobalDecListener();
+        //globalDecListener.visit(tree);
 
         // Code generation
         CodeGenerator codeGenerator = new CodeGenerator();
         String targetCode = codeGenerator.visit(tree);
-
         System.out.println(targetCode);
 
     }

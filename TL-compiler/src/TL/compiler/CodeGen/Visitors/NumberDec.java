@@ -3,10 +3,9 @@ package TL.compiler.CodeGen.Visitors;
 import TL.compiler.SymbolTable.Attributes;
 import TL.compiler.SymbolTable.SymbolTable;
 import TL.compiler.SymbolTable.Type;
-import TL.parser.TLBaseVisitor;
 import TL.parser.TLParser;
 
-public class NumberDec extends TLBaseVisitor {
+public class NumberDec {
 
     public String varName;
 

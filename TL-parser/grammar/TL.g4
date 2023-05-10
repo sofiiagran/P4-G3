@@ -106,13 +106,13 @@ whileStatement:
     ;
 
 statementBody:
-    expression* declaration* statement* (returnExp)?
+    expression* declaration* statement* initialization* (returnExp)?
     ;
 
 condition:
-    (leftConVal=val | leftConVar=ID) rightCondition     #con1
-    | ID                                                #con2
-    | NOTEQUAL ID                                       #con3
+    (leftConVal=val | leftConVar=ID) (op=conditionalOperation (rightConVal=val | rightConVar=ID))+     #con1
+    | ID                                                                                               #con2
+    | NOTEQUAL ID                                                                                      #con3
     ;
 
 rightCondition:
@@ -134,15 +134,10 @@ returnExp:
     ;
 
 printExp:
-    PRINT printBody
+    PRINT (printVal=val | printVar=ID) ( (ADD (printVal=val | printVar=ID))+ )?
     ;
 
-printBody:
-    (printVal=val | printVar=ID) ( (ADD (printVal=val | printVar=ID))+)?
-    ;
-
-
-askExp: ASK askID=ID printBody
+askExp: ASK askID=ID (printVal=val | printVar=ID) ( (ADD (printVal=val | printVar=ID))+ )?
     ;
 
 answerVal:
