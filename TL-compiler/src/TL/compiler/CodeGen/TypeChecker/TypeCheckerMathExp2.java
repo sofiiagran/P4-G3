@@ -29,9 +29,7 @@ public class TypeCheckerMathExp2 {
                                 op = ctx.mathOp.getText();
                                 type = "either string or integer";
                                 errorText = "On operation " + op + ". Both values must be of the same type: " + type;
-
                             }
-
                         } else {
                             errorText = "Variable: " + leftVarName + " is not declared";
                         }
@@ -39,7 +37,6 @@ public class TypeCheckerMathExp2 {
                         errorText = "Variable: " + rightVarName + " is not declared";
                     }
                 }
-
 
                 if (ctx.rightVal != null) {
 

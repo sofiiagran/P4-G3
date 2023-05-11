@@ -3,9 +3,7 @@ package TL.compiler.SymbolTable;
 import java.util.*;
 
 public class SymbolTable {
-    public final Map<String, Attributes> map = new LinkedHashMap<>();
-
-    public final Map<String, Attributes> hashMap = Collections.synchronizedMap(map);
+    public final Map<String, Attributes> hashMap = new LinkedHashMap<>();
 
 
 

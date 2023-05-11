@@ -31,7 +31,7 @@ funcBlockBody:
     ;
 
 funcDec:
-    FUNC funcID=funcName (LPAREN param=funcOutputParam RPAREN)? BEGIN (numberDecl)? funcBody* (returnExp)? END
+    FUNC funcID=funcName (LPAREN (param=funcOutputParam)? RPAREN)? BEGIN funcBody* (returnExp)? END
     ;
 
 funcOutputParam:
@@ -106,7 +106,7 @@ whileStatement:
     ;
 
 statementBody:
-    expression* declaration* statement* initialization* (returnExp)?
+    declaration* initialization* expression*  statement* (returnExp)?
     ;
 
 condition:

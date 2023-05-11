@@ -1,9 +1,10 @@
 package TL.compiler;
 
 import TL.compiler.CodeGen.CodeGenerator;
+import TL.compiler.Listener.FuncCallListener;
 import TL.compiler.Listener.FuncDecListener;
-import TL.compiler.Listener.GlobalDecListener;
 import TL.compiler.Listener.ParamListener;
+import TL.compiler.SymbolTable.SymbolTable;
 import TL.parser.TLLexer;
 import TL.parser.TLParser;
 import org.antlr.v4.runtime.CharStream;
@@ -31,18 +32,22 @@ public class Main {
         TLParser parser = new TLParser(tokens);
         parser.removeErrorListeners();
 
-
         //parser.addErrorListener(errorListener);
         ParseTree tree = parser.program();
         parser.program();
 
         ParseTreeWalker walker = new ParseTreeWalker();
 
-        ParamListener param = new ParamListener();
+        SymbolTable symbolTable = new SymbolTable();
+
+        ParamListener param = new ParamListener(symbolTable);
         walker.walk(param, tree);
 
-        //FuncDecListener funcDec = new FuncDecListener(param, symbolTable);
-        //walker.walk(funcDec, tree);
+        FuncDecListener funcDec = new FuncDecListener(param, symbolTable);
+        walker.walk(funcDec, tree);
+
+        FuncCallListener funcCallListener = new FuncCallListener(funcDec, symbolTable);
+        walker.walk(funcCallListener, tree);
 
         //GlobalDecListener globalDecListener = new GlobalDecListener();
         //globalDecListener.visit(tree);

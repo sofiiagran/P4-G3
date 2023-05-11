@@ -1,23 +1,19 @@
  start begin
 
-     number x
-     number w
-     text e
+    number x
+    text w
 
-     myfunc(x, w)
-
+    myfunc(w)
 
  end
 
  functions begin
 
-     function myfunc(number o, number g) begin
+     function myfunc(number g) begin
 
-     a = "hej"
+     g = 2
+     o = 6
 
-     a += e
-
-     return x
 
      end
 
@@ -25,7 +21,7 @@
 
      h = "hej"
 
-     x = 2 + 2 + 5 + x
+     x = 2 + 2 + 5
 
      end
 

@@ -33,7 +33,6 @@ public class TypeCheckerCon1 {
                         }
 
                     }
-
                     case Text -> {
                         if (ctx.rightConVar != null) {
                             String rightVar = ctx.rightConVar.getText();

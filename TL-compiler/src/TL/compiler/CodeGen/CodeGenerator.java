@@ -1,9 +1,5 @@
 package TL.compiler.CodeGen;
 
-
-import TL.compiler.CodeGen.TypeChecker.TypeCheckerCon1;
-import TL.compiler.CodeGen.TypeChecker.TypeCheckerMathExp1;
-import TL.compiler.CodeGen.TypeChecker.TypeCheckerMathExp2;
 import TL.compiler.CodeGen.Visitors.*;
 import TL.compiler.SymbolTable.*;
 import TL.parser.TLBaseVisitor;
@@ -91,7 +87,8 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     /*** Functions ***/
     @Override
     public String visitFuncDec(TLParser.FuncDecContext ctx) {
-        String print = "";
+        String printFuncBody = "";
+        String printReturnStmt = "";
         String funcName = ctx.funcID.getText();
 
         // calls function that get return type based on return type (void is default)
@@ -108,19 +105,19 @@ public class CodeGenerator extends TLBaseVisitor<String> {
             String outPutParam = visit(ctx.funcOutputParam());
 
             // visit function body
-            for(int i = 1; i < ctx.funcBody().size(); i++) {
-                print += visit(ctx.funcBody(i));
+            for(int i = 0; i < ctx.funcBody().size(); i++) {
+                printFuncBody += visit(ctx.funcBody(i));
             }
             // visit return expression if it exists
             if (ctx.returnExp() != null) {
-                print += visit(ctx.returnExp());
+                printReturnStmt += visit(ctx.returnExp());
             }
 
-            // this is returned if it contains a return expression
+            // this is returned if it contains params
             return "\n\n" + returnType + " " +  funcName + "("  + outPutParam + ") "
-                    + "{ \n\n" + print + "}" + "\n\n" + closeScope();
+                    + "{ \n\n" + printFuncBody + printReturnStmt + "}" + "\n\n" + closeScope();
         }
-        // this is returned if it does not contain a return expression
+        // this is returned if it does not contain params
         return "\n\n" + returnType + " " + funcName + "() { \n\n" + visitChildren(ctx)
                 + "}" + "\n\n" + closeScope();
     }
@@ -139,6 +136,11 @@ public class CodeGenerator extends TLBaseVisitor<String> {
             return "    " + ctx.funcID.getText() + "(" + visit(ctx.funcInputParam()) + ");" + "\n\n" ;
         }
         return "    " + ctx.funcID.getText() + "();" + "\n\n" ;
+    }
+
+    @Override
+    public String visitFuncBody(TLParser.FuncBodyContext ctx) {
+        return visitChildren(ctx);
     }
 
     /*** Declaration ***/
@@ -197,7 +199,6 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitAssignment(TLParser.AssignmentContext ctx) {
         return assignment.visitAssign(ctx, symbolTable);
     }
-
 
     /*** Statements ***/
     @Override

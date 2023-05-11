@@ -1,5 +1,6 @@
 package TL.compiler.Listener;
 
+import TL.compiler.CodeGen.Visitors.FuncOutParam;
 import TL.compiler.SymbolTable.Attributes;
 import TL.compiler.SymbolTable.SymbolTable;
 import TL.compiler.SymbolTable.Type;
@@ -22,14 +23,19 @@ public class FuncDecListener extends TLBaseListener {
     }
     public void enterFuncDec(TLParser.FuncDecContext ctx) {
 
+        symbolTable.openScope();
 
         FuncPrototype1 = ctx.funcName().getText();
         symbolTable.insertSymbol(new Attributes(FuncPrototype1, Type.Void));
+
+
         if (ctx.param != null) {
-            System.out.println(FuncPrototype1 + "("  + ");");
+            System.out.println(FuncPrototype1 + "("  + paramListener.getParams() + ");");
         } else {
             System.out.println(FuncPrototype1 + "();");
         }
+
+        symbolTable.closeScope();
 
     }
 
