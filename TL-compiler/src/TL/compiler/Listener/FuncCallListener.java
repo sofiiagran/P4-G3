@@ -7,20 +7,28 @@ import TL.compiler.SymbolTable.Type;
 import TL.parser.TLBaseListener;
 import TL.parser.TLParser;
 
-import javax.print.attribute.Attribute;
 import java.util.ArrayList;
 
 public class FuncCallListener extends TLBaseListener {
 
     public FuncDecListener funcDecListener;
     public SymbolTable symbolTable;
-    public FuncInParam funcInParam;
 
     public FuncCallListener(FuncDecListener f, SymbolTable s){
         this.funcDecListener = f;
         this.symbolTable = s;
     }
 
+    @Override
+    public void enterFuncDec(TLParser.FuncDecContext ctx) {
+        symbolTable.openScope();
+        super.enterFuncDec(ctx);
+    }
+
+    @Override
+    public void exitFuncDec(TLParser.FuncDecContext ctx) {
+        symbolTable.closeScope();
+    }
 
     @Override
     public void enterFuncCall(TLParser.FuncCallContext ctx) {
@@ -44,7 +52,9 @@ public class FuncCallListener extends TLBaseListener {
                 // throw error
                 System.err.println("Error: number of parameters in the function call does not match the number" +
                         "of parameters in the function declaration");
-            } else {
+            /** Ignore this for now, since there needs a variable checker for this ... ***
+             *
+             * } else {
                 // checks if variable is declared
                 if(symbolTable.isInScope(new Attributes(ctx.ID(i).getText(), null))) {
                     paramType = symbolTable.retrieveSymbol(paramName.get(i)).getType();
@@ -59,6 +69,7 @@ public class FuncCallListener extends TLBaseListener {
                     // throw error
                     System.err.println("Error: input parameter: " + ctx.ID(i).getText() + " is not declared");
                 }
+             **/
             }
         }
     }

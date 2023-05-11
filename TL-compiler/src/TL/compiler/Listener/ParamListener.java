@@ -12,18 +12,23 @@ public class ParamListener extends TLBaseListener {
     public  String params;
     public ArrayList<String> paramsName;
 
-    public SymbolTable symbolTable;
+    public SymbolTable symbolTable = new SymbolTable();
 
-    public ParamListener(SymbolTable s){
-        this.symbolTable = s;
+    @Override
+    public void enterFuncDec(TLParser.FuncDecContext ctx) {
+        symbolTable.openScope();
+        super.enterFuncDec(ctx);
+    }
+
+    @Override
+    public void exitFuncDec(TLParser.FuncDecContext ctx) {
+        symbolTable.closeScope();
     }
 
     @Override
     public void enterFuncOutputParam(TLParser.FuncOutputParamContext ctx) {
-        symbolTable.openScope();
         params = funcOutParam.visitOutputParam(ctx, symbolTable);
         paramsName = funcOutParam.getParamNames();
-        symbolTable.closeScope();
     }
 
     public String getParams(){

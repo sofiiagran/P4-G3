@@ -26,4 +26,8 @@ public class Attributes {
     public int hashCode() {
         return Objects.hash(name, type, depth);
     }
+
+    public int getDepth(){
+        return this.depth;
+    }
 }

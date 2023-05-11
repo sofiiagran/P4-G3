@@ -3,13 +3,11 @@
     number x
     text w
 
-    myfunc(w)
-
  end
 
  functions begin
 
-     function myfunc(number g) begin
+     function myfunc(text k, number g) begin
 
      g = 2
      o = 6
@@ -20,6 +18,8 @@
      function myfunc2 begin
 
      h = "hej"
+
+     w = 2
 
      x = 2 + 2 + 5
 

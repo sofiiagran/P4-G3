@@ -3,6 +3,7 @@ package TL.compiler;
 import TL.compiler.CodeGen.CodeGenerator;
 import TL.compiler.Listener.FuncCallListener;
 import TL.compiler.Listener.FuncDecListener;
+import TL.compiler.Listener.GlobalDecListener;
 import TL.compiler.Listener.ParamListener;
 import TL.compiler.SymbolTable.SymbolTable;
 import TL.parser.TLLexer;
@@ -38,19 +39,17 @@ public class Main {
 
         ParseTreeWalker walker = new ParseTreeWalker();
 
-        SymbolTable symbolTable = new SymbolTable();
-
-        ParamListener param = new ParamListener(symbolTable);
+        ParamListener param = new ParamListener();
         walker.walk(param, tree);
 
-        FuncDecListener funcDec = new FuncDecListener(param, symbolTable);
+        FuncDecListener funcDec = new FuncDecListener(param, param.symbolTable);
         walker.walk(funcDec, tree);
 
-        FuncCallListener funcCallListener = new FuncCallListener(funcDec, symbolTable);
+        FuncCallListener funcCallListener = new FuncCallListener(funcDec, param.symbolTable);
         walker.walk(funcCallListener, tree);
 
         //GlobalDecListener globalDecListener = new GlobalDecListener();
-        //globalDecListener.visit(tree);
+        //walker.walk(globalDecListener, tree);
 
         // Code generation
         CodeGenerator codeGenerator = new CodeGenerator();

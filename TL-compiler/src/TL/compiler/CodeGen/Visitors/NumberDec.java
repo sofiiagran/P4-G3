@@ -23,4 +23,8 @@ public class NumberDec {
             return "    int " + varName + ";" + "\n\n";
         }
     }
+
+    public String getVarName(){
+        return this.varName;
+    }
 }

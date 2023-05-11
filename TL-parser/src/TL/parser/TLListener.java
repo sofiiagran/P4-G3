@@ -58,16 +58,6 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitFunctionsBlock(TLParser.FunctionsBlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#funcBlockBody}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncBlockBody(TLParser.FuncBlockBodyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLParser#funcBlockBody}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncBlockBody(TLParser.FuncBlockBodyContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link TLParser#funcDec}.
 	 * @param ctx the parse tree
 	 */

@@ -41,12 +41,6 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctionsBlock(TLParser.FunctionsBlockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#funcBlockBody}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncBlockBody(TLParser.FuncBlockBodyContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TLParser#funcDec}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

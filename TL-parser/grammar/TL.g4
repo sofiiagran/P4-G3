@@ -21,13 +21,7 @@ startBody:
 
 
 functionsBlock:
-    FUNCTIONS BEGIN funcBlockBody* END
-    ;
-
-funcBlockBody:
-    declaration+
-    | initialization+
-    | funcDec+
+    FUNCTIONS BEGIN funcDec+ END
     ;
 
 funcDec:

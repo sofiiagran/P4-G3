@@ -31,14 +31,6 @@ public class SymbolTable {
         depth--;
     }
 
-    public Boolean containsSymbol(String name) {
-        System.out.println(hashMap.get(name));
-        if(hashMap.containsKey(name)){
-            return true;
-        } else {
-            return false;
-        }
-    }
     public Attributes retrieveSymbol(String name){
         return this.hashMap.get(name);
     }
@@ -69,14 +61,7 @@ public class SymbolTable {
 
     }
 
-    public boolean isDeclaredLocally(String name){
-        for (Attributes symbol: this.scopes.get(this.scopes.size()-1).attributes) {
-            if (name.equals(symbol.name)){
-                return true;
-            }
-        }
-        return false;
-    }
+
 
 
 
