@@ -11,22 +11,19 @@ public class FuncDecListener extends TLBaseListener {
 
     public ParamListener paramListener;
 
-    public SymbolTable symbolTable;
-
-    public FuncDecListener(ParamListener p, SymbolTable s) {
+    public FuncDecListener(ParamListener p) {
         this.paramListener = p;
-        this.symbolTable = s;
     }
     public void enterFuncDec(TLParser.FuncDecContext ctx) {
 
-        symbolTable.openScope();
+        paramListener.symbolTable.openScope();
 
         FuncPrototype1 = ctx.funcName().getText();
-        symbolTable.insertSymbol(new Attributes(FuncPrototype1, Type.Void));
+        paramListener.symbolTable.insertSymbol(new Attributes(FuncPrototype1, Type.Void));
 
 
         if (ctx.param != null) {
-            System.out.println(FuncPrototype1 + "("  + paramListener.getParams() + ");");
+            System.out.println(FuncPrototype1 + "("  + paramListener.getOutParams() + ");");
         } else {
             System.out.println(FuncPrototype1 + "();");
         }
@@ -35,7 +32,7 @@ public class FuncDecListener extends TLBaseListener {
 
     @Override
     public void exitFuncDec(TLParser.FuncDecContext ctx) {
-        symbolTable.closeScope();
+        paramListener.symbolTable.closeScope();
     }
 }
 

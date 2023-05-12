@@ -39,13 +39,15 @@ public class Main {
 
         ParseTreeWalker walker = new ParseTreeWalker();
 
-        ParamListener param = new ParamListener();
+        SymbolTable symbolTable = new SymbolTable();
+
+        ParamListener param = new ParamListener(symbolTable);
         walker.walk(param, tree);
 
-        FuncDecListener funcDec = new FuncDecListener(param, param.symbolTable);
+        FuncDecListener funcDec = new FuncDecListener(param);
         walker.walk(funcDec, tree);
 
-        //FuncCallListener funcCallListener = new FuncCallListener(funcDec, param.symbolTable);
+        //FuncCallListener funcCallListener = new FuncCallListener(funcDec, param);
         //walker.walk(funcCallListener, tree);
 
         GlobalDecListener globalDecListener = new GlobalDecListener();
