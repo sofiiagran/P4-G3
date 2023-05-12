@@ -13,6 +13,7 @@ public class FuncCallListener extends TLBaseListener {
 
     public FuncDecListener funcDecListener;
     public SymbolTable symbolTable;
+    public FuncInParam funcInParam = new FuncInParam();
 
     public FuncCallListener(FuncDecListener f, SymbolTable s){
         this.funcDecListener = f;
@@ -40,37 +41,39 @@ public class FuncCallListener extends TLBaseListener {
         }
     }
 
+
     @Override
     public void enterFuncInputParam(TLParser.FuncInputParamContext ctx) {
+        /**** NOT FINISHED, MISSED A VARIABLE LISTENER TO CHECK IF INPUT VARIABLE IS DECLARED ****/
 
-        Type paramType;
-        ArrayList<String> paramName = funcDecListener.paramListener.getParamsName();
+        // checks if variable is declared
+        funcInParam.visitInputParam(ctx, symbolTable);
+
+        ArrayList<String> outParamName = funcDecListener.paramListener.getParamsName();
+        ArrayList<String> inParamName = funcInParam.getParamNames();
+
 
         for(int i = 0; i < ctx.ID().size(); i++) {
 
-            if(ctx.ID().size() != paramName.size()){
+            if(inParamName.size() != outParamName.size()){
                 // throw error
                 System.err.println("Error: number of parameters in the function call does not match the number" +
                         "of parameters in the function declaration");
-            /** Ignore this for now, since there needs a variable checker for this ... ***
-             *
-             * } else {
-                // checks if variable is declared
-                if(symbolTable.isInScope(new Attributes(ctx.ID(i).getText(), null))) {
-                    paramType = symbolTable.retrieveSymbol(paramName.get(i)).getType();
+            } else {
+                Type outParamType = symbolTable.retrieveSymbol(outParamName.get(i)).getType();
+                Type inParamType = symbolTable.retrieveSymbol(inParamName.get(i)).getType();
 
-                    // checks if the variable in the call, matches the type from the declaration
-                    if(symbolTable.retrieveSymbol(ctx.ID(i).getText()).getType() != paramType) {
+                // checks if the variable in the call, matches the type from the declaration
+                    if(inParamType != outParamType) {
                         // throw error
                         System.err.println("Error: type of variable " + ctx.ID(i).getText()
-                                + " does not match type of variable " + paramName.get(i));
-                    }
-                } else {
+                                + " does not match type of variable " + outParamName.get(i));
+                    } else {
                     // throw error
                     System.err.println("Error: input parameter: " + ctx.ID(i).getText() + " is not declared");
                 }
-             **/
             }
         }
     }
+
 }

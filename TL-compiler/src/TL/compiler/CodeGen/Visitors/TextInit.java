@@ -6,19 +6,27 @@ import TL.compiler.SymbolTable.Type;
 import TL.parser.TLParser;
 
 public class TextInit {
+    String varName;
+    String declaration;
     public String visitTextInitialisation (TLParser.TextInitContext ctx, SymbolTable symbolTable){
 
-        String varName = ctx.var1ID.getText();
+        varName = ctx.var1ID.getText();
         Type type = Type.Text;
         Attributes attribute = new Attributes(varName, type);
 
         // checks if variable is declared
         if(symbolTable.isInScope(attribute)) {
-            return "    "  + ctx.var1ID.getText() + " = " + ctx.TEXT_VAL() + ";" + "\n\n";
+            declaration = "    "  + ctx.var1ID.getText() + " = " + ctx.TEXT_VAL() + ";";
         } else {
             // if it is not, add to symbol table and print initialisation with data type
             symbolTable.insertSymbol(attribute);
-            return "    "  + "char " + ctx.var1ID.getText() + "[]" + " = " + ctx.TEXT_VAL() + ";" + "\n\n";
+            declaration = "    "  + "char " + ctx.var1ID.getText() + "[]" + " = " + ctx.TEXT_VAL() + ";";
         }
+        return declaration + "\n\n";
     }
+    public String getVarName(){
+        return this.varName;
+    }
+    public String getDeclaration() {return this.declaration;}
+
 }

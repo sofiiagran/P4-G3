@@ -45,11 +45,11 @@ public class Main {
         FuncDecListener funcDec = new FuncDecListener(param, param.symbolTable);
         walker.walk(funcDec, tree);
 
-        FuncCallListener funcCallListener = new FuncCallListener(funcDec, param.symbolTable);
-        walker.walk(funcCallListener, tree);
+        //FuncCallListener funcCallListener = new FuncCallListener(funcDec, param.symbolTable);
+        //walker.walk(funcCallListener, tree);
 
-        //GlobalDecListener globalDecListener = new GlobalDecListener();
-        //walker.walk(globalDecListener, tree);
+        GlobalDecListener globalDecListener = new GlobalDecListener();
+        walker.walk(globalDecListener, tree);
 
         // Code generation
         CodeGenerator codeGenerator = new CodeGenerator();

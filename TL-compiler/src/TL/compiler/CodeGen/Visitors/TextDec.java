@@ -7,20 +7,29 @@ import TL.compiler.SymbolTable.Type;
 import TL.parser.TLParser;
 
 public class TextDec {
+
+    String varName;
+    String declaration;
     public String visitTextDec(TLParser.TextDeclContext ctx, SymbolTable symbolTable) {
 
-        String varName = ctx.textID.getText();
+        varName = ctx.textID.getText();
         Type type = Type.Text;
         Attributes attribute = new Attributes(varName, type);
 
         // Check if it is already declared
-        if (symbolTable.isInScope(attribute)) {
+        if(symbolTable.isInScope(attribute)) {
             //Throw error
-            return "";
+            System.err.println("Duplicated declaration of variable: " + varName);
+            declaration = "";
         } else {
             symbolTable.insertSymbol(attribute);
-            return "    char " + varName + "[]" + ";" + "\n\n";
+            declaration = "    char " + varName + "[]" + ";";
         }
+        return declaration + "\n\n";
     }
+    public String getVarName(){
+        return this.varName;
+    }
+    public String getDeclaration() {return this.declaration;}
 
 }

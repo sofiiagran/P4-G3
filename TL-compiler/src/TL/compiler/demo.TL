@@ -1,14 +1,22 @@
  start begin
 
     number x
-    text w
+    number p
+
+    c = "hej"
+
+    i = 1
+    x = 2
+
+    myfunc(x, p)
 
  end
 
  functions begin
 
-     function myfunc(text k, number g) begin
+     function myfunc(number k, number g) begin
 
+     text sofia
      g = 2
      o = 6
 
