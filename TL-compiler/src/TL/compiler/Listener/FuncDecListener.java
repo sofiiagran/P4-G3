@@ -9,7 +9,8 @@ import TL.parser.TLParser;
 public class FuncDecListener extends TLBaseListener {
     public String FuncPrototype1 = "";
 
-    public ParamListener paramListener;
+    ParamListener paramListener;
+
 
     public FuncDecListener(ParamListener p) {
         this.paramListener = p;

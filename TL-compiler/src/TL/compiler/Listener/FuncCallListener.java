@@ -32,13 +32,14 @@ public class FuncCallListener extends TLBaseListener {
 
     @Override
     public void enterFuncDec(TLParser.FuncDecContext ctx) {
-        paramListener.symbolTable.openScope();
+        funcDecListener.paramListener.symbolTable.openScope();
+
         super.enterFuncDec(ctx);
     }
 
     @Override
     public void exitFuncDec(TLParser.FuncDecContext ctx) {
-        paramListener.symbolTable.closeScope();
+        funcDecListener.paramListener.symbolTable.closeScope();
     }
 
     @Override

@@ -13,14 +13,11 @@ public class ParamListener extends TLBaseListener {
     public FuncInParam funcInParam = new FuncInParam();
     public  String inParams;
     public  String outParams;
-    public ArrayList<String> inParamsName;
-    public ArrayList<String> outParamsName;
+    public ArrayList<String> inParamsName = new ArrayList<>();
+    public ArrayList<String> outParamsName = new ArrayList<>();
 
-    public SymbolTable symbolTable;
+    public SymbolTable symbolTable = new SymbolTable();
 
-    public ParamListener(SymbolTable s){
-        this.symbolTable = s;
-    }
 
     @Override
     public void enterBlock(TLParser.BlockContext ctx) {

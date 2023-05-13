@@ -41,14 +41,14 @@ public class Main {
 
         SymbolTable symbolTable = new SymbolTable();
 
-        ParamListener param = new ParamListener(symbolTable);
+        ParamListener param = new ParamListener();
         walker.walk(param, tree);
 
         FuncDecListener funcDec = new FuncDecListener(param);
         walker.walk(funcDec, tree);
 
-        //FuncCallListener funcCallListener = new FuncCallListener(funcDec, param);
-        //walker.walk(funcCallListener, tree);
+        FuncCallListener funcCallListener = new FuncCallListener(funcDec, param);
+        walker.walk(funcCallListener, tree);
 
         GlobalDecListener globalDecListener = new GlobalDecListener();
         walker.walk(globalDecListener, tree);

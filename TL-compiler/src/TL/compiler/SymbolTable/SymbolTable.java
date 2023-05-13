@@ -4,9 +4,6 @@ import java.util.*;
 
 public class SymbolTable {
     public final Map<String, Attributes> hashMap = new LinkedHashMap<>();
-
-
-
     public ArrayList<Scope> scopes = new ArrayList<>();
 
     private int depth = -1;
