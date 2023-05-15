@@ -10,14 +10,27 @@ public class Condition1 {
     public TypeCheckerCon1 typeCheckerCon1 = new TypeCheckerCon1();
     public String visitCondition1(TLParser.Con1Context ctx, SymbolTable symbolTable) {
 
+        int numberCount = 0;
+        int valCount = 0;
+        String printCondition = "";
+
         // checks for compatible types
         typeCheckerCon1.typeCheckCon1(ctx, symbolTable);
 
         // if it passes the check, condition is printed
-        String printCondition = ctx.getChild(0).getText();
+        for (int i = 0; i < ctx.getChildCount(); i++) {
 
-        for(int i = 1; i < ctx.getChildCount(); i++) {
-            printCondition += " " + ctx.getChild(i).getText();
+            if (ctx.getChild(i) == ctx.val(numberCount).numberValue()) {
+                if (ctx.val(numberCount).numberValue().NUMBER_VAL_INT() != null) {
+                    numberCount++;
+                    printCondition += " " + ctx.getChild(i).getText() + ".0";
+                } else {
+                    numberCount++;
+                    printCondition += " " + ctx.getChild(i).getText();
+                }
+            } else {
+                printCondition += " " + ctx.getChild(i).getText();
+            }
         }
         return printCondition;
     }

@@ -200,13 +200,6 @@ public class TLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TLV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRightCondition(TLParser.RightConditionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitExpression(TLParser.ExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -242,14 +235,7 @@ public class TLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TLV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMathExp1(TLParser.MathExp1Context ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitMathExp2(TLParser.MathExp2Context ctx) { return visitChildren(ctx); }
+	@Override public T visitMathExp(TLParser.MathExpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -285,6 +271,13 @@ public class TLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TLV
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitVal(TLParser.ValContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitNumberValue(TLParser.NumberValueContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

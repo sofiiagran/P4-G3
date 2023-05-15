@@ -24,19 +24,19 @@ public class FuncOutParam {
             if(ctx.declaration(i).numberDec != null) {
                 varName = ctx.declaration(i).numberDec.numberID.getText();
                 if(symbolTable.isInScope(new Attributes(varName, Type.Number))) {
-                    System.err.println("Error: variable name is already in use");
+                    throw new IllegalArgumentException("Error: variable name is already in use");
                     //Throw error
                 } else {
                     symbolTable.insertSymbol(new Attributes(varName, Type.Number));
                     symbolTable.retrieveSymbol(varName).setIsParam(true);
-                    params += "int " + varName;
+                    params += "double " + varName;
                     paramNames.add(varName);
                 }
             }
             if(ctx.declaration(i).textDec != null) {
                 varName = ctx.declaration(i).textDec.textID.getText();
                 if(symbolTable.isInScope(new Attributes(varName, Type.Text))) {
-                    System.err.println("Error: variable name is already in use");
+                    throw new IllegalArgumentException("Error: variable name is already in use");
                     //Throw error
                 } else {
                     symbolTable.insertSymbol(new Attributes(varName, Type.Text));
@@ -48,7 +48,7 @@ public class FuncOutParam {
             if(ctx.declaration(i).boolDec != null) {
                 varName = ctx.declaration(i).boolDec.boolID.getText();
                 if (symbolTable.isInScope(new Attributes(varName, Type.Boolean))) {
-                    System.err.println("Error: variable name is already in use");
+                    throw new IllegalArgumentException("Error: variable name is already in use");
                     //Throw error
                 } else {
                     symbolTable.insertSymbol(new Attributes(varName, Type.Boolean));

@@ -35,8 +35,7 @@ public class AskExp {
                 if(symbolTable.isInScope(new Attributes(ctx.printVar.getText(), null))) {
                     val += ctx.getChild(i).getText();
                 } else {
-                    System.err.println("Error: missing variable declaration of variable: " + ctx.printVar.getText());
-                    //Throw error here
+                    throw new IllegalArgumentException("Error: missing variable declaration of variable: " + ctx.printVar.getText());
                 }
             } else {
                 val += ctx.getChild(i).getText();

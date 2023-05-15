@@ -10,15 +10,16 @@ public class ReturnExp {
         if(ctx.returnVar != null) {
 
             //Check if variable is declared
-            if(symbolTable.isInScope(new Attributes(ctx.returnVar.getText(), null))) {
-                return "    return " + ctx.returnVar.getText() + ";" + "\n\n";
+            if (symbolTable.isInScope(new Attributes(ctx.returnVar.getText(), null))) {
+                return "    return " + ctx.returnVar.getText() + ";" + "\n";
             } else {
-                System.err.println("Error: missing variable declaration of variable: " + ctx.returnVar.getText());
-                //Throw error here
-                return "";
+                throw new IllegalArgumentException("Error: missing variable declaration of variable: " + ctx.returnVar.getText());
             }
+        }
+        else if(ctx.returnVal.numberVal.NUMBER_VAL_INT() != null){
+            return "    return " + ctx.returnVal.getText() + ".0 ;" + "\n";
         } else {
-            return "    return " + ctx.returnVal.getText() + ";" + "\n\n";
+            return "    return " + ctx.returnVal.getText() + ";" + "\n";
         }
     }
 }

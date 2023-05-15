@@ -28,7 +28,7 @@ public class TextDec {
             if (symbolTable.getDepth() == 0) {
                 return "";
             } else {
-                return declaration + "\n\n";
+                return declaration + "\n";
             }
     }
     public String getVarName(){

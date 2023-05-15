@@ -25,7 +25,10 @@ public class FuncDec {
                 }
                 if(ctx.returnExp().returnVal != null) {
 
-                    if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.numberVal) {
+                    if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.numberVal.NUMBER_VAL_DOUBLE() ) {
+                        returnDt = Type.Number;
+                    }
+                    if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.numberVal.NUMBER_VAL_INT() ) {
                         returnDt = Type.Number;
                     }
                     if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.textVal) {

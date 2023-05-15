@@ -170,12 +170,6 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCon3(TLParser.Con3Context ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#rightCondition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRightCondition(TLParser.RightConditionContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -206,19 +200,11 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAnswerVal(TLParser.AnswerValContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code mathExp1}
-	 * labeled alternative in {@link TLParser#mathExp}.
+	 * Visit a parse tree produced by {@link TLParser#mathExp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMathExp1(TLParser.MathExp1Context ctx);
-	/**
-	 * Visit a parse tree produced by the {@code mathExp2}
-	 * labeled alternative in {@link TLParser#mathExp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMathExp2(TLParser.MathExp2Context ctx);
+	T visitMathExp(TLParser.MathExpContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#textInit}.
 	 * @param ctx the parse tree
@@ -249,6 +235,12 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVal(TLParser.ValContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#numberValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumberValue(TLParser.NumberValueContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#conditionalOperation}.
 	 * @param ctx the parse tree

@@ -19,8 +19,14 @@ public class Assignment {
 
 
         if (symbolTable.isInScope(var1Symbol) && symbolTable.isInScope(var2Symbol)) {
-            // is returned if both variables is declared
-            return "    " + var1Name + " = " + var2Name + ";\n\n";
+            if(symbolTable.retrieveSymbol(var1Name).getType()
+                    == symbolTable.retrieveSymbol(var2Name).getType()){
+                // is returned if both variables is declared and has the same type
+                return "    " + var1Name + " = " + var2Name + ";\n\n";
+            } else {
+                throw new IllegalArgumentException("Variable: " + var1Name + " is not of the same data type as" +
+                        " variable: " + var2Name);
+            }
 
         } else if (symbolTable.isInScope(var1Symbol) && (!symbolTable.isInScope(var2Symbol))) {
             // is returned if only var 1 is declared
@@ -31,10 +37,8 @@ public class Assignment {
             return assignDataType(var1Name, var2Name, symbolTable);
         } else {
             // throws error if none of the variable is declared
-            System.err.println("Missing variable declaration of either : " + var2Name + " or " + var1Name);
-            return "";
+            throw new IllegalArgumentException("Missing variable declaration of both : " + var2Name + " and " + var1Name);
         }
-
     }
 
     public String assignDataType(String undeclaredVar, String declaredVar, SymbolTable symbolTable) {
@@ -45,17 +49,16 @@ public class Assignment {
 
         // translate data types to C and print result
         if (dataType == Type.Number) {
-            return "    double " + undeclaredVar + " = " + declaredVar + ";\n\n";
+            return "    double " + undeclaredVar + " = " + declaredVar + ";\n";
         }
         if (dataType == Type.Text) {
-            return "    char " + undeclaredVar + "[] = " + declaredVar + ";\n\n";
+            return "    char " + undeclaredVar + "[] = " + declaredVar + ";\n";
         }
         if (dataType == Type.Boolean) {
-            return "    bool " + undeclaredVar + " = " + declaredVar + ";\n\n";
+            return "    bool " + undeclaredVar + " = " + declaredVar + ";\n";
         } else {
             // throw error
-            System.err.println("Error: cannot find data type of: " + declaredVar);
-            return "";
+            throw new IllegalArgumentException("Error: cannot find data type of: " + declaredVar);
         }
 
     }

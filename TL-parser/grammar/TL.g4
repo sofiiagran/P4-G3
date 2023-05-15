@@ -91,7 +91,7 @@ ifThenElseStatement:
     IF condition (BEGIN | THEN) statementBody END (ELSE_IF condition  BEGIN statementBody END)* (ELSE BEGIN statementBody END)?
     ;
 repeatStatement:
-    REPEAT (NUMBER_VAL | ID ) TIMES (BEGIN | THEN) statementBody END
+    REPEAT (numberVal=numberValue| ID ) TIMES (BEGIN | THEN) statementBody END
     ;
 repeatUntilStatement:
     REPEAT_UNTIL condition (BEGIN | THEN) statementBody END
@@ -101,17 +101,13 @@ whileStatement:
     ;
 
 statementBody:
-    declaration* initialization* expression*  statement* (returnExp)?
+    declaration* initialization* expression*  statement*
     ;
 
 condition:
-    (leftConVal=val | leftConVar=ID) (op=conditionalOperation (rightConVal=val | rightConVar=ID))+     #con1
+    ID conditionalOperation (val | ID) ((AND | OR) ID conditionalOperation (val | ID))*     #con1
     | ID                                                                                               #con2
     | NOTEQUAL ID                                                                                      #con3
-    ;
-
-rightCondition:
-    (op=conditionalOperation (rightConVal=val | rightConVar=ID))+
     ;
 
 
@@ -140,9 +136,9 @@ answerVal:
     ;
 
 mathExp :
-    assignId=ID ASSIGN (leftVal=val | leftVar=ID) (mathOp=mathematicalOperation1 (rightVal=val | rightVar=ID))+       #mathExp1
-    | assignID=ID mathOp=mathematicalOperation2 (leftVal=val | leftVar=ID)
-    (mathOp1=mathematicalOperation1 (rightVal=val | rightVar=ID))*                 #mathExp2
+    assignID=ID ASSIGN (numberValue | var=ID) (mathOp1=mathematicalOperation1 (numberValue | var=ID))+
+    | assignID=ID mathOp2=mathematicalOperation2 (numberValue | var=ID)
+    (mathOp1=mathematicalOperation1 (numberValue | var=ID))*
     ;
 
 textInit:
@@ -150,7 +146,7 @@ textInit:
     ;
 
 numberInit:
-    (NUMBER)? var1ID=ID ASSIGN NUMBER_VAL
+    (NUMBER)? var1ID=ID ASSIGN numberVal=numberValue
     ;
 
 booleanInit:
@@ -162,8 +158,12 @@ assignment:
 
 val:
     textVal=TEXT_VAL
-    | numberVal=NUMBER_VAL
+    | numberVal=numberValue
     | boolVal=BOOL_LITERAL
+    ;
+numberValue:
+    double=NUMBER_VAL_DOUBLE
+    | int=NUMBER_VAL_INT
     ;
 
 conditionalOperation:
@@ -248,7 +248,7 @@ LT : '<';
 EQUAL : '==' | '=?' ;
 LE : '<=' | 'less or equal to' ;
 GE : '>=' | 'greater or equal to';
-NOTEQUAL : '!=' | 'not equal to' | 'is not';
+NOTEQUAL : '!=' | 'is not';
 AND : '&&' | 'and';
 OR : '||' | 'or';
 INC : '++' | 'increase by one' ;
@@ -279,7 +279,8 @@ Letter
 fragment
 LetterOrDigit
 	:	[a-zA-Z0-9_]
-	|	NUMBER_VAL
+	|	NUMBER_VAL_DOUBLE
+	|   NUMBER_VAL_INT
 	;
 
 fragment
@@ -340,7 +341,9 @@ TEXT_VAL
 	:	'"' StringCharacters? '"'
 	;
 
-NUMBER_VAL: '-'?('0'|[1-9][0-9]*)('.'[0-9]+)? ;
+NUMBER_VAL_INT: '-'?[0-9]+ ;
+NUMBER_VAL_DOUBLE: '-'?('0'|[1-9][0-9]*)('.'[0-9]+)? ;
+
 
 // whitespace and comments
 
@@ -359,6 +362,5 @@ LINE_COMMENT
 // If none of the expressions above match
 // it checks if it is an ID (which has to have at least one letter and cannot start with a number)
 
-ID
-	:	(Letter LetterOrDigit*)+
+ID  : (Letter (LetterOrDigit)* )+
 	;

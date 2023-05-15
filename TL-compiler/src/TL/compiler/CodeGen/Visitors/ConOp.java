@@ -24,8 +24,7 @@ public class ConOp {
             return "!=";
         } else {
             // throw error
-            System.err.println("Conditional operation is not recognized");
-            return null;
+            throw new IllegalArgumentException("Conditional operation is not recognized");
         }
     }
 }

@@ -20,11 +20,10 @@ public class BoolInit {
         if(symbolTable.isInScope(attribute)) {
             if(symbolTable.retrieveSymbol(varName).getType() == Type.Boolean) {
                 declaration = "    " + ctx.var1ID.getText() + " = "+ ctx.BOOL_LITERAL().getText() + ";";
-                declared = true;
             } else {
                 System.err.println("Error: variable is already declared with at different datatype");
-                declared = true;
             }
+            declared = true;
         } else {
             // if it is not, add to symbol table and print initialisation with data type
             symbolTable.insertSymbol(attribute);
@@ -34,7 +33,7 @@ public class BoolInit {
         if (symbolTable.getDepth() == 0) {
             return "";
         } else {
-            return declaration + "\n\n";
+            return declaration + "\n";
         }
     }
     public String getVarName(){

@@ -28,8 +28,7 @@ public class CST {
     public ReturnExp returnExp = new ReturnExp();
 
     /** Math expressions **/
-    public MathExp1 mathExp1 = new MathExp1();
-    public MathExp2 mathExp2 = new MathExp2();
+    public MathExp mathExp = new MathExp();
 
     /** Conditions **/
     public Condition1 condition1 = new Condition1();

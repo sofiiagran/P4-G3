@@ -13,8 +13,7 @@ public class Condition3 {
             return "!(" + varName + ")";
         } else {
             // throws error if not declared
-            System.err.println("Variable: " + varName + " is not declared");
-            return null;
+            throw new IllegalArgumentException("Variable: " + varName + " is not declared");
         }
     }
 }

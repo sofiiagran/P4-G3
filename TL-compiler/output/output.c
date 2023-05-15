@@ -3,42 +3,22 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-myfunc(char k[], int g);
-myfunc2();
-    double x = 6;
-    char w[];
+myfunc(char k[], double g);
+    double x;
 
 int main() { 
-
-    myfunc(a, b);
-
-    newf();
 
     return 0;
 }
 
-void myfunc(char k[], int g) { 
+void myfunc(char k[], double g) { 
+    if( g != 2 && g < 2) { 
+    x = g;
 
-    x = 2;
 
-    double o = 6;
+    } else {     x = g;
 
+
+    }
 }
 
-
-
-void myfunc2() { 
-
-    w = "hej";
-
-    double o = 3;
-
-    double p = 2;
-
-    double g = 1;
-
-    x = 2 + 2 + 5
-
-}
-
-}

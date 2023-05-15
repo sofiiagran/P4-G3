@@ -19,9 +19,7 @@ public class BoolDec {
 
             // Check if it is already declared
             if (symbolTable.isInScope(attribute) && symbolTable.retrieveSymbol(varName).getIsParam() == false) {
-                //Throw error
-                System.err.println("Duplicated declaration of variable: " + varName);
-                declaration = "";
+                throw new IllegalArgumentException("Duplicated declaration of variable: " + varName);
             } else {
                 symbolTable.insertSymbol(attribute);
                 declaration = "    char " + varName + "[]" + ";";
@@ -30,7 +28,7 @@ public class BoolDec {
             if (symbolTable.getDepth() == 0) {
                 return "";
             } else {
-                return declaration + "\n\n";
+                return declaration + "\n";
             }
     }
     public String getVarName(){

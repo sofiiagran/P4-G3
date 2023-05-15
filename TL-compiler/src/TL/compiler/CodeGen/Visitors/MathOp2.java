@@ -18,8 +18,7 @@ public class MathOp2 {
             return "/=";
         } else {
             // throw error
-            System.err.println("Mathematical operation is not recognized");
-            return null;
+            throw new IllegalArgumentException("Mathematical operation is not recognized");
         }
     }
 }
