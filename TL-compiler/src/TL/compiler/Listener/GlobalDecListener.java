@@ -16,7 +16,9 @@ public class GlobalDecListener extends TLBaseListener {
     TextDec textDec = new TextDec();
     BoolDec boolDec = new BoolDec();
 
-    public SymbolTable symbolTable;
+    SymbolTable symbolTable;
+
+    String printGlobalDec = "";
 
     public GlobalDecListener(SymbolTable s) {
         this.symbolTable = s;
@@ -48,7 +50,7 @@ public class GlobalDecListener extends TLBaseListener {
         // checks if depth is 0, which means that the variable is global
         if(symbolTable.retrieveSymbol(varName).getDepth() == 0) {
             // print the variable if it is global, so that it is declared before code generator is run
-            System.out.println(numberDec.getDeclaration());
+            printGlobalDec += numberDec.getDeclaration() + "\n";
         }
     }
     @Override
@@ -58,7 +60,7 @@ public class GlobalDecListener extends TLBaseListener {
         // checks if depth is 0, which means that the variable is global
         if(symbolTable.retrieveSymbol(varName).getDepth() == 0) {
             // print the variable if it is global, so that it is declared before code generator is run
-            System.out.println(textDec.getDeclaration());
+            printGlobalDec += textDec.getDeclaration() + "\n";
         }
     }
 
@@ -69,7 +71,7 @@ public class GlobalDecListener extends TLBaseListener {
         // checks if depth is 0, which means that the variable is global
         if(symbolTable.retrieveSymbol(varName).getDepth() == 0) {
             // print the variable if it is global, so that it is declared before code generator is run
-            System.out.println(boolDec.getDeclaration());
+            printGlobalDec += boolDec.getDeclaration() + "\n";
         }
     }
 
@@ -82,7 +84,7 @@ public class GlobalDecListener extends TLBaseListener {
         // checks if depth is 0, which means that the variable is global
         if(symbolTable.retrieveSymbol(varName).getDepth() == 0 && numberInit.isDeclared() == false) {
             // print the variable if it is global, so that it is declared before code generator is run
-            System.out.println(numberInit.getDeclaration());
+            printGlobalDec += numberInit.getDeclaration() + "\n";
         }
     }
 
@@ -93,7 +95,7 @@ public class GlobalDecListener extends TLBaseListener {
         // checks if depth is 0, which means that the variable is global
         if(symbolTable.retrieveSymbol(varName).getDepth() == 0 && textInit.isDeclared() == false) {
             // print the variable if it is global, so that it is declared before code generator is run
-            System.out.println(textInit.getDeclaration());
+            printGlobalDec += textInit.getDeclaration() + "\n";
         }
     }
 
@@ -104,7 +106,7 @@ public class GlobalDecListener extends TLBaseListener {
         // checks if depth is 0, which means that the variable is global
         if(symbolTable.retrieveSymbol(varName).getDepth() == 0 && boolInit.isDeclared() == false) {
             // print the variable if it is global, so that it is declared before code generator is run
-            System.out.println(boolInit.getDeclaration());
+            printGlobalDec += boolInit.getDeclaration() + "\n";
         }
     }
 
@@ -117,6 +119,10 @@ public class GlobalDecListener extends TLBaseListener {
                 return false;
             }
         } return false;
+    }
+
+    public String getGlobalDec(){
+        return this.printGlobalDec;
     }
 
 }

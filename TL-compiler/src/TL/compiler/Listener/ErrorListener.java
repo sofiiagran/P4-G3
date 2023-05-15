@@ -1,4 +1,4 @@
-package TL.compiler;
+package TL.compiler.Listener;
 
 import TL.parser.TLLexer;
 import org.antlr.v4.runtime.*;
@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class ErrorListener extends BaseErrorListener {
-
+    /**
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
         System.err.println("line " + line + ":" + charPositionInLine + " " + msg);
         underlineError(recognizer, (Token)offendingSymbol, line, charPositionInLine);
@@ -36,5 +36,5 @@ public class ErrorListener extends BaseErrorListener {
             }
         }
         System.err.println();
-    } 
+    } **/
 }

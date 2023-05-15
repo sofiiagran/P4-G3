@@ -1,20 +1,53 @@
 package TL.compiler.CodeGen;
 
+import TL.compiler.Listener.FuncDecListener;
+import TL.compiler.Listener.GlobalDecListener;
 import TL.compiler.SymbolTable.*;
 import TL.parser.TLBaseVisitor;
 import TL.parser.TLParser;
 import org.stringtemplate.v4.ST;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class CodeGenerator extends TLBaseVisitor<String> {
 
+    SymbolTable symbolTable;
+    FuncDecListener funcDecListener;
+    GlobalDecListener globalDecListener;
+    StringBuilder libs = new StringBuilder();
+    StringBuilder globalDec = new StringBuilder();
+    StringBuilder funcPrototypes = new StringBuilder();
+    StringBuilder codeGenC = new StringBuilder();
 
-    SymbolTable symbolTable ;
+
 
     /** CST is used to create instances of functions used for visiting **/
     CST cst = new CST();
 
-    public CodeGenerator(SymbolTable s){
+    public CodeGenerator(FuncDecListener f, GlobalDecListener g, SymbolTable s){
+        this.funcDecListener = f;
+        this.globalDecListener = g;
         this.symbolTable = s;
+    }
+
+    public StringBuilder getLibs(){
+        libs.append("#include <stdbool.h>\n");
+        libs.append("#include <stblib.h>\n");
+        libs.append("#include <stdio.h>\n");
+        libs.append("#include <math.h>\n");
+        libs.append("#include <string.h>\n");
+
+        return libs;
+    }
+
+    public StringBuilder getGlobalDec(){
+        globalDec.append(globalDecListener.getGlobalDec());
+        return globalDec;
+    }
+    public StringBuilder getFuncPrototypes(){
+        funcPrototypes.append(funcDecListener.getPrototypes());
+        return funcPrototypes;
     }
 
 
@@ -192,7 +225,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         if(ctx.ELSE() != null) {
             int size = ctx.statementBody().size();
             printStatements += openScope() + " else { " + visit(ctx.statementBody(size)) + "\n    }\n"
-            + closeScope();
+                    + closeScope();
         }
 
         return printStatements;

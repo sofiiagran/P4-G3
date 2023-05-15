@@ -21,7 +21,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
 
-        CharStream stream = CharStreams.fromFileName("/Users/sofiagran/Downloads/ny/TL-compiler/src/TL/compiler/demo.TL");
+        CharStream stream = CharStreams.fromFileName("/Users/sofiagran/Documents/GitHub/P4-G3/TL-compiler/input/input.TL");
 
         //ErrorListener errorListener = new ErrorListener();
 
@@ -47,17 +47,21 @@ public class Main {
         FuncDecListener funcDec = new FuncDecListener(param, symbolTable);
         walker.walk(funcDec, tree);
 
-        GlobalDecListener globalDecListener = new GlobalDecListener(symbolTable);
-        walker.walk(globalDecListener, tree);
+        GlobalDecListener globalDec = new GlobalDecListener(symbolTable);
+        walker.walk(globalDec, tree);
 
-        FuncCallListener funcCall = new FuncCallListener(funcDec, globalDecListener, symbolTable);
+        FuncCallListener funcCall = new FuncCallListener(funcDec, globalDec, symbolTable);
         walker.walk(funcCall, tree);
 
 
         // Code generation
-        CodeGenerator codeGenerator = new CodeGenerator(symbolTable);
+        CodeGenerator codeGenerator = new CodeGenerator(funcDec, globalDec, symbolTable);
         String targetCode = codeGenerator.visit(tree);
-        System.out.println(targetCode);
+
+        BuildCProgram builder = new BuildCProgram();
+
+        StringBuilder buildProgram = builder.buildProgram(codeGenerator, targetCode);
+        builder.printCProgramToFile(buildProgram);
 
     }
 }

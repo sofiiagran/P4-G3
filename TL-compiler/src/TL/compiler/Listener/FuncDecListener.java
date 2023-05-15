@@ -7,11 +7,10 @@ import TL.parser.TLBaseListener;
 import TL.parser.TLParser;
 
 public class FuncDecListener extends TLBaseListener {
-    public String FuncPrototype1 = "";
-
-    public ParamListener paramListener;
-
-    public SymbolTable symbolTable;
+    String FuncPrototype1 = "";
+    ParamListener paramListener;
+    SymbolTable symbolTable;
+    String printPrototypes = "";
 
     public FuncDecListener(ParamListener p, SymbolTable s) {
         this.paramListener = p;
@@ -35,9 +34,9 @@ public class FuncDecListener extends TLBaseListener {
 
 
         if (ctx.param != null) {
-            System.out.println(FuncPrototype1 + "("  + paramListener.getOutParams() + ");");
+            printPrototypes += FuncPrototype1 + "("  + paramListener.getOutParams() + ");\n";
         } else {
-            System.out.println(FuncPrototype1 + "();");
+            printPrototypes += FuncPrototype1 + "();\n";
         }
 
     }
@@ -52,6 +51,10 @@ public class FuncDecListener extends TLBaseListener {
         } else {
             return false;
         }
+    }
+
+    public String getPrototypes(){
+        return this.printPrototypes;
     }
 }
 
