@@ -105,7 +105,7 @@ statementBody:
     ;
 
 condition:
-    ID conditionalOperation (val | ID) ((AND | OR) ID conditionalOperation (val | ID))*     #con1
+    ID conditionalOperation (val | ID) ((AND | OR) ID conditionalOperation (val | ID))*                #con1
     | ID                                                                                               #con2
     | NOTEQUAL ID                                                                                      #con3
     ;
@@ -125,10 +125,10 @@ returnExp:
     ;
 
 printExp:
-    PRINT (printVal=val | printVar=ID) ( (ADD (printVal=val | printVar=ID))+ )?
+    PRINT (TEXT_VAL | numberValue  | ID) ( (ADD (TEXT_VAL | numberValue  | ID))+ )?
     ;
 
-askExp: ASK askID=ID (printVal=val | printVar=ID) ( (ADD (printVal=val | printVar=ID))+ )?
+askExp: ASK askID=ID (TEXT_VAL | numberValue  | ID) ( (ADD (TEXT_VAL | numberValue  | ID))+ )?
     ;
 
 answerVal:

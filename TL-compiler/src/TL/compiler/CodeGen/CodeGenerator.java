@@ -18,7 +18,6 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     StringBuilder libs = new StringBuilder();
     StringBuilder globalDec = new StringBuilder();
     StringBuilder funcPrototypes = new StringBuilder();
-    StringBuilder codeGenC = new StringBuilder();
 
 
 

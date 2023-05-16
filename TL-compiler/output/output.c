@@ -12,13 +12,11 @@ int main() {
 }
 
 void myfunc(char k[], double g) { 
-    if( g != 2 && g < 2) { 
-    x = g;
+    char h[] = "ey";
+    printf( "hej dette er en test %lf %s 5.0 %s lol" ,x, k, h);
+    if( g == 4.0) { 
+    g = 4.0 + 5.0
+   } 
 
-
-    } else {     x = g;
-
-
-    }
 }
 

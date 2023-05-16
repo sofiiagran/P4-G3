@@ -41,13 +41,11 @@ public class MathExp {
             printMathExpr += ctx.ID(0);
         }
         int numberCount = 0;
-        int intCount = 0;
 
         for (int i = 1; i < ctx.getChildCount(); i++) {
 
             if (ctx.getChild(i) == ctx.numberValue(numberCount)) {
                 if (ctx.numberValue(numberCount).NUMBER_VAL_INT() != null) {
-                    intCount++;
                     numberCount++;
                     printMathExpr += " " + ctx.getChild(i).getText() + ".0";
                 } else {
