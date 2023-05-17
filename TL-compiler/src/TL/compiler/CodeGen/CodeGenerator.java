@@ -293,7 +293,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     }
     @Override
     public String visitRepeatStatement(TLParser.RepeatStatementContext ctx) {
-        return openScope() + "    for (int thisIsJustRandomIDxxx = 0; thisIsJustRandomIDxxx > " + ctx.numberVal.getText()
+        return openScope() + "    for (int thisIsJustRandomIDxxx = 0; thisIsJustRandomIDxxx < " + ctx.numberVal.getText()
                 + "; thisIsJustRandomIDxxx++ ) { \n" + visit(ctx.statementBody()) + "    }" + "\n" + closeScope();
     }
     @Override
