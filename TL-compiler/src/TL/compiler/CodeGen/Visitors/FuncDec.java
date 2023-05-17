@@ -5,7 +5,11 @@ import TL.compiler.SymbolTable.SymbolTable;
 import TL.compiler.SymbolTable.Type;
 import TL.parser.TLParser;
 
+import java.util.ArrayList;
+
 public class FuncDec {
+
+    ArrayList<String> returnTypeArray = new ArrayList<>();
 
     public void getReturnType(TLParser.FuncDecContext ctx, SymbolTable symbolTable) {
 
@@ -72,9 +76,12 @@ public class FuncDec {
                 returnType += "void";
             }
         }
+        returnTypeArray.add(returnType);
         return returnType;
     }
 
-
+    public ArrayList<String> getReturnTypeArray(){
+        return returnTypeArray;
+    }
 
 }

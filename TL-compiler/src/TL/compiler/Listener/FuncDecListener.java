@@ -7,6 +7,8 @@ import TL.compiler.SymbolTable.Type;
 import TL.parser.TLBaseListener;
 import TL.parser.TLParser;
 
+import java.util.ArrayList;
+
 public class FuncDecListener extends TLBaseListener {
     String FuncPrototype1 = "";
     ParamListener paramListener;
@@ -52,9 +54,8 @@ public class FuncDecListener extends TLBaseListener {
 
     }
 
-    public String getReturnType(TLParser.FuncDecContext ctx) {
-        enterFuncDec(ctx);
-        return returnType;
+    public ArrayList<String> getReturnType() {
+        return funcDec.getReturnTypeArray();
     }
 
     @Override

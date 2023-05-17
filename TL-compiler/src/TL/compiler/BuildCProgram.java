@@ -16,7 +16,8 @@ public class BuildCProgram {
         buildProgram.append(codeGen.getLibs());
         buildProgram.append(codeGen.getFuncPrototypes());
         buildProgram.append(codeGen.getGlobalDec());
-        buildProgram.append(code);
+        buildProgram.append(codeGen.getMainFunc());
+        buildProgram.append(codeGen.getFuncDec());
 
         return buildProgram;
     }

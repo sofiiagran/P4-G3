@@ -6,12 +6,6 @@
 double myfunc(double a);
 void newfunc(double a);
 double new(double a);
-double myfunc(double a);
-double myfunc(double a);
-void newfunc(double a);
-void newfunc(double a);
-void new(double a);
-void new(double a);
     double x;
     char h[] = "lol";
 
@@ -19,7 +13,6 @@ int main() {
 
     return 0;
 }
-
 double myfunc(char k[], double g) { 
     char question1[];
     char temp;
@@ -32,13 +25,11 @@ double myfunc(char k[], double g) {
 }
 
 
-
 void newfunc(char b[]) { 
 }
 
 
-
-void new(double a) { 
+double new(double a) { 
     return a;
 }
 

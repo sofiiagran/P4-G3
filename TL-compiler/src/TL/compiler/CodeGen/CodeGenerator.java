@@ -9,6 +9,8 @@ import org.stringtemplate.v4.ST;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Array;
+import java.util.ArrayList;
 
 public class CodeGenerator extends TLBaseVisitor<String> {
 
@@ -18,8 +20,12 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     StringBuilder libs = new StringBuilder();
     StringBuilder globalDec = new StringBuilder();
     StringBuilder funcPrototypes = new StringBuilder();
+    StringBuilder mainFunc = new StringBuilder();
+    StringBuilder funcDec = new StringBuilder();
 
-    String returnType;
+    ArrayList<String> funcDecCode = new ArrayList<>();
+    String mainCode;
+
 
 
 
@@ -56,6 +62,20 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         funcPrototypes.append(funcDecListener.getPrototypes());
         return funcPrototypes;
     }
+    public StringBuilder getMainFunc(){
+        mainFunc.append(mainCode);
+        return mainFunc;
+    }
+    public StringBuilder getFuncDec(){
+        //get return types from funcDecListener
+        ArrayList<String> returnType = funcDecListener.getReturnType();
+
+        // loop that goes through func declaration and adds the right return type to functions
+        for(int i = 0; i < funcDecCode.size(); i++)
+        funcDec.append("\n" + returnType.get(i) + " " + funcDecCode.get(i));
+        return funcDec;
+    }
+
 
 
     /*********** Code Generation ***********/
@@ -85,13 +105,14 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
     @Override
     public String visitBlock(TLParser.BlockContext ctx) {
+
+        mainCode = "\nint main() { " + "\n\n"  + visit(ctx.startBlock()) + "    return 0;\n}";
+
         //check if it contains a functions block
         if (!(ctx.functionsBlock() == null)) {
-            return "\nint main() { " + "\n\n"  + visit(ctx.startBlock()) + "    return 0;\n}"
-                    + visit(ctx.functionsBlock());
-        } else {
-            return "\nint main() { " + "\n\n" + visit(ctx.startBlock()) + "   return 0;\n}";
+            visit(ctx.functionsBlock());
         }
+        return mainCode;
     }
 
 
@@ -100,14 +121,10 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitFuncDec(TLParser.FuncDecContext ctx) {
         String printFuncBody = "";
         String printReturnStmt = "";
+        String printFuncDec = "";
         String funcName = ctx.funcID.getText();
 
-        returnType = "";
-
         openScope();
-
-        funcDecListener.enterFuncDec(ctx);
-        returnType = funcDecListener.getReturnType(ctx);
 
         // check if function contains params
         if(ctx.param != null) {
@@ -124,13 +141,15 @@ public class CodeGenerator extends TLBaseVisitor<String> {
             }
 
             // this is returned if it contains params
-            return "\n\n" + returnType + " " +  funcName + "("  + outPutParam + ") "
+            printFuncDec = funcName + "("  + outPutParam + ") "
                     + "{ \n" + printFuncBody + printReturnStmt + "}" + "\n\n" + closeScope();
+        } else {
+            // this is returned if it does not contain params
+            printFuncDec =funcName + "() { \n" + visitChildren(ctx)
+                    + "}" + "\n\n" + closeScope();
         }
-
-        // this is returned if it does not contain params
-        return "\n\n" + returnType + " " + funcName + "() { \n" + visitChildren(ctx)
-                + "}" + "\n\n" + closeScope();
+        funcDecCode.add(printFuncDec);
+        return printFuncDec;
     }
 
     @Override
