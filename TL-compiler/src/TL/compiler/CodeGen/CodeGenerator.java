@@ -42,7 +42,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         // standard libraries
         // this is printed in BuildCProgram
         libs.append("#include <stdbool.h>\n");
-        libs.append("#include <stblib.h>\n");
+        libs.append("#include <stdlib.h>\n");
         libs.append("#include <stdio.h>\n");
         libs.append("#include <math.h>\n");
         libs.append("#include <string.h>\n");
