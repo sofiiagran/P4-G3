@@ -38,8 +38,8 @@ public class TLParser extends Parser {
 		RULE_printExp = 26, RULE_askExp = 27, RULE_answerVal = 28, RULE_mathExp = 29, 
 		RULE_textInit = 30, RULE_numberInit = 31, RULE_booleanInit = 32, RULE_assignment = 33, 
 		RULE_val = 34, RULE_numberValue = 35, RULE_numberList = 36, RULE_textList = 37, 
-		RULE_collectionDec = 38, RULE_collectionInit = 39, RULE_increasement = 40, 
-		RULE_decreasement = 41, RULE_conditionalOperation = 42, RULE_mathematicalOperation1 = 43, 
+		RULE_collectionDec = 38, RULE_collectionInit = 39, RULE_increment = 40, 
+		RULE_decrement = 41, RULE_conditionalOperation = 42, RULE_mathematicalOperation1 = 43, 
 		RULE_mathematicalOperation2 = 44;
 	private static String[] makeRuleNames() {
 		return new String[] {
@@ -50,7 +50,7 @@ public class TLParser extends Parser {
 			"whileStatement", "statementBody", "condition", "expression", "returnExp", 
 			"printExp", "askExp", "answerVal", "mathExp", "textInit", "numberInit", 
 			"booleanInit", "assignment", "val", "numberValue", "numberList", "textList", 
-			"collectionDec", "collectionInit", "increasement", "decreasement", "conditionalOperation", 
+			"collectionDec", "collectionInit", "increment", "decrement", "conditionalOperation", 
 			"mathematicalOperation1", "mathematicalOperation2"
 		};
 	}
@@ -3978,31 +3978,31 @@ public class TLParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class IncreasementContext extends ParserRuleContext {
+	public static class IncrementContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(TLParser.ID, 0); }
 		public TerminalNode INC() { return getToken(TLParser.INC, 0); }
-		public IncreasementContext(ParserRuleContext parent, int invokingState) {
+		public IncrementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_increasement; }
+		@Override public int getRuleIndex() { return RULE_increment; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TLListener ) ((TLListener)listener).enterIncreasement(this);
+			if ( listener instanceof TLListener ) ((TLListener)listener).enterIncrement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TLListener ) ((TLListener)listener).exitIncreasement(this);
+			if ( listener instanceof TLListener ) ((TLListener)listener).exitIncrement(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TLVisitor ) return ((TLVisitor<? extends T>)visitor).visitIncreasement(this);
+			if ( visitor instanceof TLVisitor ) return ((TLVisitor<? extends T>)visitor).visitIncrement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final IncreasementContext increasement() throws RecognitionException {
-		IncreasementContext _localctx = new IncreasementContext(_ctx, getState());
-		enterRule(_localctx, 80, RULE_increasement);
+	public final IncrementContext increment() throws RecognitionException {
+		IncrementContext _localctx = new IncrementContext(_ctx, getState());
+		enterRule(_localctx, 80, RULE_increment);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
@@ -4024,31 +4024,31 @@ public class TLParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class DecreasementContext extends ParserRuleContext {
+	public static class DecrementContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(TLParser.ID, 0); }
 		public TerminalNode DEC() { return getToken(TLParser.DEC, 0); }
-		public DecreasementContext(ParserRuleContext parent, int invokingState) {
+		public DecrementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_decreasement; }
+		@Override public int getRuleIndex() { return RULE_decrement; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TLListener ) ((TLListener)listener).enterDecreasement(this);
+			if ( listener instanceof TLListener ) ((TLListener)listener).enterDecrement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TLListener ) ((TLListener)listener).exitDecreasement(this);
+			if ( listener instanceof TLListener ) ((TLListener)listener).exitDecrement(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TLVisitor ) return ((TLVisitor<? extends T>)visitor).visitDecreasement(this);
+			if ( visitor instanceof TLVisitor ) return ((TLVisitor<? extends T>)visitor).visitDecrement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final DecreasementContext decreasement() throws RecognitionException {
-		DecreasementContext _localctx = new DecreasementContext(_ctx, getState());
-		enterRule(_localctx, 82, RULE_decreasement);
+	public final DecrementContext decrement() throws RecognitionException {
+		DecrementContext _localctx = new DecrementContext(_ctx, getState());
+		enterRule(_localctx, 82, RULE_decrement);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{

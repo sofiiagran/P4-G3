@@ -175,8 +175,8 @@ numberList
 textList
 collectionDec
 collectionInit
-increasement
-decreasement
+increment
+decrement
 conditionalOperation
 mathematicalOperation1
 mathematicalOperation2

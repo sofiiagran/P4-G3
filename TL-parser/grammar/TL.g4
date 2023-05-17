@@ -178,10 +178,10 @@ collectionDec:
 collectionInit:
     COLLECTION_ID ID BEGIN (initialization)+ END
     ;
-increasement:
+increment:
     ID INC
     ;
-decreasement:
+decrement:
     ID DEC
     ;
 

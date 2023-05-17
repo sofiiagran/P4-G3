@@ -232,6 +232,31 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitAssignment(TLParser.AssignmentContext ctx) {
         return cst.assignment.visitAssign(ctx, symbolTable);
     }
+    /*** increment/decrement ***/
+
+    @Override
+    public String visitIncrement(TLParser.IncrementContext ctx) {
+        String name = ctx.ID().getText();
+        String incExp = "";
+        if(symbolTable.isInScope(new Attributes(name, null))){
+            incExp = name + ctx.INC().getText() + ";\n";
+        } else {
+            throw new IllegalArgumentException("Variable: " + name + " is not declared");
+        }
+        return incExp;
+    }
+
+    @Override
+    public String visitDecrement(TLParser.DecrementContext ctx) {
+        String name = ctx.ID().getText();
+        String decExp = "";
+        if(symbolTable.isInScope(new Attributes(name, null))){
+            decExp = name + ctx.DEC().getText() + ";\n";
+        } else {
+            throw new IllegalArgumentException("Variable: " + name + " is not declared");
+        }
+        return decExp;
+    }
 
     /*** Statements ***/
     @Override

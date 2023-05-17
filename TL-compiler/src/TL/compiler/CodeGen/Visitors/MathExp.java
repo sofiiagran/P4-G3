@@ -63,6 +63,6 @@ public class MathExp {
             }
         }
         //return final string
-        return "    " + printMathExpr + "\n";
+        return "    " + printMathExpr + ";\n";
     }
 }

@@ -434,25 +434,25 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitCollectionInit(TLParser.CollectionInitContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#increasement}.
+	 * Enter a parse tree produced by {@link TLParser#increment}.
 	 * @param ctx the parse tree
 	 */
-	void enterIncreasement(TLParser.IncreasementContext ctx);
+	void enterIncrement(TLParser.IncrementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLParser#increasement}.
+	 * Exit a parse tree produced by {@link TLParser#increment}.
 	 * @param ctx the parse tree
 	 */
-	void exitIncreasement(TLParser.IncreasementContext ctx);
+	void exitIncrement(TLParser.IncrementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#decreasement}.
+	 * Enter a parse tree produced by {@link TLParser#decrement}.
 	 * @param ctx the parse tree
 	 */
-	void enterDecreasement(TLParser.DecreasementContext ctx);
+	void enterDecrement(TLParser.DecrementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLParser#decreasement}.
+	 * Exit a parse tree produced by {@link TLParser#decrement}.
 	 * @param ctx the parse tree
 	 */
-	void exitDecreasement(TLParser.DecreasementContext ctx);
+	void exitDecrement(TLParser.DecrementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLParser#conditionalOperation}.
 	 * @param ctx the parse tree

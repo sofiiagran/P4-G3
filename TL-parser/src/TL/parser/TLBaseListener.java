@@ -521,25 +521,25 @@ public class TLBaseListener implements TLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIncreasement(TLParser.IncreasementContext ctx) { }
+	@Override public void enterIncrement(TLParser.IncrementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIncreasement(TLParser.IncreasementContext ctx) { }
+	@Override public void exitIncrement(TLParser.IncrementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDecreasement(TLParser.DecreasementContext ctx) { }
+	@Override public void enterDecrement(TLParser.DecrementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDecreasement(TLParser.DecreasementContext ctx) { }
+	@Override public void exitDecrement(TLParser.DecrementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

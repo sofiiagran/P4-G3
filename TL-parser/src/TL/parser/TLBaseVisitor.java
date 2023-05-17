@@ -312,14 +312,14 @@ public class TLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TLV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIncreasement(TLParser.IncreasementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIncrement(TLParser.IncrementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDecreasement(TLParser.DecreasementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDecrement(TLParser.DecrementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
