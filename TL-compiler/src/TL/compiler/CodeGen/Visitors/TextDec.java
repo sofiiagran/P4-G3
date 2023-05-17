@@ -15,16 +15,16 @@ public class TextDec {
             Type type = Type.Text;
             Attributes attribute = new Attributes(varName, type);
 
-            // Check if it is already declared
+            // throw error if already declared and not a param
             if (symbolTable.isInScope(attribute) && symbolTable.retrieveSymbol(varName).getIsParam() == false) {
-                //Throw error
-                System.err.println("Duplicated declaration of variable: " + varName);
-                declaration = "";
+                throw new IllegalArgumentException("Duplicated declaration of variable: " + varName);
             } else {
+                //if not, it is added to symbol table
                 symbolTable.insertSymbol(attribute);
                 declaration = "    char " + varName + "[]" + ";";
             }
 
+            // if it is global scope, empty string is returned, since declaration is printed by globalDecListener
             if (symbolTable.getDepth() == 0) {
                 return "";
             } else {

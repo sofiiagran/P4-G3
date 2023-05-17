@@ -394,6 +394,66 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitNumberValue(TLParser.NumberValueContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TLParser#numberList}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumberList(TLParser.NumberListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#numberList}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumberList(TLParser.NumberListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#textList}.
+	 * @param ctx the parse tree
+	 */
+	void enterTextList(TLParser.TextListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#textList}.
+	 * @param ctx the parse tree
+	 */
+	void exitTextList(TLParser.TextListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#collectionDec}.
+	 * @param ctx the parse tree
+	 */
+	void enterCollectionDec(TLParser.CollectionDecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#collectionDec}.
+	 * @param ctx the parse tree
+	 */
+	void exitCollectionDec(TLParser.CollectionDecContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#collectionInit}.
+	 * @param ctx the parse tree
+	 */
+	void enterCollectionInit(TLParser.CollectionInitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#collectionInit}.
+	 * @param ctx the parse tree
+	 */
+	void exitCollectionInit(TLParser.CollectionInitContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#increasement}.
+	 * @param ctx the parse tree
+	 */
+	void enterIncreasement(TLParser.IncreasementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#increasement}.
+	 * @param ctx the parse tree
+	 */
+	void exitIncreasement(TLParser.IncreasementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#decreasement}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecreasement(TLParser.DecreasementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#decreasement}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecreasement(TLParser.DecreasementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TLParser#conditionalOperation}.
 	 * @param ctx the parse tree
 	 */

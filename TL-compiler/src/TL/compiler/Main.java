@@ -39,27 +39,29 @@ public class Main {
 
         ParseTreeWalker walker = new ParseTreeWalker();
 
+        /** symbol table **/
         SymbolTable symbolTable = new SymbolTable();
 
+        /** different listeners **/
         ParamListener param = new ParamListener(symbolTable);
         walker.walk(param, tree);
 
-        FuncDecListener funcDec = new FuncDecListener(param, symbolTable);
-        walker.walk(funcDec, tree);
-
         GlobalDecListener globalDec = new GlobalDecListener(symbolTable);
         walker.walk(globalDec, tree);
+
+        FuncDecListener funcDec = new FuncDecListener(param, symbolTable);
+        walker.walk(funcDec, tree);
 
         FuncCallListener funcCall = new FuncCallListener(funcDec, globalDec, symbolTable);
         walker.walk(funcCall, tree);
 
 
-        // Code generation
+        /** code generator **/
         CodeGenerator codeGenerator = new CodeGenerator(funcDec, globalDec, symbolTable);
         String targetCode = codeGenerator.visit(tree);
 
+        /** builds program and writes it to output file **/
         BuildCProgram builder = new BuildCProgram();
-
         StringBuilder buildProgram = builder.buildProgram(codeGenerator, targetCode);
         builder.printCProgramToFile(buildProgram);
 

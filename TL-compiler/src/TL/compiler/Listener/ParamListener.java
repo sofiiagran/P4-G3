@@ -46,15 +46,20 @@ public class ParamListener extends TLBaseListener {
 
     @Override
     public void enterFuncOutputParam(TLParser.FuncOutputParamContext ctx) {
+        // saves output params
         outParams = funcOutParam.visitOutputParam(ctx, symbolTable);
+
         outParamsName = funcOutParam.getParamNames();
     }
 
+
     @Override
     public void enterFuncInputParam(TLParser.FuncInputParamContext ctx) {
+        // saves input params
         inParams = funcInParam.visitInputParam(ctx, symbolTable);
         inParamsName = funcInParam.getParamNames();
     }
+
 
     public String getOutParams(){
         return outParams;
@@ -69,6 +74,7 @@ public class ParamListener extends TLBaseListener {
     public ArrayList<String> getInParamsName(){
         return inParamsName;
     }
-
+    public void clearParams() {
+        funcOutParam.clearParams();}
 
 }

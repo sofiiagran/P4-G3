@@ -47,9 +47,9 @@ public class FuncCallListener extends TLBaseListener {
     @Override
     public void enterFuncCall(TLParser.FuncCallContext ctx) {
         funcName = ctx.funcID.getText();
+        // throw error if function name is not declared
         if(!(funcDecListener.isDeclared(funcName))) {
-            // Throw error
-            System.err.println("Function name: " + funcName + " does not exist");
+            throw new IllegalArgumentException("Function name: " + funcName + " does not exist");
         }
     }
 
@@ -64,17 +64,20 @@ public class FuncCallListener extends TLBaseListener {
 
         int depth;
 
+        // throw error if there is no params when params are required
         if(ctx.getChildCount() == 0) {
-            System.err.println("Error: missing input parameter in function call");
+            throw new IllegalArgumentException("Error: missing input parameter in function call");
         }
+
+        // loop that checks variable declared in function call
         for(int i = 0; i < ctx.ID().size(); i++) {
 
             outParamName = funcDecListener.paramListener.getOutParamsName();
             inParamName = funcDecListener.paramListener.getInParamsName();
 
+            //throw error if number of params in function call does not match the one from declaration
             if(inParamName.size() != outParamName.size()) {
-                // throw error
-                System.err.println("Error: number of parameters in the function call does not match the number " +
+                throw new IllegalArgumentException("Error: number of parameters in the function call does not match the number " +
                         "of parameters in the function declaration");
             } else {
                 // check if input variables is declared
@@ -86,13 +89,12 @@ public class FuncCallListener extends TLBaseListener {
                         inParamType = symbolTable.retrieveSymbol(inParamName.get(i)).getType();
                         // checks if the variable in the call, matches the type from the declaration
                         if(inParamType != outParamType) {
-                            // throw error
-                            System.err.println("Error: type of variable " + inParamName.get(i)
+                            throw new IllegalArgumentException("Error: type of variable " + inParamName.get(i)
                                     + " does not match type of variable " + outParamName.get(i));
                         }
                     } else {
-                        // throw error
-                        System.err.println("Error: input parameter: " + inParamName.get(i) + " is not declared");
+                        throw new IllegalArgumentException(
+                                "Error: input parameter: " + inParamName.get(i) + " is not declared");
                     }
                 }
 

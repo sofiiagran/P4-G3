@@ -4,24 +4,14 @@
 
  functions begin
 
-     number x
-     x = 2
-     h = 1
 
 
-     function myfunc(text k, number g) begin
+     function new(number a) begin
 
-     h = "ey"
-
-     print "hej" + "dette er en test" + x + k + 5 + h + "lol"
-
-
-     if g == 4 then
-        g = 4 + 5
+     return a
 
      end
 
-     end
 
 
  end

@@ -16,12 +16,12 @@ public class Condition1 {
         // checks for compatible types
         typeCheckerCon1.typeCheckCon1(ctx, symbolTable);
 
-        // if it passes the check, condition is printed
+        // loop that visit the children and return them
         for (int i = 0; i < ctx.getChildCount(); i++) {
-
-            if (ctx.getChild(i) == ctx.val(valCount)){
+            //checks if the child is an integer, if so add .0
+            if (ctx.getChild(i) == ctx.val(valCount)) {
                 if (ctx.val(valCount).numberVal != null) {
-                    if(ctx.val(valCount).numberVal.NUMBER_VAL_INT() != null) {
+                    if (ctx.val(valCount).numberVal.NUMBER_VAL_INT() != null) {
                         printCondition += " " + ctx.getChild(i).getText() + ".0";
                     }
                 }

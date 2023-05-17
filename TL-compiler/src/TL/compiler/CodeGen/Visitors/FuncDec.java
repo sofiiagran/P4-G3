@@ -10,12 +10,15 @@ public class FuncDec {
     public void getReturnType(TLParser.FuncDecContext ctx, SymbolTable symbolTable) {
 
         String funcName = ctx.funcID.getText();
+        //default type void
         Type returnDt = Type.Void;
 
+        //loop that visit children and looks for return statement
         for(int i = 0; i < ctx.getChildCount(); i++) {
 
             if(ctx.getChild(i) == ctx.returnExp()) {
 
+                //checks if it returns a variable
                 if(ctx.returnExp().returnVar != null) {
                     String varName = ctx.returnExp().returnVar.getText();
 
@@ -23,18 +26,19 @@ public class FuncDec {
                         returnDt = symbolTable.retrieveSymbol(varName).getType();
                     }
                 }
-                if(ctx.returnExp().returnVal != null) {
+                //checks if it returns a value
+                else if(ctx.returnExp().returnVal != null) {
 
                     if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.numberVal.NUMBER_VAL_DOUBLE() ) {
                         returnDt = Type.Number;
                     }
-                    if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.numberVal.NUMBER_VAL_INT() ) {
+                    else if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.numberVal.NUMBER_VAL_INT() ) {
                         returnDt = Type.Number;
                     }
-                    if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.textVal) {
+                    else if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.textVal) {
                         returnDt = Type.Text;
                     }
-                    if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.boolVal) {
+                    else if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.boolVal) {
                         returnDt = Type.Boolean;
                     }
 
@@ -43,6 +47,7 @@ public class FuncDec {
             }
 
         }
+        //insert function with return type to symbol table
         Attributes attribute = new Attributes(funcName, returnDt);
         symbolTable.insertSymbol(attribute);
     }
@@ -51,18 +56,19 @@ public class FuncDec {
         String funcName = ctx.funcID.getText();
         String returnType = "";
 
+        // translate TL return types to C types
         if(symbolTable.retrieveSymbol(funcName) != null) {
 
             if (symbolTable.retrieveSymbol(funcName).getType() == Type.Text) {
                 returnType += "const char*";
             }
-            if ((symbolTable.retrieveSymbol(funcName).getType()) == Type.Number) {
+            else if ((symbolTable.retrieveSymbol(funcName).getType()) == Type.Number) {
                 returnType += "double";
             }
-            if ((symbolTable.retrieveSymbol(funcName).getType()) == Type.Boolean) {
+            else if ((symbolTable.retrieveSymbol(funcName).getType()) == Type.Boolean) {
                 returnType += "bool";
             }
-            if ((symbolTable.retrieveSymbol(funcName).getType()) == Type.Void) {
+            else if ((symbolTable.retrieveSymbol(funcName).getType()) == Type.Void) {
                 returnType += "void";
             }
         }

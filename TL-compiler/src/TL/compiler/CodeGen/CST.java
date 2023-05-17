@@ -26,8 +26,7 @@ public class CST {
     public PrintExp printExp = new PrintExp();
     public AskExp askExp = new AskExp();
     public ReturnExp returnExp = new ReturnExp();
-
-    /** Math expressions **/
+    public AnswerExp answerExp = new AnswerExp();
     public MathExp mathExp = new MathExp();
 
     /** Conditions **/

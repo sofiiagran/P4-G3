@@ -7,8 +7,10 @@ import TL.compiler.SymbolTable.Type;
 public class TypeCheckerMathExp {
 
     public void typeCheckMathExp1(String var1, String var2, SymbolTable symbolTable) {
+        //checks if both variables is declared
         if(symbolTable.isInScope(new Attributes(var1, null))
                 && symbolTable.isInScope(new Attributes(var2, null))){
+            // throw error if not both variables is of type number
             if(symbolTable.retrieveSymbol(var1).getType() != Type.Number ||
                     symbolTable.retrieveSymbol(var2).getType() != Type.Number){
                 throw new IllegalArgumentException("All values must be of type number in math expressions");

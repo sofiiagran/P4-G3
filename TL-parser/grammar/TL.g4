@@ -110,7 +110,6 @@ condition:
     | NOTEQUAL ID                                                                                      #con3
     ;
 
-
 expression:
       mathExp+
     | funcCall+
@@ -165,6 +164,27 @@ numberValue:
     double=NUMBER_VAL_DOUBLE
     | int=NUMBER_VAL_INT
     ;
+numberList:
+    NUMBER LIST ID (ASSIGN (numberValue (COMMA numberValue)* ))?
+    ;
+
+textList:
+    TEXT LIST ID (ASSIGN (TEXT_VAL (COMMA TEXT_VAL)* ))?
+    ;
+
+collectionDec:
+    COLLECTION COLLECTION_ID (declaration)*
+    ;
+collectionInit:
+    COLLECTION_ID ID BEGIN (initialization)+ END
+    ;
+increasement:
+    ID INC
+    ;
+decreasement:
+    ID DEC
+    ;
+
 
 conditionalOperation:
              conOpLT=LT
@@ -208,10 +228,11 @@ END: 'end';
 BOOLEAN : 'truthvalue';
 NUMBER : 'number';
 TEXT : 'text';
+LIST : 'list';
+COLLECTION : 'collection';
 
 //operation keywords
 PRINT : 'print';
-LIST : 'list';
 WHILE : 'while';
 REPEAT : 'repeat';
 REPEAT_UNTIL : 'repeat until';
@@ -223,9 +244,8 @@ DO : 'do';
 TIMES: 'times';
 RETURN: 'return';
 ASK: 'ask';
-RUN: 'run';
-ALWAYS: 'always';
 ANSWER: 'answer';
+RUN: 'run';
 
 // Separators
 
@@ -265,10 +285,7 @@ ADD_ASSIGN : '+=';
 SUB_ASSIGN : '-=';
 MUL_ASSIGN : '*=';
 DIV_ASSIGN : '/=';
-AND_ASSIGN : '&=';
-OR_ASSIGN : '|=';
-XOR_ASSIGN : '^=';
-MOD_ASSIGN : '%=';
+
 
 // definition of letter and strings, based on JAVA v9
 fragment
@@ -361,6 +378,10 @@ LINE_COMMENT
 
 // If none of the expressions above match
 // it checks if it is an ID (which has to have at least one letter and cannot start with a number)
+
+COLLECTION_ID :
+    [A-Z] (LetterOrDigit)*
+    ;
 
 ID  : (Letter (LetterOrDigit)* )+
 	;

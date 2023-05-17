@@ -16,15 +16,16 @@ public class NumberDec {
             Type type = Type.Number;
             Attributes attribute = new Attributes(varName, type);
 
-            // Check if it is already declared
+            // throws error if it is already declared and that it is not a param
             if (symbolTable.isInScope(attribute) && symbolTable.retrieveSymbol(varName).getIsParam() == false) {
-                //Throw error
                 throw new IllegalArgumentException("Duplicated declaration of variable: " + varName);
             } else {
+                //if not, it is added to symbol table
                 symbolTable.insertSymbol(attribute);
                 declaration = "    double " + varName + ";";
             }
 
+            // if it is global scope, empty string is returned, since declaration is printed by globalDecListener
             if (symbolTable.getDepth() == 0) {
                 return "";
             } else {

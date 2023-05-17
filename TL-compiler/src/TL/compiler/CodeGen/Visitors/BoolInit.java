@@ -21,15 +21,15 @@ public class BoolInit {
             if(symbolTable.retrieveSymbol(varName).getType() == Type.Boolean) {
                 declaration = "    " + ctx.var1ID.getText() + " = "+ ctx.BOOL_LITERAL().getText() + ";";
             } else {
-                System.err.println("Error: variable is already declared with at different datatype");
+                throw new IllegalArgumentException("Error: variable is already declared with at different datatype");
             }
-            declared = true;
         } else {
             // if it is not, add to symbol table and print initialisation with data type
             symbolTable.insertSymbol(attribute);
             declaration = "    bool " + ctx.var1ID.getText() + " = "+ ctx.BOOL_LITERAL().getText() + ";";
             declared = false;
         }
+        // if it declared in global scope, it is not printed, since it is printed by globalDecListener
         if (symbolTable.getDepth() == 0) {
             return "";
         } else {

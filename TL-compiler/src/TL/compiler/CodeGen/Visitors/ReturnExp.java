@@ -16,6 +16,7 @@ public class ReturnExp {
                 throw new IllegalArgumentException("Error: missing variable declaration of variable: " + ctx.returnVar.getText());
             }
         }
+        // add .0 if value is integer
         else if(ctx.returnVal.numberVal.NUMBER_VAL_INT() != null){
             return "    return " + ctx.returnVal.getText() + ".0 ;" + "\n";
         } else {

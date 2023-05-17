@@ -16,6 +16,7 @@ public class MathExp {
 
         String assignIdName = ctx.assignID.getText();
 
+        // if first variable is declared, return isDeclared = true, if not add to symbol table and return false
         if (symbolTable.isInScope(new Attributes(assignIdName, null))) {
             isDeclared = true;
         } else {
@@ -23,10 +24,12 @@ public class MathExp {
             isDeclared = false;
         }
 
+        //check for compatible types
         for(int i = 0; i < (ctx.ID().size() - 1); i++){
             typeCheckerMathExp1.typeCheckMathExp1(ctx.ID(i).getText(), ctx.ID(i + 1).getText(), symbolTable);
         }
 
+        // this is returned if it was not declared beforehand (includes data type)
         if(isDeclared == false){
             if(symbolTable.retrieveSymbol(assignIdName).getType() == Type.Number){
                 printMathExpr += "double " + assignIdName;
@@ -42,10 +45,13 @@ public class MathExp {
         }
         int numberCount = 0;
 
+        //loops through children and add values to string,
+        // ignores the first child, since it is already added to string
         for (int i = 1; i < ctx.getChildCount(); i++) {
 
             if (ctx.getChild(i) == ctx.numberValue(numberCount)) {
                 if (ctx.numberValue(numberCount).NUMBER_VAL_INT() != null) {
+                    // adds .0 if integer
                     numberCount++;
                     printMathExpr += " " + ctx.getChild(i).getText() + ".0";
                 } else {
@@ -56,6 +62,7 @@ public class MathExp {
                 printMathExpr += " " + ctx.getChild(i).getText();
             }
         }
+        //return final string
         return "    " + printMathExpr + "\n";
     }
 }

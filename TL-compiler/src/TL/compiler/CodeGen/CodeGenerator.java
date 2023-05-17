@@ -19,6 +19,8 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     StringBuilder globalDec = new StringBuilder();
     StringBuilder funcPrototypes = new StringBuilder();
 
+    String returnType;
+
 
 
     /** CST is used to create instances of functions used for visiting **/
@@ -31,6 +33,8 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     }
 
     public StringBuilder getLibs(){
+        // standard libraries
+        // this is printed in BuildCProgram
         libs.append("#include <stdbool.h>\n");
         libs.append("#include <stblib.h>\n");
         libs.append("#include <stdio.h>\n");
@@ -41,10 +45,14 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     }
 
     public StringBuilder getGlobalDec(){
+        // retrieve global symbol defined in globalDecListener
+        // this is printed in BuildCProgram
         globalDec.append(globalDecListener.getGlobalDec());
         return globalDec;
     }
     public StringBuilder getFuncPrototypes(){
+        // retrieve function prototypes defined in funcDecListener
+        // this is printed in BuildCProgram
         funcPrototypes.append(funcDecListener.getPrototypes());
         return funcPrototypes;
     }
@@ -94,13 +102,12 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         String printReturnStmt = "";
         String funcName = ctx.funcID.getText();
 
-        // calls function that get return type based on return type (void is default)
-        cst.funcDec.getReturnType(ctx, symbolTable);
+        returnType = "";
 
         openScope();
 
-        // calls function that declare function type (translated to C's datatypes)
-        String returnType = cst.funcDec.printReturnType(ctx, symbolTable);
+        funcDecListener.enterFuncDec(ctx);
+        returnType = funcDecListener.getReturnType(ctx);
 
         // check if function contains params
         if(ctx.param != null) {
@@ -120,10 +127,12 @@ public class CodeGenerator extends TLBaseVisitor<String> {
             return "\n\n" + returnType + " " +  funcName + "("  + outPutParam + ") "
                     + "{ \n" + printFuncBody + printReturnStmt + "}" + "\n\n" + closeScope();
         }
+
         // this is returned if it does not contain params
         return "\n\n" + returnType + " " + funcName + "() { \n" + visitChildren(ctx)
                 + "}" + "\n\n" + closeScope();
     }
+
     @Override
     public String visitFuncOutputParam(TLParser.FuncOutputParamContext ctx) {
         return cst.funcOutParam.visitOutputParam(ctx, symbolTable);
@@ -135,10 +144,12 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     }
     @Override
     public String visitFuncCall(TLParser.FuncCallContext ctx) {
+        //checks if it contains params
         if(ctx.param != null) {
             return "    " + ctx.funcID.getText() + "(" + visit(ctx.funcInputParam()) + ");" + "\n" ;
+        } else {
+            return "    " + ctx.funcID.getText() + "();" + "\n" ;
         }
-        return "    " + ctx.funcID.getText() + "();" + "\n" ;
     }
 
     @Override
@@ -188,6 +199,11 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitReturnExp(TLParser.ReturnExpContext ctx) {
         return cst.returnExp.visitReturnExpr(ctx, symbolTable);
     }
+
+    @Override
+    public String visitAnswerVal(TLParser.AnswerValContext ctx) {
+        return cst.answerExp.visitAnswerExp(ctx);
+    }
     @Override
     public String visitMathExp(TLParser.MathExpContext ctx) {
         return cst.mathExp.visitMathExpr(ctx, symbolTable);
@@ -207,6 +223,8 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     @Override
     public String visitIfThenElseStatement(TLParser.IfThenElseStatementContext ctx) {
 
+        // maybe double check if this works
+
         String printStatements = openScope() + "    if(" + visit(ctx.condition(0)) + ") { \n"
                 + visit(ctx.statementBody(0)) + "\n    }" + closeScope();
 
@@ -216,8 +234,9 @@ public class CodeGenerator extends TLBaseVisitor<String> {
                         + visit(ctx.statementBody((i + 1))) + "\n    }" + closeScope();
             }
         }
+        int size = ctx.statementBody().size();
         if(ctx.ELSE() != null) {
-            printStatements += openScope() + " else {\n" + visit(ctx.statementBody(0)) + "\n    }\n"
+            printStatements += openScope() + " else {\n" + visit(ctx.statementBody(size - 1)) + "\n    }\n"
                     + closeScope();
         }
 

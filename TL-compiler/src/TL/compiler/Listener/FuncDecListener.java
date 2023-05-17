@@ -1,5 +1,6 @@
 package TL.compiler.Listener;
 
+import TL.compiler.CodeGen.Visitors.FuncDec;
 import TL.compiler.SymbolTable.Attributes;
 import TL.compiler.SymbolTable.SymbolTable;
 import TL.compiler.SymbolTable.Type;
@@ -11,6 +12,9 @@ public class FuncDecListener extends TLBaseListener {
     ParamListener paramListener;
     SymbolTable symbolTable;
     String printPrototypes = "";
+    String returnType;
+
+    FuncDec funcDec = new FuncDec();
 
     public FuncDecListener(ParamListener p, SymbolTable s) {
         this.paramListener = p;
@@ -29,16 +33,28 @@ public class FuncDecListener extends TLBaseListener {
     public void enterFuncDec(TLParser.FuncDecContext ctx) {
 
         symbolTable.openScope();
+
+        // calls function that get return type based on return type (void is default)
+        funcDec.getReturnType(ctx, symbolTable);
+
+        //calls function that declare function type (translated to C's data types)
+        returnType = funcDec.printReturnType(ctx, symbolTable);
+
+        //adds function name to symbol table
         FuncPrototype1 = ctx.funcName().getText();
-        symbolTable.insertSymbol(new Attributes(FuncPrototype1, Type.Void));
 
-
+        //create declaration to be used for prototypes
         if (ctx.param != null) {
-            printPrototypes += FuncPrototype1 + "("  + paramListener.getOutParams() + ");\n";
+            printPrototypes += returnType + " " + FuncPrototype1 + "("  + paramListener.getOutParams() + ");\n";
         } else {
-            printPrototypes += FuncPrototype1 + "();\n";
+            printPrototypes += returnType + " " + FuncPrototype1 + "();\n";
         }
 
+    }
+
+    public String getReturnType(TLParser.FuncDecContext ctx) {
+        enterFuncDec(ctx);
+        return returnType;
     }
 
     @Override

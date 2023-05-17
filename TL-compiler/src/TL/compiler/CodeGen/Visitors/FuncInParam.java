@@ -11,6 +11,7 @@ public class FuncInParam {
     public String visitInputParam(TLParser.FuncInputParamContext ctx, SymbolTable symbolTable){
         String params = "";
 
+        // loops through variables and add them to an array as well as returning them as a string
         for(int i = 0; i < ctx.ID().size(); i++) {
             if(i > 0 && i <ctx.ID().size()) {
                 params += ", ";
@@ -23,4 +24,5 @@ public class FuncInParam {
     public ArrayList<String> getParamNames(){
         return paramNames;
     }
+    public void clearArray() {paramNames.clear();}
 }

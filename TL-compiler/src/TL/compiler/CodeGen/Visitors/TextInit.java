@@ -21,8 +21,7 @@ public class TextInit {
                 declaration = "    "  + ctx.var1ID.getText() + " = " + ctx.TEXT_VAL() + ";";
                 declared = true;
             } else {
-                System.err.println("Error: variable is already declared with at different datatype");
-                declared = true;
+                throw new IllegalArgumentException("Error: variable is already declared with at different datatype");
             }
         } else {
             // if it is not, add to symbol table and print initialisation with data type
@@ -30,6 +29,8 @@ public class TextInit {
             declaration = "    "  + "char " + ctx.var1ID.getText() + "[]" + " = " + ctx.TEXT_VAL() + ";";
             declared = false;
         }
+
+        // if it is global scope, empty string is returned, since declaration is printed by globalDecListener
         if (symbolTable.getDepth() == 0) {
             return "";
         } else {

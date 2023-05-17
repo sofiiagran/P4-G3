@@ -16,15 +16,18 @@ public class SymbolTable {
     public void openScope(){
         depth++;
 
+        //create new scope
         this.scopes.add(new Scope());
     }
 
     public void removeScope(){
+        //remove last scope and decrease depth
         this.scopes.remove(this.scopes.size()-1);
         depth--;
     }
 
     public void closeScope(){
+        //remove variables from last scope
         for (Attributes attribute: this.scopes.get(this.scopes.size()-1).attributes) {
             this.hashMap.remove(attribute.name);
         }
@@ -38,6 +41,7 @@ public class SymbolTable {
     }
 
     public Boolean isInScope(Attributes newAttribute) {
+        //checks if it is declared in scope
         Attributes attribute = this.retrieveSymbol(newAttribute.name);
         if(attribute != null  && attribute.depth == 0 ){
             return true;

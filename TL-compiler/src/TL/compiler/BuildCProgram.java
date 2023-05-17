@@ -12,6 +12,7 @@ public class BuildCProgram {
 
         StringBuilder buildProgram = new StringBuilder();
 
+        // builds code based og StringBuilders declared in code generator and the code returned in code generator
         buildProgram.append(codeGen.getLibs());
         buildProgram.append(codeGen.getFuncPrototypes());
         buildProgram.append(codeGen.getGlobalDec());
