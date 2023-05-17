@@ -10,6 +10,8 @@ import java.util.ArrayList;
 public class FuncOutParam {
 
     ArrayList<String> paramNames = new ArrayList<>();
+
+    ArrayList<String> printParams = new ArrayList<>();
     String params;
 
     public String visitOutputParam(TLParser.FuncOutputParamContext ctx, SymbolTable symbolTable) {
@@ -67,15 +69,16 @@ public class FuncOutParam {
             }
         }
 
+        printParams.add(params);
         return params;
+    }
+
+    public ArrayList<String> getParams() {
+        return printParams;
     }
 
     public ArrayList<String> getParamNames(){
         return paramNames;
     }
 
-    public String clearParams() {
-        return params = "";
-    }
-    public void clearArray() {paramNames.clear();}
 }

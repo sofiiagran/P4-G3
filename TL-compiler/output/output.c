@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-double myfunc(double a);
-void newfunc(double a);
+double myfunc(char k[], double g);
+void newfunc(char b[]);
 double new(double a);
     double x;
     char h[] = "lol";

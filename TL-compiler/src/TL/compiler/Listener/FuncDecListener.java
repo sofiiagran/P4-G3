@@ -15,6 +15,7 @@ public class FuncDecListener extends TLBaseListener {
     SymbolTable symbolTable;
     String printPrototypes = "";
     String returnType;
+    int funcDecCount = 0;
 
     FuncDec funcDec = new FuncDec();
 
@@ -47,11 +48,11 @@ public class FuncDecListener extends TLBaseListener {
 
         //create declaration to be used for prototypes
         if (ctx.param != null) {
-            printPrototypes += returnType + " " + FuncPrototype1 + "("  + paramListener.getOutParams() + ");\n";
+            printPrototypes += returnType + " " + FuncPrototype1 + "("  + paramListener.getOutParams().get(funcDecCount) + ");\n";
         } else {
             printPrototypes += returnType + " " + FuncPrototype1 + "();\n";
         }
-
+        funcDecCount++;
     }
 
     public ArrayList<String> getReturnType() {

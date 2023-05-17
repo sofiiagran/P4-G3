@@ -13,13 +13,12 @@ import java.util.ArrayList;
 public class ParamListener extends TLBaseListener {
     public FuncOutParam funcOutParam = new FuncOutParam();
     public FuncInParam funcInParam = new FuncInParam();
-    public  String outParams;
+    public  ArrayList<String> outParams;
     public  String inParams;
-    public ArrayList<String> outParamsName;
-    public ArrayList<String> inParamsName;
+    public ArrayList<String> outParamsName = new ArrayList<>();
+    public ArrayList<String> inParamsName = new ArrayList<>();
 
     public SymbolTable symbolTable;
-    String lmao;
 
     public ParamListener(SymbolTable s) {
         symbolTable = s;
@@ -47,8 +46,8 @@ public class ParamListener extends TLBaseListener {
     @Override
     public void enterFuncOutputParam(TLParser.FuncOutputParamContext ctx) {
         // saves output params
-        outParams = funcOutParam.visitOutputParam(ctx, symbolTable);
-
+        funcOutParam.visitOutputParam(ctx, symbolTable);
+        outParams = funcOutParam.getParams();
         outParamsName = funcOutParam.getParamNames();
     }
 
@@ -61,7 +60,7 @@ public class ParamListener extends TLBaseListener {
     }
 
 
-    public String getOutParams(){
+    public ArrayList<String> getOutParams(){
         return outParams;
     }
     public String getInParams(){
@@ -74,7 +73,4 @@ public class ParamListener extends TLBaseListener {
     public ArrayList<String> getInParamsName(){
         return inParamsName;
     }
-    public void clearParams() {
-        funcOutParam.clearParams();}
-
 }
