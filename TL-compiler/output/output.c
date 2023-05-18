@@ -14,9 +14,9 @@ int main() {
     return 0;
 }
 void myfunc(char k[], double g) { 
-    char kult[][]{"ooo", k, h, "eee"};
-    char anotherList[][]{"hej", "lol", h};
-    double random[]{2.0, 2.3, 4.45, 9.0};
+    char kult[][] = {"ooo", k, "eee"};
+    char anotherList[][] = {"hej", "lol"};
+    double random[] = {2.0, 2.3, 4.45, 9.0};
 }
 
 

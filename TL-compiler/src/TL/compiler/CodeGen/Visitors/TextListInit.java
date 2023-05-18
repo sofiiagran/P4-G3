@@ -66,7 +66,7 @@ public class TextListInit {
         if (symbolTable.getDepth() == 0) {
             return "";
         } else {
-            return declaration + "{" + array + "};\n";
+            return declaration + " = {" + array + "};\n";
         }
     }
 }
