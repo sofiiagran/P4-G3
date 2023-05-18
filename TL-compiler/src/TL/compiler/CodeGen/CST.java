@@ -1,7 +1,6 @@
 package TL.compiler.CodeGen;
 
 import TL.compiler.CodeGen.Visitors.*;
-import TL.parser.TLParser;
 
 public class CST {
 
@@ -18,6 +17,7 @@ public class CST {
     public BoolDec boolDec = new BoolDec();
     public NumberListDec numberListDec = new NumberListDec();
     public TextListDec textListDec = new TextListDec();
+    public CollectionDec collectionDec = new CollectionDec();
 
     /** Initialisation **/
     public NumberInit numberInit = new NumberInit();
@@ -25,14 +25,21 @@ public class CST {
     public BoolInit boolInit = new BoolInit();
     public NumberListInit numberListInit = new NumberListInit();
     public TextListInit textListInit = new TextListInit();
+    public CollectionInitNumber collectionInitNumber = new CollectionInitNumber();
+    public CollectionInitText collectionInitText = new CollectionInitText();
+    public CollectionInitBool collectionInitBool = new CollectionInitBool();
+    public CollectionInitAll collectionInitAll = new CollectionInitAll();
+    public CollectionInitVar collectionInitVar = new CollectionInitVar();
 
     /** Expressions **/
     public Assignment assignment = new Assignment();
     public PrintExp printExp = new PrintExp();
     public AskExp askExp = new AskExp();
     public ReturnExp returnExp = new ReturnExp();
-    public AnswerExp answerExp = new AnswerExp();
     public MathExp mathExp = new MathExp();
+    public IndexVal indexVal = new IndexVal();
+    public AnswerVal answerVal = new AnswerVal();
+    public CollectionVal collectionVal = new CollectionVal();
 
     /** Conditions **/
     public Condition1 condition1 = new Condition1();

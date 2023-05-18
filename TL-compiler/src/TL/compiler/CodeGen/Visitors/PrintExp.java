@@ -19,6 +19,7 @@ public class PrintExp {
         int textCount = 0;
         int idCount = 0;
         int addCount = 0;
+        int dotCount = 0;
 
         ArrayList<String> variableNames = new ArrayList<>();
         String printVarNames = "";

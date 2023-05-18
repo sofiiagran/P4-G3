@@ -52,7 +52,7 @@ declaration:
     | boolDec=boolDecl
     | numberListDecl
     | textListDecl
-    | collectionDecl
+    | collectionDec
     ;
 
 numberDecl:
@@ -69,15 +69,15 @@ numberListDecl:
      ;
 
 numberListInit:
-     (NUMBER LIST)? assignID=ID ASSIGN (numberValue | ID) (COMMA (numberValue | ID))*
+     (NUMBER LIST)? assignID=ID ASSIGN (numberValue | ID ) (COMMA (numberValue | ID ))*
      ;
 
-     textListDecl:
+textListDecl:
      TEXT LIST ID
      ;
 
-     textListInit:
-     (TEXT LIST)? assignID=ID ASSIGN (TEXT_VAL | ID) (COMMA  (TEXT_VAL | ID))*
+textListInit:
+     (TEXT LIST)? assignID=ID ASSIGN (TEXT_VAL | ID ) (COMMA  (TEXT_VAL | ID))*
      ;
 
 
@@ -126,7 +126,7 @@ statementBody:
     ;
 
 condition:
-    ID conditionalOperation (val | ID) ((AND | OR) ID conditionalOperation (val | ID))*                #con1
+    ID  conditionalOperation (val | ID ) ((AND | OR)  ID conditionalOperation (val | ID ))*                #con1
     | ID                                                                                               #con2
     | NOTEQUAL ID                                                                                      #con3
     ;
@@ -147,14 +147,10 @@ returnExp:
     ;
 
 printExp:
-    PRINT (TEXT_VAL | numberValue  | ID) ( (ADD (TEXT_VAL | numberValue  | ID))+ )?
+    PRINT (TEXT_VAL | numberValue  | ID ) ( (ADD (TEXT_VAL | numberValue  | ID ))+ )?
     ;
 
-askExp: ASK askID=ID (TEXT_VAL | numberValue  | ID) ( (ADD (TEXT_VAL | numberValue  | ID))+ )?
-    ;
-
-answerVal:
-    askID=ID DOT ANSWER
+askExp: ASK askID=ID (TEXT_VAL | numberValue  | ID ) ( (ADD (TEXT_VAL | numberValue  | ID ))+ )?
     ;
 
 mathExp :
@@ -180,16 +176,25 @@ val:
     | numberVal=numberValue
     | boolVal=BOOL_LITERAL
     ;
+dotVal:
+      askID=ID DOT ANSWER                     #answerVal
+    | ID DOT NUMBER_VAL_INT                   #indexVal
+    | instanceName=ID DOT field=ID            #collectionVal
+    ;
+
 numberValue:
     double=NUMBER_VAL_DOUBLE
     | int=NUMBER_VAL_INT
     ;
-
-collectionDecl:
-    COLLECTION COLLECTION_ID (declaration)*
+collectionDec:
+    COLLECTION collectionName=COLLECTION_ID LPAREN declaration (COMMA declaration)* RPAREN   #collectionDecl
     ;
 collectionInit:
-    COLLECTION_ID ID BEGIN (initialization)+ END
+      collectionInstance=ID DOT field=ID ASSIGN BOOL_LITERAL                                 #collectionInitBool
+    | collectionInstance=ID DOT field=ID ASSIGN TEXT_VAL                                     #collectionInitText
+    | collectionInstance=ID DOT field=ID ASSIGN numberValue                                  #collectionInitNumber
+    | collectionInstance=ID DOT field=ID ASSIGN value=ID                                     #collectionInitVar
+    | (collectionName=COLLECTION_ID)? instanceName=ID ASSIGN (val | ID ) (COMMA  (val | ID ))* #collectionInitAll
     ;
 increment:
     ID INC
@@ -200,7 +205,6 @@ decrement:
 assignment:
     var1ID=ID ASSIGN var2ID=ID
     ;
-
 
 conditionalOperation:
              conOpLT=LT
@@ -245,7 +249,7 @@ BOOLEAN : 'truthvalue';
 NUMBER : 'number';
 TEXT : 'text';
 LIST : 'list';
-COLLECTION : 'collection';
+COLLECTION : 'Collection';
 
 //operation keywords
 PRINT : 'print';

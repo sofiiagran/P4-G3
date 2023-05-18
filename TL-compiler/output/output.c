@@ -5,28 +5,32 @@
 #include <string.h>
 void myfunc(char k[], double g);
 void newfunc(char b[]);
-double new(double a);
     double x;
     char h[] = "lol";
+
+ struct Student { 
+    char name[];
+    double age;
+};
+
+ struct Car { 
+    char carType[];
+};
 
 int main() { 
 
     return 0;
 }
 void myfunc(char k[], double g) { 
-    char kult[][] = {"ooo", k, "eee"};
-    char anotherList[][] = {"hej", "lol"};
-    double random[] = {2.0, 2.3, 4.45, 9.0};
+    Student sofia = {"sofia", 20.0};
+    strcpy(sofia.name, "lol");
+    Student truls = {"truls", 44.0};
+    truls.age = 55.0;
 }
 
 
 void newfunc(char b[]) { 
-    char test[][];
-    double test2[];
-}
-
-
-double new(double a) { 
-    return a;
+    Car jaguar = {jaguar};
+    char cartype[] = "cool";
 }
 

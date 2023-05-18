@@ -22,6 +22,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     StringBuilder funcPrototypes = new StringBuilder();
     StringBuilder mainFunc = new StringBuilder();
     StringBuilder funcDec = new StringBuilder();
+    StringBuilder structPrototype = new StringBuilder();
 
     ArrayList<String> funcDecCode = new ArrayList<>();
     String mainCode;
@@ -75,8 +76,10 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         funcDec.append("\n" + returnType.get(i) + " " + funcDecCode.get(i));
         return funcDec;
     }
-
-
+    public StringBuilder getStructPrototype(){
+        structPrototype.append(cst.collectionDec.getStructPrototype());
+        return structPrototype;
+    }
 
     /*********** Code Generation ***********/
 
@@ -170,7 +173,6 @@ public class CodeGenerator extends TLBaseVisitor<String> {
             return "    " + ctx.funcID.getText() + "();" + "\n" ;
         }
     }
-
     @Override
     public String visitFuncBody(TLParser.FuncBodyContext ctx) {
         return visitChildren(ctx);
@@ -189,17 +191,18 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitBoolDecl(TLParser.BoolDeclContext ctx) {
         return cst.boolDec.visitBoolDec(ctx, symbolTable);
     }
-
     @Override
     public String visitNumberListDecl(TLParser.NumberListDeclContext ctx) {
         return cst.numberListDec.visitNumberListDec(ctx, symbolTable);
     }
-
     @Override
     public String visitTextListDecl(TLParser.TextListDeclContext ctx) {
         return cst.textListDec.visitTextListDec(ctx, symbolTable);
     }
-
+    @Override
+    public String visitCollectionDecl(TLParser.CollectionDeclContext ctx) {
+        return cst.collectionDec.visitCollectionDec(ctx, symbolTable);
+    }
     /*** Initialisation ***/
     @Override
     public String visitNumberInit(TLParser.NumberInitContext ctx) {
@@ -213,6 +216,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitBooleanInit(TLParser.BooleanInitContext ctx) {
         return cst.boolInit.visitBoolInitialisation(ctx, symbolTable);
     }
+    /** List initialisation **/
     @Override
     public String visitNumberListInit(TLParser.NumberListInitContext ctx) {
         return cst.numberListInit.visitNumberListInitialisation(ctx, symbolTable);
@@ -220,6 +224,27 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     @Override
     public String visitTextListInit(TLParser.TextListInitContext ctx) {
         return cst.textListInit.visitTextListInitialisation(ctx, symbolTable);
+    }
+    /** Collection initialisation **/
+    @Override
+    public String visitCollectionInitNumber(TLParser.CollectionInitNumberContext ctx) {
+        return cst.collectionInitNumber.visitCollectionNumberInit(ctx, symbolTable);
+    }
+    @Override
+    public String visitCollectionInitText(TLParser.CollectionInitTextContext ctx) {
+        return cst.collectionInitText.visitCollectionTextInit(ctx, symbolTable);
+    }
+    @Override
+    public String visitCollectionInitBool(TLParser.CollectionInitBoolContext ctx) {
+        return cst.collectionInitBool.visitCollectionBoolInit(ctx, symbolTable);
+    }
+    @Override
+    public String visitCollectionInitVar(TLParser.CollectionInitVarContext ctx) {
+        return cst.collectionInitVar.visitCollectionVarInit(ctx, symbolTable);
+    }
+    @Override
+    public String visitCollectionInitAll(TLParser.CollectionInitAllContext ctx) {
+        return cst.collectionInitAll.visitCollectionAllInit(ctx, symbolTable);
     }
 
     /*** Expressions ***/
@@ -235,22 +260,18 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitReturnExp(TLParser.ReturnExpContext ctx) {
         return cst.returnExp.visitReturnExpr(ctx, symbolTable);
     }
-
-    @Override
-    public String visitAnswerVal(TLParser.AnswerValContext ctx) {
-        return cst.answerExp.visitAnswerExp(ctx);
-    }
     @Override
     public String visitMathExp(TLParser.MathExpContext ctx) {
         return cst.mathExp.visitMathExpr(ctx, symbolTable);
     }
+
     /*** Assignment ***/
     @Override
     public String visitAssignment(TLParser.AssignmentContext ctx) {
         return cst.assignment.visitAssign(ctx, symbolTable);
     }
-    /*** increment/decrement ***/
 
+    /*** Increment/decrement ***/
     @Override
     public String visitIncrement(TLParser.IncrementContext ctx) {
         String name = ctx.ID().getText();
@@ -262,7 +283,6 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         }
         return incExp;
     }
-
     @Override
     public String visitDecrement(TLParser.DecrementContext ctx) {
         String name = ctx.ID().getText();
@@ -273,6 +293,23 @@ public class CodeGenerator extends TLBaseVisitor<String> {
             throw new IllegalArgumentException("Variable: " + name + " is not declared");
         }
         return decExp;
+    }
+
+    /** Values **/
+
+    @Override
+    public String visitIndexVal(TLParser.IndexValContext ctx) {
+        return cst.indexVal.visitIndexValue(ctx, symbolTable);
+    }
+
+    @Override
+    public String visitCollectionVal(TLParser.CollectionValContext ctx) {
+        return cst.collectionVal.visitCollectionValue(ctx, symbolTable);
+    }
+
+    @Override
+    public String visitAnswerVal(TLParser.AnswerValContext ctx) {
+        return cst.answerVal.visitAnswerValue(ctx, symbolTable);
     }
 
     /*** Statements ***/

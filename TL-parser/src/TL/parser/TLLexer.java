@@ -55,7 +55,7 @@ public class TLLexer extends Lexer {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'start'", "'functions'", "'function'", "'begin'", "'end'", "'truthvalue'", 
-			"'number'", "'text'", "'list'", "'collection'", "'print'", "'while'", 
+			"'number'", "'text'", "'list'", "'Collection'", "'print'", "'while'", 
 			"'repeat'", "'repeat until'", "'if'", "'else'", "'else if'", "'then'", 
 			"'do'", "'times'", "'return'", "'ask'", "'answer'", "'run'", "'('", "')'", 
 			"'{'", "'}'", "'['", "']'", "';'", "','", "'.'", "'\"'", "'='", "'>'", 
@@ -317,7 +317,7 @@ public class TLLexer extends Lexer {
 		"\u00d0\u00d1\u0005x\u0000\u0000\u00d1\u00d2\u0005t\u0000\u0000\u00d2\u0010"+
 		"\u0001\u0000\u0000\u0000\u00d3\u00d4\u0005l\u0000\u0000\u00d4\u00d5\u0005"+
 		"i\u0000\u0000\u00d5\u00d6\u0005s\u0000\u0000\u00d6\u00d7\u0005t\u0000"+
-		"\u0000\u00d7\u0012\u0001\u0000\u0000\u0000\u00d8\u00d9\u0005c\u0000\u0000"+
+		"\u0000\u00d7\u0012\u0001\u0000\u0000\u0000\u00d8\u00d9\u0005C\u0000\u0000"+
 		"\u00d9\u00da\u0005o\u0000\u0000\u00da\u00db\u0005l\u0000\u0000\u00db\u00dc"+
 		"\u0005l\u0000\u0000\u00dc\u00dd\u0005e\u0000\u0000\u00dd\u00de\u0005c"+
 		"\u0000\u0000\u00de\u00df\u0005t\u0000\u0000\u00df\u00e0\u0005i\u0000\u0000"+

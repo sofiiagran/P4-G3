@@ -13,7 +13,7 @@ public class NumberListDec {
     public String visitNumberListDec(TLParser.NumberListDeclContext ctx, SymbolTable symbolTable){
         varName = ctx.ID().getText();
 
-        Attributes attribute = new Attributes(varName, Type.Number);
+        Attributes attribute = new Attributes(varName, Type.NumberList);
 
         // throws error if it is already declared and that it is not a param
         if (symbolTable.isInScope(attribute) && symbolTable.retrieveSymbol(varName).getIsParam() == false) {

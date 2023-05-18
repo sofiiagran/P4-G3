@@ -13,7 +13,7 @@ public class TextListDec {
 
         varName = ctx.ID().getText();
 
-        Attributes attribute = new Attributes(varName, Type.Text);
+        Attributes attribute = new Attributes(varName, Type.TextList);
 
         // throws error if it is already declared and that it is not a param
         if (symbolTable.isInScope(attribute) && symbolTable.retrieveSymbol(varName).getIsParam() == false) {

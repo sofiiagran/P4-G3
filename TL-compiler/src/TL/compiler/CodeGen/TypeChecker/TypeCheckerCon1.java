@@ -120,6 +120,9 @@ public class TypeCheckerCon1 {
                                         valCount++;
                                     }
                                 }
+                                case NumberList, TextList -> {
+                                    throw new IllegalArgumentException("Cannot do operations on lists");
+                                }
                                 default -> throw new IllegalArgumentException(
                                         "Type not found by type-checker.");
                             }
@@ -262,6 +265,9 @@ public class TypeCheckerCon1 {
                                     throw new IllegalArgumentException(
                                             "All values must be of type number for operators:" +
                                                     "\"<\", \"<=\", \">\", \">=\" ");
+                                }
+                                case TextList, NumberList -> {
+                                    throw new IllegalArgumentException("Cannot do operations on lists.");
                                 }
                                 default -> throw new IllegalArgumentException("Type not found by type-checker.");
                             }

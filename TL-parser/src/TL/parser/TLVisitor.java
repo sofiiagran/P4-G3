@@ -218,12 +218,6 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAskExp(TLParser.AskExpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#answerVal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnswerVal(TLParser.AnswerValContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TLParser#mathExp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -254,23 +248,74 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVal(TLParser.ValContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code answerVal}
+	 * labeled alternative in {@link TLParser#dotVal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnswerVal(TLParser.AnswerValContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code indexVal}
+	 * labeled alternative in {@link TLParser#dotVal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIndexVal(TLParser.IndexValContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code collectionVal}
+	 * labeled alternative in {@link TLParser#dotVal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCollectionVal(TLParser.CollectionValContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TLParser#numberValue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitNumberValue(TLParser.NumberValueContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#collectionDecl}.
+	 * Visit a parse tree produced by the {@code collectionDecl}
+	 * labeled alternative in {@link TLParser#collectionDec}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCollectionDecl(TLParser.CollectionDeclContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#collectionInit}.
+	 * Visit a parse tree produced by the {@code collectionInitBool}
+	 * labeled alternative in {@link TLParser#collectionInit}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCollectionInit(TLParser.CollectionInitContext ctx);
+	T visitCollectionInitBool(TLParser.CollectionInitBoolContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code collectionInitText}
+	 * labeled alternative in {@link TLParser#collectionInit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCollectionInitText(TLParser.CollectionInitTextContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code collectionInitNumber}
+	 * labeled alternative in {@link TLParser#collectionInit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCollectionInitNumber(TLParser.CollectionInitNumberContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code collectionInitVar}
+	 * labeled alternative in {@link TLParser#collectionInit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCollectionInitVar(TLParser.CollectionInitVarContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code collectionInitAll}
+	 * labeled alternative in {@link TLParser#collectionInit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCollectionInitAll(TLParser.CollectionInitAllContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#increment}.
 	 * @param ctx the parse tree

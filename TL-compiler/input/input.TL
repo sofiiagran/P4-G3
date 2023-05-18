@@ -10,23 +10,24 @@
 
      function myfunc(text k, number g) begin
 
-     text list kult = "ooo", k, "eee"
+         Collection Student(text name, number age)
 
-     anotherList = "hej", "lol"
+         Student sofia = "sofia", 20
 
-     random = 2, 2.3, 4.45, 9
+         sofia.name = "lol"
+
+         Student truls = "truls", 44
+         truls.age = 55
 
 
      end
 
      function newfunc(text b) begin
-     text list test
-     number list test2
-     end
 
-     function new(number a) begin
+         Collection Car = (text carType)
+         Car jaguar
+         jaguar.cartype = "cool"
 
-     return a
 
      end
 
