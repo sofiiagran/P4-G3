@@ -190,6 +190,15 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         return cst.boolDec.visitBoolDec(ctx, symbolTable);
     }
 
+    @Override
+    public String visitNumberListDecl(TLParser.NumberListDeclContext ctx) {
+        return cst.numberListDec.visitNumberListDec(ctx, symbolTable);
+    }
+
+    @Override
+    public String visitTextListDecl(TLParser.TextListDeclContext ctx) {
+        return cst.textListDec.visitTextListDec(ctx, symbolTable);
+    }
 
     /*** Initialisation ***/
     @Override
@@ -203,6 +212,14 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     @Override
     public String visitBooleanInit(TLParser.BooleanInitContext ctx) {
         return cst.boolInit.visitBoolInitialisation(ctx, symbolTable);
+    }
+    @Override
+    public String visitNumberListInit(TLParser.NumberListInitContext ctx) {
+        return cst.numberListInit.visitNumberListInitialisation(ctx, symbolTable);
+    }
+    @Override
+    public String visitTextListInit(TLParser.TextListInitContext ctx) {
+        return cst.textListInit.visitTextListInitialisation(ctx, symbolTable);
     }
 
     /*** Expressions ***/
@@ -330,6 +347,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitMathematicalOperation2(TLParser.MathematicalOperation2Context ctx) {
         return cst.mathOp2.visitMathOp2(ctx);
     }
+
 
     /*** Aggregator ***/
     @Override

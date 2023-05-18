@@ -95,6 +95,30 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBoolDecl(TLParser.BoolDeclContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TLParser#numberListDecl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumberListDecl(TLParser.NumberListDeclContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#numberListInit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumberListInit(TLParser.NumberListInitContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#textListDecl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTextListDecl(TLParser.TextListDeclContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#textListInit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTextListInit(TLParser.TextListInitContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TLParser#initialization}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -224,12 +248,6 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBooleanInit(TLParser.BooleanInitContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#assignment}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAssignment(TLParser.AssignmentContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TLParser#val}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -242,23 +260,11 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumberValue(TLParser.NumberValueContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#numberList}.
+	 * Visit a parse tree produced by {@link TLParser#collectionDecl}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumberList(TLParser.NumberListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link TLParser#textList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTextList(TLParser.TextListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link TLParser#collectionDec}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCollectionDec(TLParser.CollectionDecContext ctx);
+	T visitCollectionDecl(TLParser.CollectionDeclContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#collectionInit}.
 	 * @param ctx the parse tree
@@ -277,6 +283,12 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDecrement(TLParser.DecrementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignment(TLParser.AssignmentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#conditionalOperation}.
 	 * @param ctx the parse tree

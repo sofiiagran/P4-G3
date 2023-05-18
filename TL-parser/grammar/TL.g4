@@ -50,6 +50,8 @@ declaration:
     numberDec=numberDecl
     | textDec=textDecl
     | boolDec=boolDecl
+    | numberListDec=numberListDecl
+    | textListDec=textListDecl
     ;
 
 numberDecl:
@@ -61,12 +63,29 @@ textDecl:
 boolDecl:
     BOOLEAN boolID=ID
     ;
+numberListDecl:
+     NUMBER LIST ID
+     ;
+
+numberListInit:
+     (NUMBER LIST)? assignID=ID ASSIGN (numberValue | ID) (COMMA (numberValue | ID))*
+     ;
+
+     textListDecl:
+     TEXT LIST ID
+     ;
+
+     textListInit:
+     (TEXT LIST)? assignID=ID ASSIGN (TEXT_VAL | ID) (COMMA  (TEXT_VAL | ID))*
+     ;
 
 
 initialization:
     textInit+
     | numberInit+
     | booleanInit+
+    | numberListInit+
+    | textListInit+
     ;
 
 funcBody:
@@ -151,9 +170,6 @@ numberInit:
 booleanInit:
     (BOOLEAN)? var1ID=ID ASSIGN BOOL_LITERAL
     ;
-assignment:
-    var1ID=ID ASSIGN var2ID=ID
-    ;
 
 val:
     textVal=TEXT_VAL
@@ -164,15 +180,8 @@ numberValue:
     double=NUMBER_VAL_DOUBLE
     | int=NUMBER_VAL_INT
     ;
-numberList:
-    NUMBER LIST ID (ASSIGN (numberValue (COMMA numberValue)* ))?
-    ;
 
-textList:
-    TEXT LIST ID (ASSIGN (TEXT_VAL (COMMA TEXT_VAL)* ))?
-    ;
-
-collectionDec:
+collectionDecl:
     COLLECTION COLLECTION_ID (declaration)*
     ;
 collectionInit:
@@ -183,6 +192,9 @@ increment:
     ;
 decrement:
     ID DEC
+    ;
+assignment:
+    var1ID=ID ASSIGN var2ID=ID
     ;
 
 

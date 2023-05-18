@@ -10,15 +10,18 @@
 
      function myfunc(text k, number g) begin
 
-        ask question1 "what is your name?" + 5 + x + "lol"
+     text list kult = "ooo", k, "eee"
 
-        print "you answered: " + question1.answer
+     anotherList = "hej", "lol"
 
-        return x
+     random = 2, 2.3, 4.45, 9
+
 
      end
 
      function newfunc(text b) begin
+     text list test
+     number list test2
      end
 
      function new(number a) begin

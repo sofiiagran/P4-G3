@@ -148,6 +148,46 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitBoolDecl(TLParser.BoolDeclContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TLParser#numberListDecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumberListDecl(TLParser.NumberListDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#numberListDecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumberListDecl(TLParser.NumberListDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#numberListInit}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumberListInit(TLParser.NumberListInitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#numberListInit}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumberListInit(TLParser.NumberListInitContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#textListDecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterTextListDecl(TLParser.TextListDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#textListDecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitTextListDecl(TLParser.TextListDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#textListInit}.
+	 * @param ctx the parse tree
+	 */
+	void enterTextListInit(TLParser.TextListInitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#textListInit}.
+	 * @param ctx the parse tree
+	 */
+	void exitTextListInit(TLParser.TextListInitContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TLParser#initialization}.
 	 * @param ctx the parse tree
 	 */
@@ -364,16 +404,6 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitBooleanInit(TLParser.BooleanInitContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssignment(TLParser.AssignmentContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssignment(TLParser.AssignmentContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link TLParser#val}.
 	 * @param ctx the parse tree
 	 */
@@ -394,35 +424,15 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitNumberValue(TLParser.NumberValueContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#numberList}.
+	 * Enter a parse tree produced by {@link TLParser#collectionDecl}.
 	 * @param ctx the parse tree
 	 */
-	void enterNumberList(TLParser.NumberListContext ctx);
+	void enterCollectionDecl(TLParser.CollectionDeclContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLParser#numberList}.
+	 * Exit a parse tree produced by {@link TLParser#collectionDecl}.
 	 * @param ctx the parse tree
 	 */
-	void exitNumberList(TLParser.NumberListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TLParser#textList}.
-	 * @param ctx the parse tree
-	 */
-	void enterTextList(TLParser.TextListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLParser#textList}.
-	 * @param ctx the parse tree
-	 */
-	void exitTextList(TLParser.TextListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TLParser#collectionDec}.
-	 * @param ctx the parse tree
-	 */
-	void enterCollectionDec(TLParser.CollectionDecContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLParser#collectionDec}.
-	 * @param ctx the parse tree
-	 */
-	void exitCollectionDec(TLParser.CollectionDecContext ctx);
+	void exitCollectionDecl(TLParser.CollectionDeclContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLParser#collectionInit}.
 	 * @param ctx the parse tree
@@ -453,6 +463,16 @@ public interface TLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDecrement(TLParser.DecrementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignment(TLParser.AssignmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignment(TLParser.AssignmentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLParser#conditionalOperation}.
 	 * @param ctx the parse tree

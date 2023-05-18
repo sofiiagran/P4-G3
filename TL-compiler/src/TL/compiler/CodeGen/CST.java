@@ -1,6 +1,7 @@
 package TL.compiler.CodeGen;
 
 import TL.compiler.CodeGen.Visitors.*;
+import TL.parser.TLParser;
 
 public class CST {
 
@@ -15,11 +16,15 @@ public class CST {
     public NumberDec numberDec = new NumberDec();
     public TextDec textDec = new TextDec();
     public BoolDec boolDec = new BoolDec();
+    public NumberListDec numberListDec = new NumberListDec();
+    public TextListDec textListDec = new TextListDec();
 
     /** Initialisation **/
     public NumberInit numberInit = new NumberInit();
     public TextInit textInit = new TextInit();
     public BoolInit boolInit = new BoolInit();
+    public NumberListInit numberListInit = new NumberListInit();
+    public TextListInit textListInit = new TextListInit();
 
     /** Expressions **/
     public Assignment assignment = new Assignment();
