@@ -50,8 +50,9 @@ declaration:
     numberDec=numberDecl
     | textDec=textDecl
     | boolDec=boolDecl
-    | numberListDec=numberListDecl
-    | textListDec=textListDecl
+    | numberListDecl
+    | textListDecl
+    | collectionDecl
     ;
 
 numberDecl:
@@ -86,6 +87,7 @@ initialization:
     | booleanInit+
     | numberListInit+
     | textListInit+
+    | collectionInit+
     ;
 
 funcBody:
@@ -136,6 +138,8 @@ expression:
     | printExp+
     | askExp+
     | assignment+
+    | increment+
+    | decrement+
     ;
 
 returnExp:
