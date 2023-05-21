@@ -351,15 +351,15 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     }
     @Override
     public String visitIfThenElseStatement(TLParser.IfThenElseStatementContext ctx) {
+        String printStatements = "";
 
-        String printStatements = openScope() + "    if(" + visit(ctx.condition(0)) + ") { \n"
+        printStatements = openScope() + "    if(" + visit(ctx.condition(0)) + ") { \n"
                 + visit(ctx.ifBody) + "\n    }" + closeScope();
 
         if(ctx.ELSE_IF() != null) {
-
-            for(int i = 0; i > ctx.ELSE_IF().size(); i++) {
+            for(int i = 0; i < ctx.ELSE_IF().size(); i++) {
                 printStatements += openScope() + "    else if (" + visit(ctx.condition((i + 1))) + ") {\n        "
-                        + visit(ctx.elseIfBody) + "\n    }" + closeScope();
+                        + visit(ctx.statementBody(i + 1)) + "\n    }" + closeScope();
             }
         }
         if(ctx.ELSE() != null) {

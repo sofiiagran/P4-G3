@@ -31,6 +31,7 @@ public class CollectionDec {
                     } else {
                         // if not, it is added to symbol table
                         symbolTable.insertSymbol(new Attributes(varName, Type.Text));
+                        symbolTable.retrieveSymbol(varName).setIsParam(true);
                         declaration += "    char " + varName + "[];\n";
                     }
                 } else if (ctx.declaration(decCount).numberDec != null){
@@ -41,6 +42,7 @@ public class CollectionDec {
                     } else {
                         // if not, it is added to symbol table
                         symbolTable.insertSymbol(new Attributes(varName, Type.Number));
+                        symbolTable.retrieveSymbol(varName).setIsParam(true);
                         declaration += "    double " + varName + ";\n";
                     }
                 } else if (ctx.declaration(decCount).boolDec != null) {
@@ -51,6 +53,7 @@ public class CollectionDec {
                     } else {
                         // if not, it is added to symbol table
                         symbolTable.insertSymbol(new Attributes(varName, Type.Boolean));
+                        symbolTable.retrieveSymbol(varName).setIsParam(true);
                         declaration += "    bool " + varName + ";\n";
                     }
                 }

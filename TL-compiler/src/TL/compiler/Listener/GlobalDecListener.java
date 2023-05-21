@@ -144,6 +144,11 @@ public class GlobalDecListener extends TLBaseListener {
     }
 
     @Override
+    public void enterCollectionDecl(TLParser.CollectionDeclContext ctx) {
+        cst.collectionDec.visitCollectionDec(ctx, symbolTable);
+    }
+
+    @Override
     public void enterCollectionInitAll(TLParser.CollectionInitAllContext ctx) {
         cst.collectionInitAll.visitCollectionAllInit(ctx, symbolTable);
         // checks if depth is 0, which means that the variable is global

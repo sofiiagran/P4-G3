@@ -114,7 +114,7 @@ ifThenElseStatement:
     (ELSE BEGIN elseBody=statementBody* END)?
     ;
 repeatStatement:
-    REPEAT (numberVal=numberValue| var ) TIMES (BEGIN | THEN) statementBody* END
+    REPEAT (numberVal=numberValue) TIMES (BEGIN | THEN) statementBody* END
     ;
 repeatUntilStatement:
     REPEAT_UNTIL condition (BEGIN | THEN) statementBody* END
@@ -212,6 +212,7 @@ assignment:
     var1ID=ID ASSIGN var2ID=ID                                   #assignID
     | assignID=ID ASSIGN askID=ID GET ANSWER                     #assignAnswer
     | assignID=ID ASSIGN indexID=ID GET NUMBER_VAL_INT           #assignList
+    | assignID=ID ASSIGN instance=ID GET field=ID                #assignCollection
     ;
 var:
     ID
@@ -301,16 +302,16 @@ QUOTE : '"';
 // Operators
 
 ASSIGN : '=';
-GT : '>';
-LT : '<';
-EQUAL : '==' | '?=' ;
-LE : '<=' | 'less or equal to' ;
-GE : '>=' | 'greater or equal to';
+GT : '>'| 'is greater than';
+LT : '<'| 'is less than';
+EQUAL : '==' | '?=' | 'equals';
+LE : '<=' | 'is less or equal to' ;
+GE : '>=' | 'is greater or equal to';
 NOTEQUAL : '!=' | 'is not';
 AND : '&&' | 'and';
 OR : '||' | 'or';
-INC : '++' | 'increase by one' ;
-DEC : '--' | 'decrease by one' ;
+INC : '++' | 'is increased by one' ;
+DEC : '--' | 'is decreased by one' ;
 ADD : '+';
 SUB : '-';
 MUL : '*';

@@ -30,14 +30,14 @@ public class CollectionInstanceDec {
         }
 
 
-        declaration = "    " + collectionName + " " + instanceName + ";";
+        declaration = collectionName + " " + instanceName + ";";
 
         // if it is global scope, empty string is returned, since it is printed by globalDecListener
         if (symbolTable.getDepth() == 0) {
             return "";
         } else {
             // return declaration of instance
-            return declaration + "\n";
+            return "    struct " + declaration + "\n";
         }
     }
     public String getVarName(){

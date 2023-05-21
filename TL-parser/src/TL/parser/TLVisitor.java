@@ -334,6 +334,13 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignList(TLParser.AssignListContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code assignCollection}
+	 * labeled alternative in {@link TLParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignCollection(TLParser.AssignCollectionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TLParser#var}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

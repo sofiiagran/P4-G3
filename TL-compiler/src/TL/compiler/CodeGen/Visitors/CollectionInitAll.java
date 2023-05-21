@@ -102,7 +102,7 @@ public class CollectionInitAll {
                 commaCount++;
             }
         }
-        init = "    " + collectionName + " " + instanceName + " = {" + values + "};";
+        init = "    struct " + collectionName + " " + instanceName + " = {" + values + "};";
         return init + "\n";
     }
     public String getInit() {return this.init;}

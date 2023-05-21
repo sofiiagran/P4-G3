@@ -550,6 +550,18 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitAssignList(TLParser.AssignListContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code assignCollection}
+	 * labeled alternative in {@link TLParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignCollection(TLParser.AssignCollectionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code assignCollection}
+	 * labeled alternative in {@link TLParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignCollection(TLParser.AssignCollectionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TLParser#var}.
 	 * @param ctx the parse tree
 	 */
