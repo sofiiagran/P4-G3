@@ -485,42 +485,6 @@ public class TLBaseListener implements TLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAnswerVal(TLParser.AnswerValContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAnswerVal(TLParser.AnswerValContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIndexVal(TLParser.IndexValContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIndexVal(TLParser.IndexValContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCollectionVal(TLParser.CollectionValContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCollectionVal(TLParser.CollectionValContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterNumberValue(TLParser.NumberValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -540,6 +504,18 @@ public class TLBaseListener implements TLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCollectionDecl(TLParser.CollectionDeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCollectionInstanceDecl(TLParser.CollectionInstanceDeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCollectionInstanceDecl(TLParser.CollectionInstanceDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -629,13 +605,49 @@ public class TLBaseListener implements TLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssignment(TLParser.AssignmentContext ctx) { }
+	@Override public void enterAssignID(TLParser.AssignIDContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssignment(TLParser.AssignmentContext ctx) { }
+	@Override public void exitAssignID(TLParser.AssignIDContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignAnswer(TLParser.AssignAnswerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignAnswer(TLParser.AssignAnswerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignList(TLParser.AssignListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignList(TLParser.AssignListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVar(TLParser.VarContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVar(TLParser.VarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -672,6 +684,18 @@ public class TLBaseListener implements TLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMathematicalOperation2(TLParser.MathematicalOperation2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDotVariable(TLParser.DotVariableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDotVariable(TLParser.DotVariableContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

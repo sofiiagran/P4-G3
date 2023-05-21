@@ -7,7 +7,7 @@ import TL.parser.TLParser;
 
 public class TextInit {
     String varName;
-    String declaration;
+    String init;
     Boolean declared = false;
     public String visitTextInitialisation (TLParser.TextInitContext ctx, SymbolTable symbolTable){
 
@@ -18,7 +18,7 @@ public class TextInit {
         // checks if variable is declared
         if(symbolTable.isInScope(attribute)) {
             if(symbolTable.retrieveSymbol(varName).getType() == Type.Text) {
-                declaration = "    "  + ctx.var1ID.getText() + " = " + ctx.TEXT_VAL() + ";";
+                init = "    "  + ctx.var1ID.getText() + " = " + ctx.TEXT_VAL() + ";";
                 declared = true;
             } else {
                 throw new IllegalArgumentException("Error: variable is already declared with at different datatype");
@@ -26,7 +26,7 @@ public class TextInit {
         } else {
             // if it is not, add to symbol table and print initialisation with data type
             symbolTable.insertSymbol(attribute);
-            declaration = "    "  + "char " + ctx.var1ID.getText() + "[]" + " = " + ctx.TEXT_VAL() + ";";
+            init = "    "  + "char " + ctx.var1ID.getText() + "[]" + " = " + ctx.TEXT_VAL() + ";";
             declared = false;
         }
 
@@ -34,13 +34,13 @@ public class TextInit {
         if (symbolTable.getDepth() == 0) {
             return "";
         } else {
-            return declaration + "\n";
+            return init + "\n";
         }
     }
     public String getVarName(){
         return this.varName;
     }
-    public String getDeclaration() {return this.declaration;}
+    public String getInit() {return this.init;}
     public Boolean isDeclared() {
         return this.declared;
     }

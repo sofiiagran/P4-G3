@@ -248,39 +248,23 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVal(TLParser.ValContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code answerVal}
-	 * labeled alternative in {@link TLParser#dotVal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnswerVal(TLParser.AnswerValContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code indexVal}
-	 * labeled alternative in {@link TLParser#dotVal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIndexVal(TLParser.IndexValContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code collectionVal}
-	 * labeled alternative in {@link TLParser#dotVal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCollectionVal(TLParser.CollectionValContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TLParser#numberValue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitNumberValue(TLParser.NumberValueContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code collectionDecl}
-	 * labeled alternative in {@link TLParser#collectionDec}.
+	 * Visit a parse tree produced by {@link TLParser#collectionDecl}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCollectionDecl(TLParser.CollectionDeclContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#collectionInstanceDecl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCollectionInstanceDecl(TLParser.CollectionInstanceDeclContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code collectionInitBool}
 	 * labeled alternative in {@link TLParser#collectionInit}.
@@ -329,11 +313,32 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDecrement(TLParser.DecrementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TLParser#assignment}.
+	 * Visit a parse tree produced by the {@code assignID}
+	 * labeled alternative in {@link TLParser#assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssignment(TLParser.AssignmentContext ctx);
+	T visitAssignID(TLParser.AssignIDContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code assignAnswer}
+	 * labeled alternative in {@link TLParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignAnswer(TLParser.AssignAnswerContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code assignList}
+	 * labeled alternative in {@link TLParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignList(TLParser.AssignListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVar(TLParser.VarContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TLParser#conditionalOperation}.
 	 * @param ctx the parse tree
@@ -352,4 +357,10 @@ public interface TLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMathematicalOperation2(TLParser.MathematicalOperation2Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link TLParser#dotVariable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDotVariable(TLParser.DotVariableContext ctx);
 }

@@ -7,6 +7,10 @@ import TL.parser.TLParser;
 
 public class CollectionInitAll {
 
+    CollectionInstanceDec collectionInstanceDec = new CollectionInstanceDec();
+
+    String init;
+
     public String visitCollectionAllInit(TLParser.CollectionInitAllContext ctx, SymbolTable symbolTable){
         String collectionName = ctx.collectionName.getText();
         String instanceName = ctx.instanceName.getText();
@@ -14,10 +18,11 @@ public class CollectionInitAll {
 
         int valCount = 0;
         int commaCount = 0;
-        int idCount = 1;
+        int varCount = 0;
 
         //check if instance name is declared
-        if(symbolTable.isInScope(new Attributes(instanceName, null))){
+        if(symbolTable.isInScope(new Attributes(instanceName, null))
+                && !collectionInstanceDec.isDeclared(instanceName) ){
             throw new IllegalArgumentException("Variable name: " + instanceName + " is already in use" +
                     " and can therefore not be used to create instance of collection: " + collectionName);
         } else {
@@ -49,22 +54,56 @@ public class CollectionInitAll {
                 }
                 valCount++;
             }
-            // check if it is an ID (variable)
-            else if(ctx.ID(idCount) != null){
-                if(symbolTable.isInScope(new Attributes(ctx.ID(idCount).getText(), null))){
-                    values += ctx.ID(idCount).getText();
-                } else {
-                    //throw error if variable is not declared
-                    throw new IllegalArgumentException("Variable: " + ctx.ID(idCount).getText() + " is not declared.");
+            // check if it is a variable
+            else if(ctx.getChild(i) == ctx.var(varCount)){
+                if(ctx.var(varCount).ID() != null) {
+                    String varName = ctx.var(varCount).ID().getText();
+                    if(varName != ctx.instanceName.getText()){
+                        if(symbolTable.isInScope(new Attributes(varName, null))){
+                            values += varName;
+                        } else {
+                            //throw error if variable is not declared
+                            throw new IllegalArgumentException("Variable: " + varName + " is not declared.");
+                        }
+                    }
+                }else if (ctx.var(varCount).dotVariable() != null) {
+                    String varName;
+                    if (ctx.var(varCount).dotVariable().instanceName != null) {
+                        varName = ctx.var(varCount).dotVariable().instanceName.getText();
+                        String field = ctx.var(varCount).dotVariable().field.getText();
+                        if (symbolTable.isInScope(new Attributes(varName, null))) {
+                            values += varName + "." + field;
+                        } else {
+                            //throw error if variable is not declared
+                            throw new IllegalArgumentException("Variable: " + varName + " is not declared.");
+                        }
+                    } else if (ctx.var(varCount).dotVariable().askID != null) {
+                        varName = ctx.var(varCount).dotVariable().askID.getText();
+                        if (symbolTable.isInScope(new Attributes(varName, null))) {
+                            values += varName;
+                        } else {
+                            //throw error if variable is not declared
+                            throw new IllegalArgumentException("Variable: " + varName + " is not declared.");
+                        }
+                    } else if (ctx.var(varCount).dotVariable().listID != null) {
+                        varName = ctx.var(varCount).dotVariable().listID.getText();
+                        if (symbolTable.isInScope(new Attributes(varName, null))) {
+                            values += varName + "[" + ctx.var(varCount).dotVariable().NUMBER_VAL_INT() + "]";
+                        } else {
+                            //throw error if variable is not declared
+                            throw new IllegalArgumentException("Variable: " + varName + " is not declared.");
+                        }
+                    }
+                    varCount++;
                 }
-                idCount++;
-
             // add ", " if child is a comma
             } else if (ctx.getChild(i) == ctx.COMMA(commaCount))  {
                 values += ", ";
                 commaCount++;
             }
         }
-        return "    " + collectionName + " " + instanceName + " = {" + values + "};\n";
+        init = "    " + collectionName + " " + instanceName + " = {" + values + "};";
+        return init + "\n";
     }
+    public String getInit() {return this.init;}
 }

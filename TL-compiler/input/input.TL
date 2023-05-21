@@ -7,30 +7,20 @@
      number x
      h = "lol"
 
-
      function myfunc(text k, number g) begin
 
          Collection Student(text name, number age)
 
-         Student sofia = "sofia", 20
+         text list list1 = "sofia", "kari", "inga"
 
-         sofia.name = "lol"
+         Student sofia = list1 get 0, g
 
-         Student truls = "truls", 44
-         truls.age = 55
-
-
+        return sofia get age
      end
 
-     function newfunc(text b) begin
+     function newFunc begin
+     ask person1 "hvad hedder du????"
 
-         Collection Car = (text carType)
-         Car jaguar
-         jaguar.cartype = "cool"
-
-
+        return person1 get answer
      end
-
-
-
- end
+end

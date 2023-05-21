@@ -31,4 +31,10 @@ public class NumberListDec {
             return declaration + "\n";
         }
     }
+    public String getVarName(){
+        return this.varName;
+    }
+    public String getDeclaration(){
+        return declaration;
+    }
 }

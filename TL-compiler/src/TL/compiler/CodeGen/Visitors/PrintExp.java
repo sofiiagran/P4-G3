@@ -1,5 +1,6 @@
 package TL.compiler.CodeGen.Visitors;
 
+import TL.compiler.CodeGen.TypeChecker.TypeCheckerPrintBody;
 import TL.compiler.SymbolTable.Attributes;
 import TL.compiler.SymbolTable.SymbolTable;
 import TL.compiler.SymbolTable.Type;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 
 public class PrintExp {
 
+    TypeCheckerPrintBody typeChecker = new TypeCheckerPrintBody();
+
     public String visitPrintExpr(TLParser.PrintExpContext ctx, SymbolTable symbolTable){
         return "    printf(" + printBody(ctx, symbolTable) + ");" + "\n";
     }
@@ -17,9 +20,8 @@ public class PrintExp {
 
         int numberCount = 0;
         int textCount = 0;
-        int idCount = 0;
         int addCount = 0;
-        int dotCount = 0;
+        int varCount = 0;
 
         ArrayList<String> variableNames = new ArrayList<>();
         String printVarNames = "";
@@ -43,28 +45,23 @@ public class PrintExp {
                 val += newString.replace("\"", "");
                 textCount++;
             }
-            //checks if child is a variable (ID)
-            else if (ctx.getChild(i) == ctx.ID(idCount)) {
-                if (symbolTable.isInScope(new Attributes(ctx.ID(idCount).getText(), null))) {
-                    // print different base on type of the variable + adds variable to an array
-                    if (symbolTable.retrieveSymbol(ctx.ID(idCount).getText()).getType() == Type.Number) {
-                        val += "%lf";
-                        variableNames.add(ctx.ID(idCount).getText());
-                        idCount++;
-                    }
-                    else if (symbolTable.retrieveSymbol(ctx.ID(idCount).getText()).getType() == Type.Text) {
-                        val += "%s";
-                        variableNames.add(ctx.ID(idCount).getText());
-                        idCount++;
-                    }
-                    else if (symbolTable.retrieveSymbol(ctx.ID(idCount).getText()).getType() == Type.Boolean) {
-                        val += "%d";
-                        variableNames.add(ctx.ID(idCount).getText());
-                        idCount++;
-                    }
-                } else {
-                    throw new IllegalArgumentException("Error: missing variable declaration of variable: " + ctx.ID(idCount).getText());
+            //checks if child is a variable
+            else if (ctx.getChild(i) == ctx.var(varCount)){
+                // check if it is ID
+                if(ctx.var(varCount).ID() != null){
+                    String varName = ctx.var(varCount).ID().getText();
+                    // calls function that check type and translate it to C
+                    val += typeChecker.checkType(varName, symbolTable);
+                    variableNames.add(varName);
                 }
+                // check if it is dot variable
+                else if(ctx.var(varCount).dotVariable() != null) {
+                    String varName = ctx.var(varCount).dotVariable().getText();
+                    // calls function that check type and translate it to C
+                    val += typeChecker.checkType(varName, symbolTable);
+                    variableNames.add(varName);
+                }
+                varCount++;
             }
             // if child is +, change it to space
             if (ctx.getChild(i) == ctx.ADD(addCount)) {

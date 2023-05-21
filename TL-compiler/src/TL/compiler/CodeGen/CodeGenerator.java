@@ -5,11 +5,7 @@ import TL.compiler.Listener.GlobalDecListener;
 import TL.compiler.SymbolTable.*;
 import TL.parser.TLBaseVisitor;
 import TL.parser.TLParser;
-import org.stringtemplate.v4.ST;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class CodeGenerator extends TLBaseVisitor<String> {
@@ -72,8 +68,9 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         ArrayList<String> returnType = funcDecListener.getReturnType();
 
         // loop that goes through func declaration and adds the right return type to functions
-        for(int i = 0; i < funcDecCode.size(); i++)
-        funcDec.append("\n" + returnType.get(i) + " " + funcDecCode.get(i));
+        for(int i = 0; i < funcDecCode.size(); i++) {
+            funcDec.append("\n" + returnType.get(i) + " " + funcDecCode.get(i));
+        }
         return funcDec;
     }
     public StringBuilder getStructPrototype(){
@@ -125,6 +122,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         String printFuncBody = "";
         String printReturnStmt = "";
         String printFuncDec = "";
+        String returnType = "";
         String funcName = ctx.funcID.getText();
 
         openScope();
@@ -141,14 +139,16 @@ public class CodeGenerator extends TLBaseVisitor<String> {
             // visit return expression if it exists
             if (ctx.returnExp() != null) {
                 printReturnStmt += visit(ctx.returnExp());
+                if(ctx.returnExp().returnVar.dotVariable() != null) {
+                    visit(ctx.returnExp().returnVar.dotVariable());
+                }
             }
-
             // this is returned if it contains params
             printFuncDec = funcName + "("  + outPutParam + ") "
                     + "{ \n" + printFuncBody + printReturnStmt + "}" + "\n\n" + closeScope();
         } else {
             // this is returned if it does not contain params
-            printFuncDec =funcName + "() { \n" + visitChildren(ctx)
+            printFuncDec = funcName + "() { \n" + visitChildren(ctx)
                     + "}" + "\n\n" + closeScope();
         }
         funcDecCode.add(printFuncDec);
@@ -203,6 +203,12 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     public String visitCollectionDecl(TLParser.CollectionDeclContext ctx) {
         return cst.collectionDec.visitCollectionDec(ctx, symbolTable);
     }
+
+    @Override
+    public String visitCollectionInstanceDecl(TLParser.CollectionInstanceDeclContext ctx) {
+        return cst.collectionInstanceDec.visitCollectionInstanceDec(ctx, symbolTable);
+    }
+
     /*** Initialisation ***/
     @Override
     public String visitNumberInit(TLParser.NumberInitContext ctx) {
@@ -258,6 +264,9 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     }
     @Override
     public String visitReturnExp(TLParser.ReturnExpContext ctx) {
+        if(ctx.returnVar.dotVariable() != null){
+            visit(ctx.var().dotVariable());
+        }
         return cst.returnExp.visitReturnExpr(ctx, symbolTable);
     }
     @Override
@@ -267,8 +276,18 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
     /*** Assignment ***/
     @Override
-    public String visitAssignment(TLParser.AssignmentContext ctx) {
-        return cst.assignment.visitAssign(ctx, symbolTable);
+    public String visitAssignID(TLParser.AssignIDContext ctx) {
+        return cst.assignID.visitAssignmentID(ctx, symbolTable);
+    }
+
+    @Override
+    public String visitAssignAnswer(TLParser.AssignAnswerContext ctx) {
+        return cst.assignAnswer.visitAssignmentAnswer(ctx, symbolTable);
+    }
+
+    @Override
+    public String visitAssignList(TLParser.AssignListContext ctx) {
+        return cst.assignList.visitAssignmentList(ctx, symbolTable);
     }
 
     /*** Increment/decrement ***/
@@ -277,7 +296,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         String name = ctx.ID().getText();
         String incExp = "";
         if(symbolTable.isInScope(new Attributes(name, null))){
-            incExp = name + ctx.INC().getText() + ";\n";
+            incExp = "    " + name + ctx.INC().getText() + ";\n";
         } else {
             throw new IllegalArgumentException("Variable: " + name + " is not declared");
         }
@@ -288,53 +307,63 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         String name = ctx.ID().getText();
         String decExp = "";
         if(symbolTable.isInScope(new Attributes(name, null))){
-            decExp = name + ctx.DEC().getText() + ";\n";
+            decExp = "    " + name + ctx.DEC().getText() + ";\n";
         } else {
             throw new IllegalArgumentException("Variable: " + name + " is not declared");
         }
         return decExp;
     }
 
-    /** Values **/
-
     @Override
-    public String visitIndexVal(TLParser.IndexValContext ctx) {
-        return cst.indexVal.visitIndexValue(ctx, symbolTable);
+    public String visitVar(TLParser.VarContext ctx) {
+        if(ctx.dotVariable() != null) {
+            return visit(ctx.dotVariable());
+        } else {
+            return ctx.getRuleContext().getText();
+        }
     }
 
     @Override
-    public String visitCollectionVal(TLParser.CollectionValContext ctx) {
-        return cst.collectionVal.visitCollectionValue(ctx, symbolTable);
+    public String visitDotVariable(TLParser.DotVariableContext ctx) {
+        if(ctx.askID != null){
+            return cst.answerVal.visitAnswerValue(ctx, symbolTable);
+        } else if(ctx.listID != null){
+            return cst.indexVal.visitIndexValue(ctx, symbolTable);
+        } else if(ctx.instanceName != null){
+            return cst.collectionVal.visitCollectionValue(ctx, symbolTable);
+        } else {
+            return "";
+        }
     }
 
-    @Override
-    public String visitAnswerVal(TLParser.AnswerValContext ctx) {
-        return cst.answerVal.visitAnswerValue(ctx, symbolTable);
-    }
+
 
     /*** Statements ***/
     @Override
     public String visitIfThenStatement(TLParser.IfThenStatementContext ctx) {
+        String statementBody = "";
+        // visit statement body
+        for(int i = 0; i < ctx.statementBody().size(); i++) {
+            statementBody += visit(ctx.statementBody(i));
+        }
         return openScope() +  "    if(" + visit(ctx.condition()) + ") { \n"
-                + visit(ctx.statementBody()) + "   } \n\n" + closeScope();
+                + statementBody + "   } \n\n" + closeScope();
     }
     @Override
     public String visitIfThenElseStatement(TLParser.IfThenElseStatementContext ctx) {
 
-        // maybe double check if this works
-
         String printStatements = openScope() + "    if(" + visit(ctx.condition(0)) + ") { \n"
-                + visit(ctx.statementBody(0)) + "\n    }" + closeScope();
+                + visit(ctx.ifBody) + "\n    }" + closeScope();
 
         if(ctx.ELSE_IF() != null) {
+
             for(int i = 0; i > ctx.ELSE_IF().size(); i++) {
                 printStatements += openScope() + "    else if (" + visit(ctx.condition((i + 1))) + ") {\n        "
-                        + visit(ctx.statementBody((i + 1))) + "\n    }" + closeScope();
+                        + visit(ctx.elseIfBody) + "\n    }" + closeScope();
             }
         }
-        int size = ctx.statementBody().size();
         if(ctx.ELSE() != null) {
-            printStatements += openScope() + " else {\n" + visit(ctx.statementBody(size - 1)) + "\n    }\n"
+            printStatements += openScope() + " else {\n" + visit(ctx.elseBody) + "\n    }\n"
                     + closeScope();
         }
 
@@ -342,24 +371,38 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     }
     @Override
     public String visitWhileStatement(TLParser.WhileStatementContext ctx) {
+        String statementBody = "";
+        // visit statement body
+        for(int i = 0; i < ctx.statementBody().size(); i++) {
+            statementBody += visit(ctx.statementBody(i));
+        }
         return openScope() + "    while (" + visit(ctx.condition()) + ") { \n"
-                + visit(ctx.statementBody()) + "    }" + "\n" + closeScope();
+                + statementBody + "    }" + "\n" + closeScope();
     }
     @Override
     public String visitRepeatStatement(TLParser.RepeatStatementContext ctx) {
+        String statementBody = "";
+        // visit statement body
+        for(int i = 0; i < ctx.statementBody().size(); i++) {
+            statementBody += visit(ctx.statementBody(i));
+        }
         return openScope() + "    for (int thisIsJustRandomIDxxx = 0; thisIsJustRandomIDxxx < " + ctx.numberVal.getText()
-                + "; thisIsJustRandomIDxxx++ ) { \n" + visit(ctx.statementBody()) + "    }" + "\n" + closeScope();
+                + "; thisIsJustRandomIDxxx++ ) { \n" + statementBody + "    }" + "\n" + closeScope();
     }
     @Override
     public String visitRepeatUntilStatement(TLParser.RepeatUntilStatementContext ctx) {
+        String statementBody = "";
+        // visit statement body
+        for(int i = 0; i < ctx.statementBody().size(); i++) {
+            statementBody += visit(ctx.statementBody(i));
+        }
         return openScope() + "    while(!(" + visit(ctx.condition()) + ")) { \n"
-                + visit(ctx.statementBody()) + "    }" + "\n" + closeScope();
+                + statementBody + "    }" + "\n" + closeScope();
     }
 
     /*** Conditions ***/
     @Override
     public String visitCon1(TLParser.Con1Context ctx) {
-        // visits condition
         return cst.condition1.visitCondition1(ctx, symbolTable);
     }
     @Override

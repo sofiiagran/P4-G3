@@ -7,8 +7,9 @@ import TL.parser.TLParser;
 
 public class TextListInit {
     String varName;
-    String declaration;
+    String init;
     String array;
+    String initialisation;
 
 
     public String visitTextListInitialisation(TLParser.TextListInitContext ctx, SymbolTable symbolTable) {
@@ -21,18 +22,18 @@ public class TextListInit {
 
         varName = ctx.assignID.getText();
 
-        Attributes attribute = new Attributes(varName, Type.Text);
+        Attributes attribute = new Attributes(varName, Type.TextList);
         // checks if variable is declared and of right type
         if (symbolTable.isInScope(attribute)) {
             if (symbolTable.retrieveSymbol(varName).getType() == Type.Text) {
-                declaration = "    " + varName + " = ";
+                init = "    " + varName + " = ";
             } else {
                 throw new IllegalArgumentException("Error: variable is already declared with at different datatype");
             }
         } else {
             // if it is not, add to symbol table and print initialisation with data type
             symbolTable.insertSymbol(attribute);
-            declaration = "    char " + varName + "[][]";
+            init = "    char " + varName + "[][]";
         }
         for (int i = 0; i < ctx.getChildCount(); i++) {
             if (ctx.getChild(i) == ctx.ID(idCount)) {
@@ -62,11 +63,17 @@ public class TextListInit {
             }
         }
 
+        initialisation = init + " = {" + array + "};";
+
         // if it initialised in global scope, it is not printed, since it is printed by globalDecListener
         if (symbolTable.getDepth() == 0) {
             return "";
         } else {
-            return declaration + " = {" + array + "};\n";
+            return initialisation + "\n";
         }
     }
+    public String getInitialisation(){
+        return this.initialisation;
+    }
+
 }

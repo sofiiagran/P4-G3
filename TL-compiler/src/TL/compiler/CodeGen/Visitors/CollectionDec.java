@@ -16,6 +16,9 @@ public class CollectionDec {
 
         int decCount = 0;
 
+        //insert collection name to symbol table
+        symbolTable.insertSymbol(new Attributes(collectionName, Type.Collection));
+
         //loops through children
         for(int i = 0; i < ctx.getChildCount(); i++){
             // check if child is initialisation

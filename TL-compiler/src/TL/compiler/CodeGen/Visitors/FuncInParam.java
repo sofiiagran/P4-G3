@@ -12,12 +12,18 @@ public class FuncInParam {
         String params = "";
 
         // loops through variables and add them to an array as well as returning them as a string
-        for(int i = 0; i < ctx.ID().size(); i++) {
-            if(i > 0 && i <ctx.ID().size()) {
+        for(int i = 0; i < ctx.var().size(); i++) {
+            if(i > 0 && i <ctx.var().size()) {
                 params += ", ";
             }
-            params += ctx.ID(i).getText();
-            paramNames.add(ctx.ID(i).getText());
+            if(ctx.var(i).ID() != null){
+                params += ctx.var(i).ID().getText();
+                paramNames.add(ctx.var(i).ID().getText());
+            }
+            else if(ctx.var(i).dotVariable() != null){
+                params += ctx.var(i).dotVariable().getText();
+                paramNames.add(ctx.var(i).dotVariable().getText());
+            }
         }
         return params;
     }

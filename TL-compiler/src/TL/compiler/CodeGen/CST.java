@@ -18,6 +18,7 @@ public class CST {
     public NumberListDec numberListDec = new NumberListDec();
     public TextListDec textListDec = new TextListDec();
     public CollectionDec collectionDec = new CollectionDec();
+    public CollectionInstanceDec collectionInstanceDec = new CollectionInstanceDec();
 
     /** Initialisation **/
     public NumberInit numberInit = new NumberInit();
@@ -32,7 +33,9 @@ public class CST {
     public CollectionInitVar collectionInitVar = new CollectionInitVar();
 
     /** Expressions **/
-    public Assignment assignment = new Assignment();
+    public AssignID assignID = new AssignID();
+    public AssignAnswer assignAnswer = new AssignAnswer();
+    public AssignList assignList = new AssignList();
     public PrintExp printExp = new PrintExp();
     public AskExp askExp = new AskExp();
     public ReturnExp returnExp = new ReturnExp();

@@ -23,7 +23,7 @@ public class BoolDec {
             } else {
                 // if not, it is added to symbol table
                 symbolTable.insertSymbol(attribute);
-                declaration = "    char " + varName + "[]" + ";";
+                declaration = "    bool " + varName + ";";
             }
 
             // if it is global scope, empty string is returned, since it is printed by globalDecListener

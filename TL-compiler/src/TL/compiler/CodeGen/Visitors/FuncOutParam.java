@@ -67,6 +67,46 @@ public class FuncOutParam {
                     paramNames.add(varName);
                 }
             }
+            if(ctx.declaration(i).numberListDecl() != null){
+                varName = ctx.declaration(i).numberListDecl().ID().getText();
+                //throw error if declared in scope
+                if (symbolTable.isInScope(new Attributes(varName, Type.NumberList))) {
+                    throw new IllegalArgumentException("Error: variable name is already in use");
+                } else {
+                    // adds to symbol table and adds to array
+                    symbolTable.insertSymbol(new Attributes(varName, Type.NumberList));
+                    symbolTable.retrieveSymbol(varName).setIsParam(true);
+                    params += "double " + varName + "[]";
+                    paramNames.add(varName);
+                }
+            }
+            if(ctx.declaration(i).textListDecl() != null){
+                varName = ctx.declaration(i).textListDecl().ID().getText();
+                //throw error if declared in scope
+                if (symbolTable.isInScope(new Attributes(varName, Type.TextList))) {
+                    throw new IllegalArgumentException("Error: variable name is already in use");
+                } else {
+                    // adds to symbol table and adds to array
+                    symbolTable.insertSymbol(new Attributes(varName, Type.TextList));
+                    symbolTable.retrieveSymbol(varName).setIsParam(true);
+                    params += "char " + varName +"[][]";
+                    paramNames.add(varName);
+                }
+            }
+            if(ctx.declaration(i).collectionInstanceDecl() != null){
+                String collectionName = ctx.declaration(i).collectionInstanceDecl().collectionName.getText();
+                String instanceName = ctx.declaration(i).collectionInstanceDecl().instanceName.getText();
+                //throw error if declared in scope
+                if (symbolTable.isInScope(new Attributes(instanceName, Type.Collection))) {
+                    throw new IllegalArgumentException("Error: variable name is already in use");
+                } else {
+                    // adds to symbol table and adds to array
+                    symbolTable.insertSymbol(new Attributes(instanceName, Type.Collection));
+                    symbolTable.retrieveSymbol(instanceName).setIsParam(true);
+                    params += collectionName + " " + instanceName;
+                    paramNames.add(instanceName);
+                }
+            }
         }
 
         printParams.add(params);

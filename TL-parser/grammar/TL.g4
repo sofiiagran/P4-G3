@@ -34,7 +34,7 @@ funcOutputParam:
     ;
 
 funcInputParam:
-    varID=ID | (varID=ID (COMMA varID=ID)* )
+    var | (var (COMMA var)* )
     ;
 
 funcName:
@@ -52,7 +52,8 @@ declaration:
     | boolDec=boolDecl
     | numberListDecl
     | textListDecl
-    | collectionDec
+    | collectionDecl
+    | collectionInstanceDecl
     ;
 
 numberDecl:
@@ -69,7 +70,7 @@ numberListDecl:
      ;
 
 numberListInit:
-     (NUMBER LIST)? assignID=ID ASSIGN (numberValue | ID ) (COMMA (numberValue | ID ))*
+     (NUMBER LIST)? assignID=ID ASSIGN (numberValue | ID) (COMMA (numberValue | ID))*
      ;
 
 textListDecl:
@@ -77,7 +78,7 @@ textListDecl:
      ;
 
 textListInit:
-     (TEXT LIST)? assignID=ID ASSIGN (TEXT_VAL | ID ) (COMMA  (TEXT_VAL | ID))*
+     (TEXT LIST)? assignID=ID ASSIGN (TEXT_VAL | ID) (COMMA  (TEXT_VAL | ID))*
      ;
 
 
@@ -106,29 +107,34 @@ statement:
     ;
 
 ifThenStatement:
-    IF condition (BEGIN | THEN) statementBody END
+    IF condition (BEGIN | THEN) statementBody+ END
     ;
 ifThenElseStatement:
-    IF condition (BEGIN | THEN) statementBody END (ELSE_IF condition  BEGIN statementBody END)* (ELSE BEGIN statementBody END)?
+    IF condition (BEGIN | THEN) ifBody=statementBody* END (ELSE_IF condition  BEGIN elseIfBody=statementBody* END)*
+    (ELSE BEGIN elseBody=statementBody* END)?
     ;
 repeatStatement:
-    REPEAT (numberVal=numberValue| ID ) TIMES (BEGIN | THEN) statementBody END
+    REPEAT (numberVal=numberValue| var ) TIMES (BEGIN | THEN) statementBody* END
     ;
 repeatUntilStatement:
-    REPEAT_UNTIL condition (BEGIN | THEN) statementBody END
+    REPEAT_UNTIL condition (BEGIN | THEN) statementBody* END
     ;
 whileStatement:
-    WHILE condition (DO | BEGIN) statementBody END
+    WHILE condition (DO | BEGIN) statementBody* END
     ;
 
 statementBody:
-    declaration* initialization* expression*  statement*
+    statement+
+    | declaration+
+    | initialization+
+    | expression+
     ;
 
 condition:
-    ID  conditionalOperation (val | ID ) ((AND | OR)  ID conditionalOperation (val | ID ))*                #con1
-    | ID                                                                                               #con2
-    | NOTEQUAL ID                                                                                      #con3
+    ((var  conOp=conditionalOperation (val | var)) | (var) | (NOT var) )
+    ((AND | OR)  (var conOp=conditionalOperation (val | var)) | (var) | (NOT var) )*                      #con1
+    | var                                                                                                 #con2
+    | NOT var                                                                                             #con3
     ;
 
 expression:
@@ -143,32 +149,34 @@ expression:
     ;
 
 returnExp:
-    RETURN (returnVal=val | returnVar=ID)
+    RETURN (returnVal=val | returnVar=var)
     ;
 
 printExp:
-    PRINT (TEXT_VAL | numberValue  | ID ) ( (ADD (TEXT_VAL | numberValue  | ID ))+ )?
+    PRINT (TEXT_VAL | numberValue  | var ) ( (ADD (TEXT_VAL | numberValue  | var ))+ )?
     ;
 
-askExp: ASK askID=ID (TEXT_VAL | numberValue  | ID ) ( (ADD (TEXT_VAL | numberValue  | ID ))+ )?
+askExp: ASK askID=ID (TEXT_VAL | numberValue  | var) ( (ADD (TEXT_VAL | numberValue  | var ))+ )?
     ;
 
 mathExp :
-    assignID=ID ASSIGN (numberValue | var=ID) (mathOp1=mathematicalOperation1 (numberValue | var=ID))+
-    | assignID=ID mathOp2=mathematicalOperation2 (numberValue | var=ID)
-    (mathOp1=mathematicalOperation1 (numberValue | var=ID))*
+    assignID=var ASSIGN (numberValue | var)
+        (mathOp1=mathematicalOperation1 (numberValue | var))+
+
+    | assignID=var mathOp2=mathematicalOperation2 (numberValue | var)
+    (mathOp1=mathematicalOperation1 (numberValue | var))*
     ;
 
 textInit:
-    (TEXT)? var1ID=ID ASSIGN TEXT_VAL
+    (TEXT)? var1ID=ID ASSIGN (TEXT_VAL)
     ;
 
 numberInit:
-    (NUMBER)? var1ID=ID ASSIGN numberVal=numberValue
+    (NUMBER)? var1ID=ID ASSIGN (numberVal=numberValue)
     ;
 
 booleanInit:
-    (BOOLEAN)? var1ID=ID ASSIGN BOOL_LITERAL
+    (BOOLEAN)? var1ID=ID ASSIGN (BOOL_LITERAL)
     ;
 
 val:
@@ -176,25 +184,23 @@ val:
     | numberVal=numberValue
     | boolVal=BOOL_LITERAL
     ;
-dotVal:
-      askID=ID DOT ANSWER                     #answerVal
-    | ID DOT NUMBER_VAL_INT                   #indexVal
-    | instanceName=ID DOT field=ID            #collectionVal
-    ;
 
 numberValue:
     double=NUMBER_VAL_DOUBLE
     | int=NUMBER_VAL_INT
     ;
-collectionDec:
-    COLLECTION collectionName=COLLECTION_ID LPAREN declaration (COMMA declaration)* RPAREN   #collectionDecl
+collectionDecl:
+    COLLECTION collectionName=COLLECTION_ID LPAREN declaration (COMMA declaration)* RPAREN
+    ;
+collectionInstanceDecl:
+    collectionName=COLLECTION_ID instanceName=ID
     ;
 collectionInit:
-      collectionInstance=ID DOT field=ID ASSIGN BOOL_LITERAL                                 #collectionInitBool
-    | collectionInstance=ID DOT field=ID ASSIGN TEXT_VAL                                     #collectionInitText
-    | collectionInstance=ID DOT field=ID ASSIGN numberValue                                  #collectionInitNumber
-    | collectionInstance=ID DOT field=ID ASSIGN value=ID                                     #collectionInitVar
-    | (collectionName=COLLECTION_ID)? instanceName=ID ASSIGN (val | ID ) (COMMA  (val | ID ))* #collectionInitAll
+      collectionInstance=ID GET field=ID ASSIGN BOOL_LITERAL                                   #collectionInitBool
+    | collectionInstance=ID GET field=ID ASSIGN TEXT_VAL                                       #collectionInitText
+    | collectionInstance=ID GET field=ID ASSIGN numberValue                                    #collectionInitNumber
+    | collectionInstance=ID GET field=ID ASSIGN variable=var                                   #collectionInitVar
+    | collectionName=COLLECTION_ID instanceName=ID ASSIGN (val | var) (COMMA  (val | var ))* #collectionInitAll
     ;
 increment:
     ID INC
@@ -203,7 +209,13 @@ decrement:
     ID DEC
     ;
 assignment:
-    var1ID=ID ASSIGN var2ID=ID
+    var1ID=ID ASSIGN var2ID=ID                                   #assignID
+    | assignID=ID ASSIGN askID=ID GET ANSWER                     #assignAnswer
+    | assignID=ID ASSIGN indexID=ID GET NUMBER_VAL_INT           #assignList
+    ;
+var:
+    ID
+    | dotVariable
     ;
 
 conditionalOperation:
@@ -228,7 +240,11 @@ mathematicalOperation2:
     	     | mathOpDIV=DIV_ASSIGN
     		 ;
 
-
+dotVariable:
+      askID=ID GET ANSWER
+    | listID=ID GET (NUMBER_VAL_INT)
+    | instanceName=ID GET field=ID
+    ;
 
 /***** LEXER RULES  *****/
 
@@ -266,6 +282,8 @@ RETURN: 'return';
 ASK: 'ask';
 ANSWER: 'answer';
 RUN: 'run';
+GET: 'get';
+NOT: 'not';
 
 // Separators
 
@@ -285,7 +303,7 @@ QUOTE : '"';
 ASSIGN : '=';
 GT : '>';
 LT : '<';
-EQUAL : '==' | '=?' ;
+EQUAL : '==' | '?=' ;
 LE : '<=' | 'less or equal to' ;
 GE : '>=' | 'greater or equal to';
 NOTEQUAL : '!=' | 'is not';

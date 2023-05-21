@@ -25,8 +25,8 @@ public class MathExp {
         }
 
         //check for compatible types
-        for(int i = 0; i < (ctx.ID().size() - 1); i++){
-            typeCheckerMathExp1.typeCheckMathExp1(ctx.ID(i).getText(), ctx.ID(i + 1).getText(), symbolTable);
+        for(int i = 0; i < (ctx.var().size() - 1); i++){
+            typeCheckerMathExp1.typeCheckMathExp1(ctx.var(i).getText(), ctx.var(i + 1).getText(), symbolTable);
         }
 
         // this is returned if it was not declared beforehand (includes data type)
@@ -41,7 +41,7 @@ public class MathExp {
                 printMathExpr += "bool " + assignIdName;
             }
         } else {
-            printMathExpr += ctx.ID(0);
+            printMathExpr += assignIdName;
         }
         int numberCount = 0;
 

@@ -1,5 +1,6 @@
 package TL.compiler.CodeGen.Visitors;
 
+import TL.compiler.CodeGen.TypeChecker.TypeCheckerPrintBody;
 import TL.compiler.SymbolTable.Attributes;
 import TL.compiler.SymbolTable.SymbolTable;
 import TL.compiler.SymbolTable.Type;
@@ -9,16 +10,24 @@ import java.util.ArrayList;
 
 public class AskExp {
 
+    TypeCheckerPrintBody typeChecker = new TypeCheckerPrintBody();
+
     public String visitAskExpr(TLParser.AskExpContext ctx, SymbolTable symbolTable){
         String varName = ctx.askID.getText();
 
-        // Check if the variable name exists in the symbol table
+        // Check if the variable name exists in the symbol table and is of type text
         if (symbolTable.isInScope(new Attributes(varName, Type.Text))) {
-            return  "    char temp;" +
-                    "\n    printf(" + printBody(ctx, symbolTable) + ");" +
-                    "\n    scanf(" + "\"%c\"" + "&temp);" +
-                    "\n    " + "scanf(" + "\"%[^\\n]\"" + ", " + varName + ");" +
-                    "\n\n";
+            if(symbolTable.retrieveSymbol(varName).getType() == Type.Text){
+                return  "    char temp;" +
+                        "\n    printf(" + printBody(ctx, symbolTable) + ");" +
+                        "\n    scanf(" + "\"%c\"" + "&temp);" +
+                        "\n    " + "scanf(" + "\"%[^\\n]\"" + ", " + varName + ");" +
+                        "\n\n";
+            } else {
+                // throw error if ask ID is declared with a different type than text.
+                throw new IllegalArgumentException("Variable: " + varName + " is already declared with a different " +
+                        "data type than text. Ask expression can also read answer of type text.");
+            }
 
         } else {
             //if it does not exist, it is added
@@ -34,8 +43,8 @@ public class AskExp {
     public String printBody(TLParser.AskExpContext ctx, SymbolTable symbolTable){
         int numberCount = 0;
         int textCount = 0;
-        int idCount = 1;
         int addCount = 0;
+        int varCount = 1;
 
         ArrayList<String> variableNames = new ArrayList<>();
         String printVarNames = "";
@@ -61,31 +70,26 @@ public class AskExp {
                 val += newString.replace("\"", "");
                 textCount++;
             }
-            //checks if child is a variable (ID)
-            else if (ctx.getChild(i) == ctx.ID(idCount)) {
-                if (symbolTable.isInScope(new Attributes(ctx.ID(idCount).getText(), null))) {
-                    // print different base on type of the variable + adds variable to an array
-                    if (symbolTable.retrieveSymbol(ctx.ID(idCount).getText()).getType() == Type.Number) {
-                        val += "%lf";
-                        variableNames.add(ctx.ID(idCount).getText());
-                        idCount++;
-                    }
-                    else if (symbolTable.retrieveSymbol(ctx.ID(idCount).getText()).getType() == Type.Text) {
-                        val += "%s";
-                        variableNames.add(ctx.ID(idCount).getText());
-                        idCount++;
-                    }
-                    else if (symbolTable.retrieveSymbol(ctx.ID(idCount).getText()).getType() == Type.Boolean) {
-                        val += "%d";
-                        variableNames.add(ctx.ID(idCount).getText());
-                        idCount++;
-                    }
-                } else {
-                    throw new IllegalArgumentException("Error: missing variable declaration of variable: " + ctx.ID(idCount).getText());
+            //checks if child is a variable
+            else if (ctx.getChild(i) == ctx.var(varCount)){
+                // check if it is ID
+                if(ctx.var(varCount).ID() != null){
+                    String varName = ctx.var(varCount).ID().getText();
+                    // calls function that check type and translate it to C
+                    val += typeChecker.checkType(varName, symbolTable);
+                    variableNames.add(varName);
                 }
+                // check if it is dot variable
+                else if(ctx.var(varCount).dotVariable() != null) {
+                    String varName = ctx.var(varCount).dotVariable().getText();
+                    // calls function that check type and translate it to C
+                    val += typeChecker.checkType(varName, symbolTable);
+                    variableNames.add(varName);
+                }
+                varCount++;
             }
             // if child is +, change it to space
-            if (ctx.getChild(i) == ctx.ADD(addCount)) {
+            else if (ctx.getChild(i) == ctx.ADD(addCount)) {
                 val += " ";
                 addCount++;
             }
@@ -96,4 +100,5 @@ public class AskExp {
         //print the result string with "" added to start and end, plus variable names printed afterwards
         return val + "\" " + printVarNames;
     }
+
 }

@@ -7,7 +7,7 @@ import TL.parser.TLParser;
 
 public class NumberInit {
     String varName;
-    String declaration;
+    String init;
 
     public Boolean declared = false;
 
@@ -19,7 +19,7 @@ public class NumberInit {
         // checks if variable is declared and of right type
         if(symbolTable.isInScope(attribute)) {
             if(symbolTable.retrieveSymbol(varName).getType() == Type.Number) {
-                declaration = "    "  + varName + " = " + ctx.numberVal.getText() + ";";
+                init = "    "  + varName + " = " + ctx.numberVal.getText() + ";";
             } else {
                 throw new IllegalArgumentException("Error: variable is already declared with at different datatype");
             }
@@ -28,23 +28,23 @@ public class NumberInit {
             symbolTable.insertSymbol(attribute);
             if(ctx.numberVal.NUMBER_VAL_INT() != null) {
                 //adds .0 if integer
-                declaration = "    double " + varName + " = " + ctx.numberVal.getText() + ".0 ;";
+                init = "    double " + varName + " = " + ctx.numberVal.getText() + ".0 ;";
             }
             else if(ctx.numberVal.NUMBER_VAL_DOUBLE() != null){
-                declaration = "    double " + varName + " = " + ctx.numberVal.getText() + ";";
+                init = "    double " + varName + " = " + ctx.numberVal.getText() + ";";
             }
         }
         // if it declared in global scope, it is not printed, since it is printed by globalDecListener
         if (symbolTable.getDepth() == 0) {
             return "";
         } else {
-            return declaration + "\n";
+            return init + "\n";
         }
     }
     public String getVarName(){
         return this.varName;
     }
-    public String getDeclaration() {return this.declaration;}
+    public String getInit() {return this.init;}
 
 
 }

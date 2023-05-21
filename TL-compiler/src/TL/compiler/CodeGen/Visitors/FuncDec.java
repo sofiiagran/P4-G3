@@ -11,7 +11,7 @@ public class FuncDec {
 
     ArrayList<String> returnTypeArray = new ArrayList<>();
 
-    public void getReturnType(TLParser.FuncDecContext ctx, SymbolTable symbolTable) {
+    public void setReturnType(TLParser.FuncDecContext ctx, SymbolTable symbolTable) {
 
         String funcName = ctx.funcID.getText();
         //default type void
@@ -25,9 +25,19 @@ public class FuncDec {
                 //checks if it returns a variable
                 if(ctx.returnExp().returnVar != null) {
                     String varName = ctx.returnExp().returnVar.getText();
-
-                    if(symbolTable.isInScope(new Attributes(varName, null))){
-                        returnDt = symbolTable.retrieveSymbol(varName).getType();
+                    if (ctx.returnExp().returnVar.dotVariable() != null) {
+                        if (ctx.returnExp().returnVar.dotVariable().listID != null) {
+                            varName = ctx.returnExp().returnVar.dotVariable().listID.getText() + "["
+                                    + ctx.returnExp().returnVar.dotVariable().NUMBER_VAL_INT().getText() + "]";
+                        } else if (ctx.returnExp().returnVar.dotVariable().instanceName != null) {
+                            varName = ctx.returnExp().returnVar.dotVariable().instanceName.getText() + "."
+                                    + ctx.returnExp().returnVar.dotVariable().field.getText();
+                        } else if (ctx.returnExp().returnVar.dotVariable().askID != null) {
+                            varName = ctx.returnExp().returnVar.dotVariable().askID.getText();
+                        }
+                        if (symbolTable.isInScope(new Attributes(varName, null))) {
+                            returnDt = symbolTable.retrieveSymbol(varName).getType();
+                        }
                     }
                 }
                 //checks if it returns a value
@@ -45,7 +55,6 @@ public class FuncDec {
                     else if(ctx.returnExp().returnVal == ctx.returnExp().returnVal.boolVal) {
                         returnDt = Type.Boolean;
                     }
-
                 }
 
             }
@@ -55,7 +64,7 @@ public class FuncDec {
         Attributes attribute = new Attributes(funcName, returnDt);
         symbolTable.insertSymbol(attribute);
     }
-    public String printReturnType(TLParser.FuncDecContext ctx, SymbolTable symbolTable) {
+    public String getReturnType(TLParser.FuncDecContext ctx, SymbolTable symbolTable) {
 
         String funcName = ctx.funcID.getText();
         String returnType = "";

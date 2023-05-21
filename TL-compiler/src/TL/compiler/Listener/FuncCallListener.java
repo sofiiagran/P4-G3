@@ -70,7 +70,7 @@ public class FuncCallListener extends TLBaseListener {
         }
 
         // loop that checks variable declared in function call
-        for(int i = 0; i < ctx.ID().size(); i++) {
+        for(int i = 0; i < ctx.var().size(); i++) {
 
             outParamName = funcDecListener.paramListener.getOutParamsName();
             inParamName = funcDecListener.paramListener.getInParamsName();

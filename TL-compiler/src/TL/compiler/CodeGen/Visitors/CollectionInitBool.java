@@ -5,6 +5,7 @@ import TL.compiler.SymbolTable.SymbolTable;
 import TL.parser.TLParser;
 
 public class CollectionInitBool {
+    String init;
 
     public String visitCollectionBoolInit(TLParser.CollectionInitBoolContext ctx, SymbolTable symbolTable) {
 
@@ -19,6 +20,8 @@ public class CollectionInitBool {
             throw new IllegalArgumentException("Variable: " + instanceName + " is not declared.");
         }
         //if both is declared, initialisation is printed
-        return "    " +  instanceName + "." + field + " = " + ctx.BOOL_LITERAL() + ";\n";
+        init = "    " +  instanceName + "." + field + " = " + ctx.BOOL_LITERAL() + ";";
+        return init + "\n";
     }
+    public String getInit() {return this.init;}
 }

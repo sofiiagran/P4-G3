@@ -5,6 +5,7 @@ import TL.compiler.SymbolTable.SymbolTable;
 import TL.parser.TLParser;
 
 public class CollectionInitNumber {
+    String init;
     public String visitCollectionNumberInit(TLParser.CollectionInitNumberContext ctx, SymbolTable symbolTable){
         String instanceName = ctx.collectionInstance.getText();
         String field = ctx.field.getText();
@@ -26,6 +27,8 @@ public class CollectionInitNumber {
         }
 
         //if both is declared, initialisation is printed
-        return "    " + instanceName + "." + field + " = " + number + ";\n";
+        init = "    " + instanceName + "." + field + " = " + number + ";\n";
+        return init + "\n";
     }
+    public String getInit() {return this.init;}
 }

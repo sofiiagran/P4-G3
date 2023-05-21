@@ -1,5 +1,6 @@
 package TL.compiler.Listener;
 
+import TL.compiler.CodeGen.CST;
 import TL.compiler.CodeGen.Visitors.FuncDec;
 import TL.compiler.SymbolTable.Attributes;
 import TL.compiler.SymbolTable.SymbolTable;
@@ -17,7 +18,7 @@ public class FuncDecListener extends TLBaseListener {
     String returnType;
     int funcDecCount = 0;
 
-    FuncDec funcDec = new FuncDec();
+    CST cst = new CST();
 
     public FuncDecListener(ParamListener p, SymbolTable s) {
         this.paramListener = p;
@@ -38,10 +39,10 @@ public class FuncDecListener extends TLBaseListener {
         symbolTable.openScope();
 
         // calls function that get return type based on return type (void is default)
-        funcDec.getReturnType(ctx, symbolTable);
+        cst.funcDec.setReturnType(ctx, symbolTable);
 
         //calls function that declare function type (translated to C's data types)
-        returnType = funcDec.printReturnType(ctx, symbolTable);
+        returnType = cst.funcDec.getReturnType(ctx, symbolTable);
 
         //adds function name to symbol table
         FuncPrototype1 = ctx.funcName().getText();
@@ -56,7 +57,7 @@ public class FuncDecListener extends TLBaseListener {
     }
 
     public ArrayList<String> getReturnType() {
-        return funcDec.getReturnTypeArray();
+        return cst.funcDec.getReturnTypeArray();
     }
 
     @Override
