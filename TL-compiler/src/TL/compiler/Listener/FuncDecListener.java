@@ -72,6 +72,10 @@ public class FuncDecListener extends TLBaseListener {
         }
     }
 
+    public Type getType(String name){
+        return symbolTable.retrieveSymbol(name).getType();
+    }
+
     public String getPrototypes(){
         return this.printPrototypes;
     }

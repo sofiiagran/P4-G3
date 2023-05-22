@@ -1,5 +1,6 @@
 package TL.compiler.CodeGen;
 
+import TL.compiler.Listener.FuncCallListener;
 import TL.compiler.Listener.FuncDecListener;
 import TL.compiler.Listener.GlobalDecListener;
 import TL.compiler.SymbolTable.*;
@@ -12,6 +13,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
     SymbolTable symbolTable;
     FuncDecListener funcDecListener;
+    FuncCallListener funcCallListener;
     GlobalDecListener globalDecListener;
     StringBuilder libs = new StringBuilder();
     StringBuilder globalDec = new StringBuilder();
@@ -49,15 +51,17 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
     public StringBuilder getGlobalDec(){
         // retrieve global symbol defined in globalDecListener
-        // this is printed in BuildCProgram
         globalDec.append(globalDecListener.getGlobalDec());
         return globalDec;
     }
     public StringBuilder getFuncPrototypes(){
         // retrieve function prototypes defined in funcDecListener
-        // this is printed in BuildCProgram
         funcPrototypes.append(funcDecListener.getPrototypes());
         return funcPrototypes;
+    }
+    public StringBuilder getStructPrototype(){
+        structPrototype.append(cst.collectionDec.getStructPrototype());
+        return structPrototype;
     }
     public StringBuilder getMainFunc(){
         mainFunc.append(mainCode);
@@ -72,10 +76,6 @@ public class CodeGenerator extends TLBaseVisitor<String> {
             funcDec.append("\n" + returnType.get(i) + " " + funcDecCode.get(i));
         }
         return funcDec;
-    }
-    public StringBuilder getStructPrototype(){
-        structPrototype.append(cst.collectionDec.getStructPrototype());
-        return structPrototype;
     }
 
     /*********** Code Generation ***********/
@@ -255,8 +255,13 @@ public class CodeGenerator extends TLBaseVisitor<String> {
 
     /*** Expressions ***/
     @Override
-    public String visitAskExp(TLParser.AskExpContext ctx) {
-        return cst.askExp.visitAskExpr(ctx, symbolTable);
+    public String visitTextQuestion(TLParser.TextQuestionContext ctx) {
+        return cst.questionText.visitQuestionText(ctx, symbolTable);
+    }
+
+    @Override
+    public String visitNumberQuestion(TLParser.NumberQuestionContext ctx) {
+        return cst.questionNumber.visitQuestionNumber(ctx, symbolTable);
     }
     @Override
     public String visitPrintExp(TLParser.PrintExpContext ctx) {

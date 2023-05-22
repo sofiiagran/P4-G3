@@ -413,13 +413,25 @@ public class TLBaseListener implements TLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAskExp(TLParser.AskExpContext ctx) { }
+	@Override public void enterNumberQuestion(TLParser.NumberQuestionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAskExp(TLParser.AskExpContext ctx) { }
+	@Override public void exitNumberQuestion(TLParser.NumberQuestionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTextQuestion(TLParser.TextQuestionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTextQuestion(TLParser.TextQuestionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

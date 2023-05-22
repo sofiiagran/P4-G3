@@ -37,8 +37,10 @@ public class CST {
     public AssignAnswer assignAnswer = new AssignAnswer();
     public AssignList assignList = new AssignList();
     public AssignCollection assignCollection = new AssignCollection();
+
     public PrintExp printExp = new PrintExp();
-    public AskExp askExp = new AskExp();
+    public QuestionText questionText = new QuestionText();
+    public QuestionNumber questionNumber = new QuestionNumber();
     public ReturnExp returnExp = new ReturnExp();
     public MathExp mathExp = new MathExp();
     public IndexVal indexVal = new IndexVal();

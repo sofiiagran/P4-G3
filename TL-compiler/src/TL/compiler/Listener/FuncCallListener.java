@@ -13,9 +13,9 @@ public class FuncCallListener extends TLBaseListener {
 
     FuncDecListener funcDecListener;
     GlobalDecListener globalDecListener;
-    public SymbolTable symbolTable;
-
+    SymbolTable symbolTable;
     String funcName;
+    String assignment;
 
     public FuncCallListener(FuncDecListener f, GlobalDecListener g, SymbolTable s){
         this.funcDecListener = f;
@@ -77,8 +77,8 @@ public class FuncCallListener extends TLBaseListener {
 
             //throw error if number of params in function call does not match the one from declaration
             if(inParamName.size() != outParamName.size()) {
-                throw new IllegalArgumentException("Error: number of parameters in the function call does not match the number " +
-                        "of parameters in the function declaration");
+                throw new IllegalArgumentException("Error: number of parameters in the function call does not match " +
+                        "the number of parameters in the function declaration");
             } else {
                 // check if input variables is declared
                 if(funcDecListener.isDeclared(funcName)) {

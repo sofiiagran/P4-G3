@@ -3,18 +3,29 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-void myfunc();
+void getName();
+void getAge();
 
 int main() { 
 
-    myfunc();
+    getName();
+    getAge();
     return 0;
 }
-void myfunc() { 
-    char * person1;
-    printf( "What is your name?" );
-    scanf("%[^\n]s", &person1);
+void getName() { 
+    char question1[100];
+    printf( "What is your name?\n" );
+    scanf("%[^\n]s", question1);
 
-    printf( "%s" , &person1);
+    printf( "%s" , question1);
+}
+
+
+void getAge() { 
+    double question2;
+    printf( "what is your age?\n" );
+    scanf("%lf", &question2);
+
+    printf( "%lf" , question2);
 }
 

@@ -7,7 +7,6 @@ public class Attributes {
     String name;
     Type type;
     Boolean isParam = false;
-    Boolean isGlobal = false;
     int depth;
 
 
@@ -40,12 +39,6 @@ public class Attributes {
         return this.isParam;
     }
 
-    public void setIsGlobal(Boolean truthvalue){
-        this.isGlobal = truthvalue;
-    }
-    public Boolean getIsGlobal(){
-        return this.isGlobal;
-    }
 
 
 }

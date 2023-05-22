@@ -35,20 +35,20 @@ public class Condition1 {
                         if (symbolTable.isInScope(new Attributes(leftVar, null))) {
                             Type leftVarType = symbolTable.retrieveSymbol(leftVar).getType();
                             varCount++;
+
+                            // check if next child is a variable
                             if (ctx.getChild(i + 1) == ctx.var(varCount)) {
+
+                                // check if the variable is an ID
                                 if (ctx.var(varCount).ID() != null) {
                                     String rightVar = ctx.var(varCount).ID().getText();
                                     returnCondition += checkTypes(leftVar, rightVar, symbolTable, operator);
-                                } else if (ctx.var(varCount).dotVariable() != null) {
+                                }
+                                // check if the variable is a dot variable
+                                else if (ctx.var(varCount).dotVariable() != null) {
                                     String rightVar = "";
-
-                                    // if it is an answer variable / contains an ask ID
-                                    if (ctx.var(varCount).dotVariable().askID != null) {
-                                        // set rightVar to ask ID
-                                        rightVar = ctx.var(varCount).dotVariable().askID.getText();
-                                    }
-                                    // if it is a collection variable / contain an instance name
-                                    else if (ctx.var(varCount).dotVariable().instanceName != null) {
+                                    // check if it is a collection variable / contain an instance name
+                                    if (ctx.var(varCount).dotVariable().instanceName != null) {
 
                                         String instanceName = ctx.var(varCount).dotVariable().instanceName.getText();
                                         String field = ctx.var(varCount).dotVariable().field.getText();
@@ -68,7 +68,9 @@ public class Condition1 {
                                                     + field + "\" in math expressions," + " since: "
                                                     + instanceName + " or " + field + " is not declared");
                                         }
-                                    } else if (ctx.var(varCount).dotVariable().listID != null) {
+                                    }
+                                    // check if the dot variable contains a listID / is a list variable
+                                    else if (ctx.var(varCount).dotVariable().listID != null) {
 
                                         String listID = ctx.var(varCount).dotVariable().listID.getText();
                                         String index = ctx.var(varCount).dotVariable().NUMBER_VAL_INT().getText();
@@ -84,6 +86,11 @@ public class Condition1 {
                                             throw new IllegalArgumentException("Cannot use variable: \" " + listID + " get " +
                                                     index + "\" in math expressions, since: " + listID + " is not declared");
                                         }
+                                    }
+                                    // check if it is an answer variable / contains an ask ID
+                                    else if (ctx.var(varCount).dotVariable().askID != null) {
+                                        // set rightVar to ask ID
+                                        rightVar = ctx.var(varCount).dotVariable().askID.getText();
                                     }
                                     returnCondition += checkTypes(leftVar, rightVar, symbolTable, operator);
                                 }
@@ -132,18 +139,8 @@ public class Condition1 {
                     // does the same as for ID
                     else if (ctx.var(varCount).dotVariable() != null) {
                         String leftVar = "";
-
-                        // if it is an answer variable / contains an ask ID
-                        if (ctx.var(varCount).dotVariable().askID != null) {
-                            // set leftVar to ask ID, throw error if not declared
-                            leftVar = ctx.var(varCount).dotVariable().askID.getText();
-                            if (!symbolTable.isInScope(new Attributes(leftVar, null))) {
-                                throw new IllegalArgumentException("Cannot use variable: \"" + leftVar + " get answer\""
-                                        + " in math expressions, since: " + leftVar + " is not declared");
-                            }
-                        }
-                        // if it is a collection variable / contain an instance name
-                        else if (ctx.var(varCount).dotVariable().instanceName != null) {
+                        // check if it is a collection variable / contain an instance name
+                        if (ctx.var(varCount).dotVariable().instanceName != null) {
 
                             String instanceName = ctx.var(varCount).dotVariable().instanceName.getText();
                             String field = ctx.var(varCount).dotVariable().field.getText();
@@ -155,7 +152,6 @@ public class Condition1 {
 
                                 leftVar = instanceName + "." + field;
                                 Type fieldType = symbolTable.retrieveSymbol(field).getType();
-
                                 symbolTable.insertSymbol(new Attributes(leftVar, fieldType));
 
                             } else {
@@ -163,7 +159,9 @@ public class Condition1 {
                                         + field + "\" in math expressions," + " since: "
                                         + instanceName + " or " + field + " is not declared");
                             }
-                        } else if (ctx.var(varCount).dotVariable().listID != null) {
+                        }
+                        // check if it is a list variable / contain an listID
+                        else if (ctx.var(varCount).dotVariable().listID != null) {
 
                             String listID = ctx.var(varCount).dotVariable().listID.getText();
                             String index = ctx.var(varCount).dotVariable().NUMBER_VAL_INT().getText();
@@ -178,6 +176,15 @@ public class Condition1 {
                             } else {
                                 throw new IllegalArgumentException("Cannot use variable: \" " + listID + " get " +
                                         index + "\" in math expressions, since: " + listID + " is not declared");
+                            }
+                        }
+                        // if it is an answer variable / contains an ask ID
+                        else if (ctx.var(varCount).dotVariable().askID != null) {
+                            // set leftVar to ask ID, throw error if not declared
+                            leftVar = ctx.var(varCount).dotVariable().askID.getText();
+                            if (!symbolTable.isInScope(new Attributes(leftVar, null))) {
+                                throw new IllegalArgumentException("Cannot use variable: \"" + leftVar + " get answer\""
+                                        + " in math expressions, since: " + leftVar + " is not declared");
                             }
                         }
                         varCount++;
@@ -202,7 +209,7 @@ public class Condition1 {
                                     String field = ctx.var(varCount).dotVariable().field.getText();
 
                                     // check if both instance name and field is declared, if so,
-                                    // leftVar is set to name . field, and added to symbol table with teh same type as field
+                                    // leftVar is set to name . field, and added to symbol table with the same type as field
                                     if (symbolTable.isInScope(new Attributes(instanceName, null))
                                             && symbolTable.isInScope(new Attributes(field, null))) {
 

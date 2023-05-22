@@ -58,11 +58,11 @@ public class Main {
 
         /** code generator **/
         CodeGenerator codeGenerator = new CodeGenerator(funcDec, globalDec, symbolTable);
-        String targetCode = codeGenerator.visit(tree);
+        codeGenerator.visit(tree);
 
         /** builds program and writes it to output file **/
         BuildCProgram builder = new BuildCProgram();
-        StringBuilder buildProgram = builder.buildProgram(codeGenerator, targetCode);
+        StringBuilder buildProgram = builder.buildProgram(codeGenerator);
         builder.printCProgramToFile(buildProgram);
 
     }

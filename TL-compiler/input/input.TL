@@ -1,14 +1,19 @@
  start begin
 
-    myfunc
+ run getName
+ run getAge
+
  end
 
  functions begin
 
-     function myfunc begin
+     function getName begin
+         ask text question1 "What is your name?\n"
+         print question1
+     end
 
-    ask person1 "What is your name?"
-    print person1 get answer
-
+     function getAge begin
+        ask number question2 "what is your age?\n"
+        print question2
      end
 end

@@ -35,9 +35,9 @@ public class FuncDec {
                         } else if (ctx.returnExp().returnVar.dotVariable().askID != null) {
                             varName = ctx.returnExp().returnVar.dotVariable().askID.getText();
                         }
-                        if (symbolTable.isInScope(new Attributes(varName, null))) {
-                            returnDt = symbolTable.retrieveSymbol(varName).getType();
-                        }
+                    }
+                    if (symbolTable.isInScope(new Attributes(varName, null))) {
+                        returnDt = symbolTable.retrieveSymbol(varName).getType();
                     }
                 }
                 //checks if it returns a value

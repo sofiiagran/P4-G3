@@ -212,12 +212,14 @@ public class GlobalDecListener extends TLBaseListener {
     }
     /** Enter ask exp, to declare ask ID **/
     @Override
-    public void enterAskExp(TLParser.AskExpContext ctx) {
-        cst.askExp.visitAskExpr(ctx, symbolTable);
+    public void enterTextQuestion(TLParser.TextQuestionContext ctx) {
+        cst.questionText.visitQuestionText(ctx, symbolTable);
     }
 
-
-
+    @Override
+    public void enterNumberQuestion(TLParser.NumberQuestionContext ctx) {
+        cst.questionNumber.visitQuestionNumber(ctx, symbolTable);
+    }
 
     public Boolean isDeclared(String name, int depth){
         Attributes attribute = new Attributes(name, null);

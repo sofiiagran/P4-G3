@@ -344,15 +344,29 @@ public interface TLListener extends ParseTreeListener {
 	 */
 	void exitPrintExp(TLParser.PrintExpContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLParser#askExp}.
+	 * Enter a parse tree produced by the {@code numberQuestion}
+	 * labeled alternative in {@link TLParser#askExp}.
 	 * @param ctx the parse tree
 	 */
-	void enterAskExp(TLParser.AskExpContext ctx);
+	void enterNumberQuestion(TLParser.NumberQuestionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLParser#askExp}.
+	 * Exit a parse tree produced by the {@code numberQuestion}
+	 * labeled alternative in {@link TLParser#askExp}.
 	 * @param ctx the parse tree
 	 */
-	void exitAskExp(TLParser.AskExpContext ctx);
+	void exitNumberQuestion(TLParser.NumberQuestionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code textQuestion}
+	 * labeled alternative in {@link TLParser#askExp}.
+	 * @param ctx the parse tree
+	 */
+	void enterTextQuestion(TLParser.TextQuestionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code textQuestion}
+	 * labeled alternative in {@link TLParser#askExp}.
+	 * @param ctx the parse tree
+	 */
+	void exitTextQuestion(TLParser.TextQuestionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLParser#mathExp}.
 	 * @param ctx the parse tree

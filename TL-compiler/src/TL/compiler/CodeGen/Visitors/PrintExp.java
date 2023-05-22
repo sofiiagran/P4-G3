@@ -57,34 +57,28 @@ public class PrintExp {
                 // check if it is dot variable
                 else if (ctx.var(varCount).dotVariable() != null) {
                     String varName = "";
-                    // if it is an answer variable / contains an ask ID
-                    if (ctx.var(varCount).dotVariable().askID != null) {
-                        // set rightVar to ask ID
-                        varName = ctx.var(varCount).dotVariable().askID.getText();
-                        variableNames.add(varName);
-                    }
                     // if it is a collection variable / contain an instance name
-                    else if (ctx.var(varCount).dotVariable().instanceName != null) {
-
+                    if (ctx.var(varCount).dotVariable().instanceName != null) {
                         String instanceName = ctx.var(varCount).dotVariable().instanceName.getText();
                         String field = ctx.var(varCount).dotVariable().field.getText();
 
                         // check if both instance name and field is declared, if so,
-                        // leftVar is set to name . field, and added to symbol table with teh same type as field
+                        // leftVar is set to name.field, and added to symbol table with the same data type as field
                         if (symbolTable.isInScope(new Attributes(instanceName, null))
                             && symbolTable.isInScope(new Attributes(field, null))) {
 
                             varName = instanceName + "." + field;
                             Type fieldType = symbolTable.retrieveSymbol(field).getType();
-
                             symbolTable.insertSymbol(new Attributes(varName, fieldType));
                             variableNames.add(varName);
                         } else {
                             throw new IllegalArgumentException("Cannot use variable: \"" + instanceName + " get "
-                                + field + "\" in math expressions," + " since: "
+                                + field + "\" in print expressions," + " since: "
                                 + instanceName + " or " + field + " is not declared");
                         }
-                    } else if (ctx.var(varCount).dotVariable().listID != null) {
+                    }
+                    // check if it is a list / contains a listID
+                    else if (ctx.var(varCount).dotVariable().listID != null) {
 
                         String listID = ctx.var(varCount).dotVariable().listID.getText();
                         String index = ctx.var(varCount).dotVariable().NUMBER_VAL_INT().getText();
@@ -99,8 +93,14 @@ public class PrintExp {
                             variableNames.add(varName);
                         } else {
                             throw new IllegalArgumentException("Cannot use variable: \" " + listID + " get " +
-                                index + "\" in math expressions, since: " + listID + " is not declared");
+                                index + "\" in print expressions, since: " + listID + " is not declared");
                         }
+                    }
+                    // if it is an answer variable / contains an ask ID
+                    else if (ctx.var(varCount).dotVariable().askID != null) {
+                        // set rightVar to ask ID
+                        varName = ctx.var(varCount).dotVariable().askID.getText();
+                        variableNames.add(varName);
                     }
                     // calls function that check type and translate it to C
                     val += typeChecker.checkType(varName, symbolTable);
@@ -114,7 +114,7 @@ public class PrintExp {
             }
         }
         for(int i = 0; i < variableNames.size(); i++){
-            printVarNames += ", " + "&" + variableNames.get(i);
+            printVarNames += ", " + variableNames.get(i);
         }
         //print the result string with "" added to start and end, plus variable names printed afterwards
         return val + "\" " + printVarNames;

@@ -33,7 +33,7 @@ public class TextListInit {
         } else {
             // if it is not, add to symbol table and print initialisation with data type
             symbolTable.insertSymbol(attribute);
-            init = "    char *" + varName + "[]";
+            init = "    char *" + varName + "[1000]";
         }
         for (int i = 0; i < ctx.getChildCount(); i++) {
             if (ctx.getChild(i) == ctx.ID(idCount)) {

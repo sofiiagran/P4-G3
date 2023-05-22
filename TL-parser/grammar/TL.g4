@@ -13,10 +13,11 @@ startBlock:
     ;
 
 startBody:
-    declaration
-    | initialization
-    | expression
-    | statement
+    declaration+
+    | initialization+
+    | expression+
+    | statement+
+    | funcCall+
     ;
 
 
@@ -42,7 +43,7 @@ funcName:
     ;
 
 funcCall:
-    (RUN)? funcID=funcName (LPAREN param=funcInputParam RPAREN)?
+    (RUN)? funcID=funcName (LPAREN (param=funcInputParam)? RPAREN)?
     ;
 
 
@@ -70,7 +71,7 @@ numberListDecl:
      ;
 
 numberListInit:
-     (NUMBER LIST)? assignID=ID ASSIGN (numberValue | ID) (COMMA (numberValue | ID))*
+     (NUMBER LIST)? assignID=ID ASSIGN (numberValue | ID) (COMMA (numberValue | ID))+
      ;
 
 textListDecl:
@@ -78,7 +79,7 @@ textListDecl:
      ;
 
 textListInit:
-     (TEXT LIST)? assignID=ID ASSIGN (TEXT_VAL | ID) (COMMA  (TEXT_VAL | ID))*
+     (TEXT LIST)? assignID=ID ASSIGN (TEXT_VAL | ID) (COMMA  (TEXT_VAL | ID))+
      ;
 
 
@@ -96,6 +97,7 @@ funcBody:
     | expression+
     | declaration+
     | initialization+
+    | funcCall+
     ;
 
 statement:
@@ -128,6 +130,7 @@ statementBody:
     | declaration+
     | initialization+
     | expression+
+    | funcCall+
     ;
 
 condition:
@@ -157,8 +160,11 @@ printExp:
     PRINT (TEXT_VAL | numberValue  | var ) ( (ADD (TEXT_VAL | numberValue  | var ))+ )?
     ;
 
-askExp: ASK askID=ID (TEXT_VAL | numberValue  | var) ( (ADD (TEXT_VAL | numberValue  | var ))+ )?
+askExp:
+    ASK NUMBER askID=ID (TEXT_VAL | numberValue  | var) ( (ADD (TEXT_VAL | numberValue  | var ))+ )? #numberQuestion
+    |ASK TEXT askID=ID (TEXT_VAL | numberValue  | var) ( (ADD (TEXT_VAL | numberValue  | var ))+ )?  #textQuestion
     ;
+
 
 mathExp :
     assignID=var ASSIGN (numberValue | var)
@@ -268,6 +274,7 @@ NUMBER : 'number';
 TEXT : 'text';
 LIST : 'list';
 COLLECTION : 'Collection';
+QUESTION: 'question';
 
 //operation keywords
 PRINT : 'print';
@@ -283,8 +290,8 @@ TIMES: 'times';
 RETURN: 'return';
 ASK: 'ask';
 ANSWER: 'answer';
-RUN: 'run';
 GET: 'get';
+RUN: 'run';
 NOT: 'not';
 
 // Separators

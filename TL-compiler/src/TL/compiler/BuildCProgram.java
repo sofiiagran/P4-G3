@@ -7,8 +7,7 @@ import java.io.IOException;
 
 public class BuildCProgram {
 
-
-    public StringBuilder buildProgram(CodeGenerator codeGen, String code) {
+    public StringBuilder buildProgram(CodeGenerator codeGen) {
 
         StringBuilder buildProgram = new StringBuilder();
 
