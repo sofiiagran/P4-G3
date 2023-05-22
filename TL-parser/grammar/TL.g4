@@ -13,15 +13,15 @@ startBlock:
     ;
 
 startBody:
-    declaration+
-    | initialization+
-    | expression+
-    | statement+
+    declaration
+    | initialization
+    | expression
+    | statement
     ;
 
 
 functionsBlock:
-    FUNCTIONS BEGIN declaration* initialization* funcDec+ END
+    FUNCTIONS BEGIN (declaration initialization)* funcDec+ END
     ;
 
 funcDec:
@@ -83,12 +83,12 @@ textListInit:
 
 
 initialization:
-    textInit+
-    | numberInit+
-    | booleanInit+
-    | numberListInit+
-    | textListInit+
-    | collectionInit+
+    textInit
+    | numberInit
+    | booleanInit
+    | numberListInit
+    | textListInit
+    | collectionInit
     ;
 
 funcBody:
@@ -99,11 +99,11 @@ funcBody:
     ;
 
 statement:
-    ifThenStatement+
-    | ifThenElseStatement+
-    | repeatStatement+
-    | repeatUntilStatement+
-    | whileStatement+
+    ifThenStatement
+    | ifThenElseStatement
+    | repeatStatement
+    | repeatUntilStatement
+    | whileStatement
     ;
 
 ifThenStatement:
@@ -137,15 +137,16 @@ condition:
     | NOT var                                                                                             #con3
     ;
 
+
 expression:
-      mathExp+
-    | funcCall+
-    | funcDec+
-    | printExp+
-    | askExp+
-    | assignment+
-    | increment+
-    | decrement+
+      mathExp
+    | funcCall
+    | funcDec
+    | printExp
+    | askExp
+    | assignment
+    | increment
+    | decrement
     ;
 
 returnExp:

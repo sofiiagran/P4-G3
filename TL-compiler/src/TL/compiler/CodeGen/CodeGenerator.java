@@ -290,6 +290,11 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         return cst.assignList.visitAssignmentList(ctx, symbolTable);
     }
 
+    @Override
+    public String visitAssignCollection(TLParser.AssignCollectionContext ctx) {
+        return cst.assignCollection.visitAssignmentCollection(ctx, symbolTable);
+    }
+
     /*** Increment/decrement ***/
     @Override
     public String visitIncrement(TLParser.IncrementContext ctx) {
@@ -313,32 +318,6 @@ public class CodeGenerator extends TLBaseVisitor<String> {
         }
         return decExp;
     }
-
-    @Override
-    public String visitVar(TLParser.VarContext ctx) {
-        if(ctx.dotVariable() != null) {
-            return visit(ctx.dotVariable());
-        } else {
-            return ctx.getRuleContext().getText();
-        }
-    }
-
-    @Override
-    public String visitDotVariable(TLParser.DotVariableContext ctx) {
-        if(ctx.askID != null){
-            return cst.answerVal.visitAnswerValue(ctx, symbolTable);
-        } else if(ctx.listID != null){
-            return cst.indexVal.visitIndexValue(ctx, symbolTable);
-        } else if(ctx.instanceName != null){
-            return cst.collectionVal.visitCollectionValue(ctx, symbolTable);
-        } else {
-            return "";
-        }
-    }
-
-
-
-    /*** Statements ***/
     @Override
     public String visitIfThenStatement(TLParser.IfThenStatementContext ctx) {
         String statementBody = "";

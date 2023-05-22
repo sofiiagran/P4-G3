@@ -36,6 +36,7 @@ public class CST {
     public AssignID assignID = new AssignID();
     public AssignAnswer assignAnswer = new AssignAnswer();
     public AssignList assignList = new AssignList();
+    public AssignCollection assignCollection = new AssignCollection();
     public PrintExp printExp = new PrintExp();
     public AskExp askExp = new AskExp();
     public ReturnExp returnExp = new ReturnExp();
