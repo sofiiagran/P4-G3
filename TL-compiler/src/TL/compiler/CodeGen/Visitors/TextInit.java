@@ -26,7 +26,7 @@ public class TextInit {
         } else {
             // if it is not, add to symbol table and print initialisation with data type
             symbolTable.insertSymbol(attribute);
-            init = "    "  + "char " + ctx.var1ID.getText() + "[]" + " = " + ctx.TEXT_VAL() + ";";
+            init = "    "  + "char * " + ctx.var1ID.getText() + " = " + ctx.TEXT_VAL() + ";";
             declared = false;
         }
 

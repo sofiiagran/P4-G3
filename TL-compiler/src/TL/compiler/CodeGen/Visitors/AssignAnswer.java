@@ -45,7 +45,7 @@ public class AssignAnswer {
             return "    double " + undeclaredVar + " = " + declaredVar + ";\n";
         }
         if (dataType == Type.Text) {
-            return "    char " + undeclaredVar + "[] = " + declaredVar + ";\n";
+            return "    char * " + undeclaredVar + " = " + declaredVar + ";\n";
         }
         if (dataType == Type.Boolean) {
             return "    bool " + undeclaredVar + " = " + declaredVar + ";\n";

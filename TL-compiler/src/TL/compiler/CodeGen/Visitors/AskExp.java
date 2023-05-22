@@ -18,10 +18,8 @@ public class AskExp {
         // Check if the variable name exists in the symbol table and is of type text
         if (symbolTable.isInScope(new Attributes(varName, Type.Text))) {
             if(symbolTable.retrieveSymbol(varName).getType() == Type.Text){
-                return  "    char temp;" +
-                        "\n    printf(" + printBody(ctx, symbolTable) + ");" +
-                        "\n    scanf(" + "\"%c\"" + "&temp);" +
-                        "\n    " + "scanf(" + "\"%[^\\n]\"" + ", " + varName + ");" +
+                return  "\n    printf(" + printBody(ctx, symbolTable) + ");" +
+                        "\n    " + "scanf(" + "\"%[^\\n]\"" + ", " + "&" +varName + ");" +
                         "\n\n";
             } else {
                 // throw error if ask ID is declared with a different type than text.
@@ -32,11 +30,9 @@ public class AskExp {
         } else {
             //if it does not exist, it is added
             symbolTable.insertSymbol(new Attributes(varName, Type.Text));
-            return  "    char " + varName + "[];" +
-                    "\n    char temp;" +
+            return  "    char * " + varName + ";" +
                     "\n    printf(" + printBody(ctx, symbolTable) + ");" +
-                    "\n    scanf(" + "\"%c\"" + "&temp);" +
-                    "\n    " + "scanf(" + "\"%[^\\n]s\"" + ", " + varName + ");" +
+                    "\n    " + "scanf(" + "\"%[^\\n]s\"" + ", " + "&" +varName + ");" +
                     "\n\n";
         }
     }
@@ -95,7 +91,7 @@ public class AskExp {
             }
         }
         for(int i = 0; i < variableNames.size(); i++){
-            printVarNames += ", " + variableNames.get(i);
+            printVarNames += ", " + "&" +variableNames.get(i);
         }
         //print the result string with "" added to start and end, plus variable names printed afterwards
         return val + "\" " + printVarNames;

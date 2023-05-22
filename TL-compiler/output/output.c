@@ -11,12 +11,10 @@ int main() {
     return 0;
 }
 void myfunc() { 
-    char person1[];
-    char temp;
+    char * person1;
     printf( "What is your name?" );
-    scanf("%c"&temp);
-    scanf("%[^\n]s", person1);
+    scanf("%[^\n]s", &person1);
 
-    printf( "%s" , person1);
+    printf( "%s" , &person1);
 }
 

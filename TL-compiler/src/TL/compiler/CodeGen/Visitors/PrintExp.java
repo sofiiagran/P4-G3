@@ -114,7 +114,7 @@ public class PrintExp {
             }
         }
         for(int i = 0; i < variableNames.size(); i++){
-            printVarNames += ", " + variableNames.get(i);
+            printVarNames += ", " + "&" + variableNames.get(i);
         }
         //print the result string with "" added to start and end, plus variable names printed afterwards
         return val + "\" " + printVarNames;

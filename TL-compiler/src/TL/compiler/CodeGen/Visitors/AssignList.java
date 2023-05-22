@@ -48,7 +48,7 @@ public class AssignList {
             return "    double " + undeclaredVar + " = " + declaredVar + ";\n";
         }
         else if (dataType == Type.TextList) {
-            return "    char " + undeclaredVar + "[] = " + declaredVar + ";\n";
+            return "    char * " + undeclaredVar + " = " + declaredVar + ";\n";
         }
         else {
             // throw error

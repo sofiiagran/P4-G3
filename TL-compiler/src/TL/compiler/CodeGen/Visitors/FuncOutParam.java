@@ -49,7 +49,7 @@ public class FuncOutParam {
                     // adds to symbol table and adds to array
                     symbolTable.insertSymbol(new Attributes(varName, Type.Text));
                     symbolTable.retrieveSymbol(varName).setIsParam(true);
-                    params += "char " + varName + "[]";
+                    params += "char * " + varName;
                     paramNames.add(varName);
                 }
             }

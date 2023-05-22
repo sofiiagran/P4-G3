@@ -118,7 +118,7 @@ public class MathExp {
                 printMathExpr += "double " + assignIdName;
             }
             else if(symbolTable.retrieveSymbol(assignIdName).getType() == Type.Text){
-                printMathExpr += "char " + assignIdName + "[]";
+                printMathExpr += "char * " + assignIdName;
             }
             else if(symbolTable.retrieveSymbol(assignIdName).getType() == Type.Boolean){
                 printMathExpr += "bool " + assignIdName;

@@ -21,7 +21,7 @@ public class TextListDec {
         } else {
             //if not, it is added to symbol table
             symbolTable.insertSymbol(attribute);
-            declaration = "    char " + varName + "[][];";
+            declaration = "    char *" + varName + "[];";
         }
 
         // if it is global scope, empty string is returned, since declaration is printed by globalDecListener

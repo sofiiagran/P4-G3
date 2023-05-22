@@ -32,7 +32,7 @@ public class CollectionDec {
                         // if not, it is added to symbol table
                         symbolTable.insertSymbol(new Attributes(varName, Type.Text));
                         symbolTable.retrieveSymbol(varName).setIsParam(true);
-                        declaration += "    char " + varName + "[];\n";
+                        declaration += "    char * " + varName + ";\n";
                     }
                 } else if (ctx.declaration(decCount).numberDec != null){
                     varName = ctx.declaration(decCount).numberDec.numberID.getText();
