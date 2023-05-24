@@ -25,6 +25,7 @@ public class Condition1 {
         for (int i = 0; i < ctx.getChildCount(); i++) {
             if (ctx.getChild(i) == ctx.conditionalOperation(conOpCount)) {
 
+
                 String operator = op.visitConditionOp(ctx, conOpCount);
                 conOpCount++;
                 if (ctx.getChild(i - 1) == ctx.var(varCount)) {

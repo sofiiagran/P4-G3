@@ -17,7 +17,7 @@ startBody:
     | initialization+
     | expression+
     | statement+
-    | funcCall+
+    | funcDec+
     ;
 
 
@@ -97,7 +97,7 @@ funcBody:
     | expression+
     | declaration+
     | initialization+
-    | funcCall+
+    | funcDec+
     ;
 
 statement:
@@ -130,7 +130,7 @@ statementBody:
     | declaration+
     | initialization+
     | expression+
-    | funcCall+
+    | funcDec+
     ;
 
 condition:
@@ -144,7 +144,6 @@ condition:
 expression:
       mathExp
     | funcCall
-    | funcDec
     | printExp
     | askExp
     | assignment
@@ -324,8 +323,6 @@ ADD : '+';
 SUB : '-';
 MUL : '*';
 DIV : '/';
-CARET : '^';
-MOD : '%';
 BOOL_LITERAL : 'true' | 'false';
 
 ADD_ASSIGN : '+=';

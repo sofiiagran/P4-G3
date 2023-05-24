@@ -15,7 +15,6 @@ public class FuncCallListener extends TLBaseListener {
     GlobalDecListener globalDecListener;
     SymbolTable symbolTable;
     String funcName;
-    String assignment;
 
     public FuncCallListener(FuncDecListener f, GlobalDecListener g, SymbolTable s){
         this.funcDecListener = f;

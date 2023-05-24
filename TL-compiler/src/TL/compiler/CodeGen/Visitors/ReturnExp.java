@@ -10,7 +10,7 @@ public class ReturnExp {
     String returnName;
 
     public String visitReturnExpr(TLParser.ReturnExpContext ctx, SymbolTable symbolTable){
-        varName = ctx.returnVar.getText();
+        varName = "";
         if(ctx.returnVar != null) {
 
             // if it is a dot variable, this is handled in code gen
@@ -64,11 +64,18 @@ public class ReturnExp {
                 }
             }
 
+
+        } else if(ctx.returnVal != null) {
+            varName = ctx.returnVal.getText();
+
             // add .0 if value is integer
-        } else if(ctx.returnVal.numberVal.NUMBER_VAL_INT() != null){
-            returnName = ctx.returnVal.getText() + ".0";
-        } else {
-            returnName = ctx.returnVal.getText();
+            if (ctx.returnVal.numberVal.NUMBER_VAL_INT() != null) {
+                returnName = ctx.returnVal.getText() + ".0";
+            }
+            // else: print value as it is
+            else {
+                returnName = ctx.returnVal.getText();
+            }
         }
         return "    return " + returnName + ";" + "\n";
 

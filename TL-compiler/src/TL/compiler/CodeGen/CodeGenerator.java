@@ -277,6 +277,7 @@ public class CodeGenerator extends TLBaseVisitor<String> {
     @Override
     public String visitMathExp(TLParser.MathExpContext ctx) {
         return cst.mathExp.visitMathExpr(ctx, symbolTable);
+
     }
 
     /*** Assignment ***/
